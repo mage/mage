@@ -24,6 +24,6 @@
     "node": "%MAGE_NODE_VERSION%"
   },
   "dependencies": {
-    "mage": "%MAGE_REPO%#%MAGE_VERSION%"
+    "mage": "%MAGE_PACKAGE_VERSION%"
   }
 }

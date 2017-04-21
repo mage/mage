@@ -221,7 +221,7 @@
       </div>
         <ul class="toc-footer">
             <li><a href='./api.html'>API Documentation</a></li>
-            <li><a href='https://github.com/Wizcorp/mage'>GitHub</a></li>
+            <li><a href='https://github.com/mage/mage'>GitHub</a></li>
             <li><a href='https://wizcorp.jp/mage'>MAGE website</a></li>
             <li><a href='https://wizcorp.jp/'>Wizcorp website</a></li>
         </ul>
@@ -240,15 +240,9 @@ please have a look at the <a href="api.html">API reference</a>.</p>
 documentation:</p>
 
 <ol>
-<li><a href="https://github.com/Wizcorp/mage/issues/new">Open an issue</a> and request an addition to the documentation</li>
+<li><a href="https://github.com/mage/mage/issues/new">Open an issue</a> and request an addition to the documentation</li>
 <li>If you have some time, please make a pull request to enhance the documentation</li>
 </ol>
-
-<h2 id="contributing-to-mage">Contributing to MAGE</h2>
-
-<p>Contributors are welcome! Simply make sure to read the
-<a href="https://github.com/Wizcorp/mage/blob/develop/Contributing.md">Contributing</a> document
-before getting started.</p>
 
           <h1 id="requirements">Requirements</h1>
 
@@ -325,9 +319,9 @@ whenever you start up the game.</p>
 <blockquote>
 <p>Replace my-gameserver with how you wish to name your game</p>
 </blockquote>
-<pre class="highlight shell tab-shell"><code>npm install wizcorp/mage --bootstrap --prefix my-gameserver
+<pre class="highlight shell tab-shell"><code>npm install mage --bootstrap --prefix my-gameserver
 <span class="nb">cd </span>my-gameserver
-</code></pre><pre class="highlight powershell tab-powershell"><code>npm install wizcorp/mage --bootstrap --prefix my-gameserver
+</code></pre><pre class="highlight powershell tab-powershell"><code>npm install mage --bootstrap --prefix my-gameserver
 <span class="nb">cd </span>my-gameserver
 </code></pre>
 <blockquote>
@@ -347,8 +341,8 @@ the end of the line.</p>
 <blockquote>
 <p>In some cases, you may want to <code class="prettyprint">npm run clean</code> first.</p>
 </blockquote>
-<pre class="highlight shell tab-shell"><code>npm install --save wizcorp/mage#0.23.4
-</code></pre><pre class="highlight powershell tab-powershell"><code>npm install --save wizcorp/mage#0.23.4
+<pre class="highlight shell tab-shell"><code>npm install --save mage@1.2.3
+</code></pre><pre class="highlight powershell tab-powershell"><code>npm install --save mage@1.2.3
 </code></pre>
 <p>To upgrade to a new version of MAGE, simply re-run install with the <code class="prettyprint">--save</code> flag,
 and specify the version you wish to now use.</p>
@@ -368,18 +362,15 @@ and specify the version you wish to now use.</p>
 <h2 id="working-with-master-latest-and-development">Working with master (latest) and development</h2>
 
 <aside class="warning">
-Both master and development will frequently be updated, which may end up breaking
-your builds. You should try to avoid using these versions, and instead use a versioned
+The master branch will be frequently updated, which may end up breaking your application.
+You should try to avoid using this pre-release version, and instead use a versioned
 copy of MAGE for your project.
 </aside>
-<pre class="highlight shell tab-shell"><code>npm install --save wizcorp/mage#master
-npm install --save wizcorp/mage#develop
-</code></pre><pre class="highlight powershell tab-powershell"><code>npm install --save wizcorp/mage#master
-npm install --save wizcorp/mage#develop
+<pre class="highlight shell tab-shell"><code>npm install --save mage/mage#master
+</code></pre><pre class="highlight powershell tab-powershell"><code>npm install --save mage/mage#master
 </code></pre>
-<p>You may choose, for the duration of your application development, to work on the development version
-or the latest released version of MAGE. To do so, you can use the <code class="prettyprint">develop</code> and <code class="prettyprint">master</code> versions
-when running <code class="prettyprint">npm install</code>.</p>
+<p>You may choose, for the duration of your application development, to work on a pre-release version
+of MAGE. To do so, you can use the <code class="prettyprint">master</code> branch when running <code class="prettyprint">npm install</code>.</p>
 
           <h1 id="api-reference">API Reference</h1>
 
@@ -806,7 +797,7 @@ privileges only. You wouldn&rsquo;t be able to do much with that.</p>
 so there is nothing left for us to do.</p>
 
 <p>When you are ready to create user accounts, please read on about how to use and configure the
-<a href="https://github.com/Wizcorp/mage/tree/master/lib/modules/auth">auth module</a>.</p>
+<a href="https://github.com/mage/mage/tree/master/lib/modules/auth">auth module</a>.</p>
 
 <h3 id="testing-your-login-user-command">Testing your login user command</h3>
 <pre class="highlight shell tab-shell"><code>curl -X POST http://127.0.0.1:8080/game/players.login <span class="se">\</span>
