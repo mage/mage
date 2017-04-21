@@ -1,4 +1,4 @@
-<img src="./logo.png" alt="MAGE logo" width="250" height="250" />
+<img src="https://github.com/mage/mage/raw/master/logo.png" alt="MAGE logo" width="250" height="250" />
 
 [![GitHub tag](https://img.shields.io/github/tag/mage/mage.svg?style=flat-square)](https://github.com/mage/mage/releases/latest)
 [![npm](https://img.shields.io/npm/v/mage.svg?style=flat-square)](https://www.npmjs.com/package/mage)
