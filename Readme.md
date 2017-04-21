@@ -1,19 +1,14 @@
 <img src="./logo.png" alt="MAGE logo" width="250" height="250" />
 
-A server-side development solution for high-end,
-highly scalable applications and games.
+[![GitHub tag](https://img.shields.io/github/tag/mage/mage.svg?style=flat-square)](https://github.com/mage/mage/releases/latest)
+[![npm](https://img.shields.io/npm/v/mage.svg?style=flat-square)](https://www.npmjs.com/package/mage)
+[![npm](https://img.shields.io/npm/dt/mage.svg?style=flat-square)](https://www.npmjs.com/package/mage)
+[![Gitter](https://img.shields.io/gitter/room/mage-framework/mage.svg?style=flat-square)](https://gitter.im/mage-framework/mage)
 
-MAGE runs on [Node.js](http://nodejs.org/).
-It also offers tools and libraries to deal with
-message passing at scale, datastore interactions.
+Game Server Framework for Node.js
 
 Install
 -------
-
-**Note**: There are more installation options currently available: here
-we only list the normal bootstrap process. For more details, please refer
-to the [documentation on the install process](./docs/Install.md)
-
 
 ### Linux, macOS
 
@@ -43,5 +38,4 @@ See Also
 ---------
 
 * [About MAGE](https://wizcorp.jp/mage)
-* [Documentation](./docs/Readme.md)
-* [Node.js Documentation](http://nodejs.org/api/)
+* [Documentation](https://mage.github.io/mage)
