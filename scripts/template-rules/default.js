@@ -90,10 +90,6 @@ exports.prepare = function (cb) {
 		function (callback) {
 			ask('Please provide a valid GitHub repository URL (if there is one):', 'APP_REPO',
 				null, callback);
-		},
-		function (callback) {
-			ask('Please provide a valid repository URL for MAGE:', 'MAGE_REPO',
-				null, callback);
 		}
 	], cb);
 };
