@@ -17,11 +17,12 @@ var npmArgs = JSON.parse(process.env.npm_config_argv);
 // (note the hash)
 var MAGE_REPO = npmArgs.remain[0];
 var MAGE_VERSION = magePackage.version;
-var versionMarker = MAGE_REPO.indexOf('#');
+var MAGE_PACKAGE_VERSION = magePackage.version;
 
-if (versionMarker !== -1) {
-	MAGE_VERSION = MAGE_REPO.substring(versionMarker + 1);
-	MAGE_REPO = MAGE_REPO.substring(0, versionMarker);
+if (MAGE_REPO.indexOf('#') !== -1 || MAGE_REPO.indexOf('/') !== -1) {
+	MAGE_PACKAGE_VERSION = MAGE_REPO;
+} else if (MAGE_REPO.indexOf('@') !== -1) {
+	MAGE_PACKAGE_VERSION = MAGE_REPO.substring(MAGE_REPO.indexOf('@') + 1);
 }
 
 var replacements = {};
@@ -60,6 +61,7 @@ replacements = {
 	APP_CLIENTHOST_EXPOSE: '',
 	MAGE_REPO: MAGE_REPO,
 	MAGE_VERSION: MAGE_VERSION,
+	MAGE_PACKAGE_VERSION: MAGE_PACKAGE_VERSION,
 	MAGE_NODE_VERSION: (magePackage.engines && magePackage.engines.node) ? magePackage.engines.node : '',
 	ENV_USER: process.env.USER
 };
