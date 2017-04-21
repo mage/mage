@@ -1,0 +1,109 @@
+#
+# %APP_NAME% - default.yaml
+#
+# This file includes all the configuration that every environment has in common. Every environment
+# (named by the NODE_ENV environment variable) can have its own configuration file. If the
+# environment specific configuration file overlaps entries with this file, the environment specific
+# one will override the values here.
+#
+
+# Define all apps in existence. Generally our game and dashboard apps (but we leave those to the
+# individual environments).
+
+apps:
+    # Our main app: the game
+    game:
+        # Number of seconds to keep user command responses cached (to mitigate weak client connections)
+        responseCache: 30
+
+        # The maximum access level for this app (user commands with a higher level are not exposed)
+        access: user
+
+# Define how we want to log debug information, notices, warnings, errors, etc
+
+logging:
+    # Logging in the browser
+    html5:
+        # Log to the browser console
+        console:
+            channels: ">=debug"
+
+        # Send log messages back to the server (usually errors and up)
+        server:
+            channels:
+                - ">=error"
+
+    # Logging on the server
+    server:
+        # Log to the terminal (hurts performance, not recommended in production)
+        terminal:
+            channels: ">=debug"
+            config:
+                # Themes enable colors
+                theme: default
+
+
+# The server and its place in the network
+
+server:
+    # The clientHost (a fancy word for the HTTP server that serves all requests)
+    clientHost:
+        transports:
+            # Use long polling as an asynchronous event delivery mechanism
+            longpolling:
+                # Respond a short heartbeat message on the long poller every N seconds
+                heartbeat: 30
+        # Make the HTTP server available on port 8080
+        bind: "http://0.0.0.0:8080"
+
+    # Set cluster to boolean true to have as many workers as this machine has cores, or a number
+    # if you want to be more precise.
+    cluster: 1
+
+    # MMRP is the messaging layer between node instances. Turn this on when you want to allow
+    # asynchronous message passing to users. See production.yaml for an example.
+    mmrp: false
+
+    # Peers in the network should be discoverable. Use mdns or zookeeper.
+    # See production.yaml for an example.
+    serviceDiscovery: false
+
+
+# This is where all of the configuration for your databases goes. We'll get you started with a
+# simple memoryVault and a fileVault. Keep in mind these are good for easy development, but have
+# shortcomings when it comes to cluster mode.
+
+archivist:
+    vaults:
+        # Our vaults, augment this with as many as you need.
+        # You should take care to name them appropriately given the context of how they will be used.
+        volatileVault:
+            type: memory
+        userVault:
+            type: file
+            config:
+                path: ./filevault/userVault
+
+    # When doing "list" operations, we will attempt each mentioned vault until successful
+    listOrder:
+        - userVault
+
+    # When doing "get" operations, we will attempt each mentioned vault until successful
+    readOrder:
+        - volatileVault
+        - userVault
+
+    # When doing "add/set/touch/del" operations, we will write to each mentioned vault in the given order
+    writeOrder:
+        - client
+        - volatileVault
+        - userVault
+
+
+module:
+    auth:
+        topic: auth
+        hash:
+            type: pbkdf2
+            algorithm: sha256
+            iterations: 10000

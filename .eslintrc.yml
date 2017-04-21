@@ -1,0 +1,146 @@
+---
+  plugins:
+    - json
+    - mocha
+  env:
+    browser: true
+    mocha: true
+    node: true
+    es6: true
+  rules:
+    no-bitwise: 0
+    camelcase:
+      - 2
+      -
+        properties: "never"
+    curly:
+      - 2
+      - "all"
+    eqeqeq: 2
+    guard-for-in: 0
+    no-extend-native: 2
+    block-scoped-var: 2
+    strict: 0
+    wrap-iife: 2
+    indent:
+      - 2
+      - "tab"
+      -
+        SwitchCase: 0
+    no-use-before-define:
+      - 2
+      -
+        functions: false
+    complexity: 0
+    max-depth:
+      - 2
+      - 6
+    max-len:
+      - 2
+      - 120
+      -
+        ignoreUrls: true
+    max-params: 0
+    max-statements: 0
+    new-cap: 2
+    no-caller: 2
+    no-empty:
+      - 2
+      -
+        allowEmptyCatch: true
+    no-irregular-whitespace: 2
+    no-new: 0
+    valid-typeof: 0
+    quotes:
+      - 2
+      - "single"
+    no-shadow: 0
+    no-extra-parens: 0
+    no-undef: 2
+    no-unused-vars: 2
+    semi: 2
+    no-cond-assign: 0
+    no-debugger: 2
+    no-eq-null: 0
+    no-eval: 0
+    no-unused-expressions: 0
+    no-iterator: 0
+    linebreak-style:
+      - 2
+      - "unix"
+    comma-style:
+      - 2
+      - "last"
+    no-loop-func: 0
+    no-multi-str: 2
+    require-yield: 0
+    no-plusplus: 0
+    no-proto: 0
+    no-script-url: 0
+    dot-notation:
+      - 2
+      -
+        allowPattern: "^[a-z]+(_[a-z]+)+$"
+    no-new-func: 0
+    no-new-wrappers: 0
+    no-invalid-this: 0
+    no-with: 2
+    keyword-spacing:
+      - 2
+      - {}
+    space-before-blocks:
+      - 2
+      - "always"
+    space-before-function-paren:
+      - 2
+      -
+        anonymous: always
+        named: never
+        # asyncArrow: always # TODO: turn on once Node.js 0.x support is dropped
+    padded-blocks:
+      - 2
+      - "never"
+    array-bracket-spacing:
+      - 2
+      - "never"
+    space-in-parens:
+      - 2
+      - "never"
+    quote-props:
+      - 2
+      - "as-needed"
+    key-spacing:
+      - 2
+      -
+        beforeColon: false
+        afterColon: true
+    operator-linebreak:
+      - 2
+      - "after"
+    space-unary-ops:
+      - 2
+      -
+        words: false
+        nonwords: false
+    space-infix-ops: 2
+    no-mixed-spaces-and-tabs: 2
+    no-trailing-spaces: 2
+    comma-dangle:
+      - 2
+      - "never"
+    no-spaced-func: 2
+    brace-style:
+      - 2
+      - "1tbs"
+      -
+        allowSingleLine: true
+    consistent-this:
+      - 2
+      - "that"
+    yoda:
+      - 2
+      - "never"
+    spaced-comment:
+      - 2
+      - "always"
+    valid-jsdoc: 0

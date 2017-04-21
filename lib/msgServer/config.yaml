@@ -1,0 +1,13 @@
+msgStream:
+    transports:
+        longpolling:
+            route: "/msgstream"
+            heartbeat: 60
+        shortpolling:
+            route: "/msgstream"
+        websocket:
+            route: "/msgstream"
+    detect:
+        - websocket
+        - longpolling
+        - shortpolling

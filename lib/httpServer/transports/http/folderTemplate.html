@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>{{relPath}}</title>
+	<style type="text/css">
+		BODY { font: 14px Arial, sans-serif; }
+	</style>
+</head>
+<body>
+	<h1>Contents of {{relPath}}</h1>
+
+	<a href="../">..</a><br>
+{{#each files}}
+	<a href="./{{this}}">{{this}}</a><br>
+{{/each}}
+
+</body>
+</html>

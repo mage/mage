@@ -1,0 +1,10 @@
+@hawk
+# jQuery
+node_modules/plato/lib/assets/scripts/vendor/jquery-1.8.3.min.js
+node_modules/plato/tmp/assets/scripts/vendor/jquery-1.8.3.min.js
+node_modules/plato/lib/assets/scripts/bundles/core-bundle.js
+node_modules/plato/tmp/assets/scripts/bundles/core-bundle.js
+plato-report/
+html-report/
+docs/
+docs-sources/

@@ -1,0 +1,58 @@
+#
+# %APP_NAME% - production.yaml
+#
+# This file includes all the configuration that is unique to the "production" environment.
+# When it overlaps with default.yaml it will override its values.
+#
+
+
+# Development mode MUST NEVER be turned on in production.
+
+developmentMode: false
+
+
+# Define how we want to log debug information, notices, warnings, errors, etc
+
+logging:
+    # Logging in the browser
+    html5:
+        # Log to the browser console
+        console:
+            channels:
+                - ">=error"
+
+        # Send log messages back to the server (usually errors and up)
+        server:
+            channels:
+                - ">=error"
+
+    server:
+        # You should add logging services such as Graylog or Syslog here
+
+
+# The server and its place in the network
+
+server:
+    # Set cluster to boolean true to have as many workers as this machine has cores, or a number
+    # if you want to be more precise.
+    cluster: true
+
+    # MMRP is the messaging layer between node instances, built on top of ZeroMQ
+    mmrp:
+        bind:
+            # Wildcard host binds on all interfaces
+            host: "*"
+
+            # Wildcard port binds on a random available port
+            port: "*"
+
+        # The network you want to use for MMRP
+        network:
+            - "10.0.0.0/8"
+            - "172.16.0.0/12"
+            - "192.168.0.0/16"
+            - "127.0.0.0/8"
+
+    # Peers in the network should be discoverable. Use mdns or zookeeper.
+    serviceDiscovery:
+        engine: mdns

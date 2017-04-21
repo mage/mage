@@ -1,0 +1,35 @@
+/node_modules
+/components
+/test/browser/build
+/test/integration/components
+/test/integration/node_modules
+/tmp
+.swp
+*.swp
+*.session
+*.log
+*.sock
+.idea
+.DS_Store
+._.DS_Store
+.htpasswd
+.pidfile
+npm-debug.log
+.digest-cache.json
+check.txt
+.vagrant
+*.heapsnapshot
+
+# YARN local install
+.yarn
+
+# Retire cache
+.retire-cache
+
+# Docs related
+/docs-sources/includes/mage
+
+# reports (.eslintrc is generated for plato to use)
+/complexity-report
+/coverage-report
+.eslintrc

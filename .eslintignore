@@ -1,0 +1,5 @@
+node_modules/**
+coverage-report/**
+plato-report/**
+docs/**
+docs-sources/**

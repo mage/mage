@@ -1,0 +1,13 @@
+clientHost:
+    protocol: http
+    closeTimeout: 5000
+    transports:
+        longpolling:
+            heartbeat: 120
+    bind: "http://0.0.0.0:8080"
+quietRoutes: # Filter out debug and verbose logs for URLs matching these regex
+    - ^\/check\.txt
+    - ^\/favicon\.ico
+longRoutes: # Filter out long warnings for URLs matching these regex
+    - ^\/msgstream
+longThreshold: 500 # The number of milliseconds before a request is considered to be taking too long
