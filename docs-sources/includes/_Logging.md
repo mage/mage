@@ -28,15 +28,15 @@ The following channels are provided in MAGE
 
 | Channel   | Description                                                                                   |
 |-----------|-----------------------------------------------------------------------------------------------|
-| verbose   | Low-level debug information (I/O details, etc). Reserved to MAGE internals.                   |
-| debug     | Game server debugging information.                                                            |
+| verbose   | Low-level debug information (I/O details, etc); reserved to MAGE internals                    |
+| debug     | Game server debugging information                                                             |
 | info      | User command request information                                                              |
 | notice    | Services state change notification (example: third-party services and databases)              |
-| warning   | An unusual situation occurred, which should required analysis.                                |
-| error     | A user request caused an error. The user should still be able to continue using the services. |
-| critical  | A user is now stuck in a broken state which the system cannot naturally repair.               |
-| alert     | Internal services (data store API calls failed, etc) or external services are failing.        |
-| emergency | The app cannot boot or stopped unexpectedly.                                                  |
+| warning   | An unusual situation occurred, which requires analysis                                        |
+| error     | A user request caused an error. The user should still be able to continue using the services  |
+| critical  | A user is now stuck in a broken state which the system cannot naturally repair                |
+| alert     | Internal services (data store API calls failed, etc) or external services are failing         |
+| emergency | The app cannot boot or stopped unexpectedly                                                   |
 
 ## Log contexts
 

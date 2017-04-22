@@ -1,0 +1,17 @@
+/node_modules
+.swp
+*.swp
+*.session
+.idea
+.DS_Store
+._.DS_Store
+.htpasswd
+.pidfile
+*.log
+*.sock
+npm-debug.log
+vagrant_ansible_inventory_*
+.vagrant
+Vagrantfile
+check.txt
+.digest-cache.json

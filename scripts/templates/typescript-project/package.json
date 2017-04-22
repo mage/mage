@@ -1,0 +1,32 @@
+{
+  "name": "%APP_NAME%",
+  "description": "%APP_DESCRIPTION%",
+  "version": "%APP_VERSION%",
+  "repository": "%APP_REPO%",
+  "author": "%APP_AUTHOR%",
+  "license": "%APP_LICENSE%",
+  "scripts": {
+    "help": "     echo 'Display help information (this screen)' &&   npm run",
+    "mage": "     echo 'Run the mage binary'  &&                     ts-mage",
+    "develop": "  echo 'Run MAGE in development mode' &&             npm run mage",
+    "start": "    echo 'Start MAGE as a daemon' &&                   ts-mage start",
+    "stop": "     echo 'Stop the MAGE daemon' &&                     ts-mage stop",
+    "restart": "  echo 'Restart the MAGE daemon' &&                  ts-mage restart",
+    "reload": "   echo 'Reload the MAGE daemon' &&                   ts-mage reload",
+    "status": "   echo 'Check the MAGE daemon status' &&             ts-mage status",
+    "show-config": "      echo 'Show the compiled MAGE configuration' &&                         ts-mage show-config",
+    "archivist-create": " echo 'Create archivist vaults (based on current configuration)' &&     ts-mage archivist-create",
+    "archivist-migrate": "echo 'Migrate archivist vaults (based on current configuration)' &&    ts-mage archivist-migrate",
+    "archivist-drop": "   echo 'Drop the archivist vaults (based on current configuration)' &&   ts-mage archivist-drop",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "%MAGE_NODE_VERSION%"
+  },
+  "dependencies": {
+    "@types/node": "7.0.13",
+    "mage": "%MAGE_PACKAGE_VERSION%",
+    "ts-node": "3.0.2",
+    "typescript": "2.2.2"
+  }
+}

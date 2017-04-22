@@ -8,8 +8,10 @@
     "mail": "info@wizcorp.jp",
     "url": "http://github.com/mage/mage/issues"
   },
+  "types": "./types.d.ts",
   "engines": {
-    "node": "^4 || ^5 || ^6 || ^7"
+    "node": "^4 || ^5 || ^6 || ^7",
+    "typescript": "^2.2"
   },
   "scripts": {
     "dev:setup": "node ./scripts/githooks.js",
@@ -37,7 +39,8 @@
     "clean": "npm run clean:deps && npm run clean:report"
   },
   "bin": {
-    "mage": "./bin/mage.js"
+    "mage": "./bin/mage",
+    "ts-mage": "./bin/ts-mage"
   },
   "dependencies": {
     "async": "0.9.0",
