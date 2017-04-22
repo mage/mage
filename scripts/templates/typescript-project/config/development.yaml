@@ -1,0 +1,20 @@
+#
+# %APP_NAME% - development.yaml
+#
+# This file includes all the configuration that is unique to the "development" environment.
+# When it overlaps with default.yaml it will override its values.
+#
+
+
+# Developers should set this to true in their environment, in order to enable dev specific features.
+
+developmentMode: true
+
+# Augmenting the default configuration for our server
+
+server:
+    clientHost:
+        # What the world will see us as (a full base URL)
+        expose: "http://127.0.0.1:8080/"
+        bind: "http://127.0.0.1:8080"
+

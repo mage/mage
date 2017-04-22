@@ -1,9 +1,15 @@
 #!/usr/bin/env node
 
-var npmArgs = JSON.parse(process.env.npm_config_argv);
+var npmArgs = JSON.parse(process.env.npm_config_argv).original;
 
-if (npmArgs.original.indexOf('--bootstrap') === -1) {
+if (npmArgs.indexOf('--create') === -1 && npmArgs.indexOf('--bootstrap') === -1) {
 	process.exit(0);
+}
+
+var language = 'javascript';
+
+if (npmArgs.indexOf('--typescript') !== -1 || npmArgs.indexOf('--ts') !== -1) {
+	language = 'typescript';
 }
 
 var path = require('path');
@@ -23,6 +29,7 @@ var magePackagePath = path.join(magePath, 'package.json');
 var appPackagePath = path.join(appPath, 'package.json');
 
 var templateRules = require('./template-rules/default.js');
+var projectTemplatePath = 'scripts/templates/' + language + '-project';
 
 pretty.h1('Setting up application');
 
@@ -144,19 +151,38 @@ function bootstrap(cb) {
 		},
 		function (callback) {
 			function tpl(filePath) {
-				copy(path.join(magePath, 'scripts/templates/create-project', filePath), path.join(appPath, filePath));
+				copy(path.join(magePath, projectTemplatePath, filePath), path.join(appPath, filePath));
 			}
 
 			function mkdir(folderPath) {
 				mkdirpSync(path.join(appPath, folderPath));
 			}
 
-			var found = find(path.join(magePath, 'scripts/templates/create-project'));
+			var found = find(path.join(magePath, projectTemplatePath));
 
 			found.folders.forEach(mkdir);
 			found.files.forEach(tpl);
 
 			callback();
+		},
+		function (callback) {
+			var packageInfo = require(appPackagePath);
+			var args = Object.keys(packageInfo.dependencies).filter(function (name) {
+				return name !== 'mage';
+			});
+
+			if (args.length === 0) {
+				return callback();
+			}
+
+			pretty.h2('Install additional project dependencies');
+
+			args.unshift('install');
+
+			spawn('npm', args, {
+				stdio: ['ignore', process.stdout, process.stderr],
+				cwd: appPath
+			}).on('close', callback);
 		},
 		function (callback) {
 			pretty.h2('Git repository');
@@ -234,6 +260,12 @@ function bootstrap(cb) {
 					}
 				], callback);
 			});
+		},
+		function (callback) {
+			// For some reason, when using the --prefix flag, an etc folder is added.
+			// lets remove it
+			// Ref: https://github.com/npm/npm/pull/7249
+			fs.rmdir(path.join(appPath, 'etc'), callback);
 		},
 		function (callback) {
 			var msg = [

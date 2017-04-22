@@ -22,15 +22,17 @@ whenever you start up the game.
 
 ## Setting up a new MAGE project
 
+### As a JavaScript project
+
 > Replace my-gameserver with how you wish to name your game
 
 ```shell
-npm install mage --bootstrap --prefix my-gameserver
+npm install mage --create --prefix my-gameserver
 cd my-gameserver
 ```
 
 ```powershell
-npm install mage --bootstrap --prefix my-gameserver
+npm install mage --create --prefix my-gameserver
 cd my-gameserver
 ```
 
@@ -44,11 +46,26 @@ npm run develop
 npm run develop
 ```
 
-Running the following steps is the easiest way to bootstrap a new project. Do this **from inside an
+Running the following steps is the easiest way to create a new project. Do this **from inside an
 empty folder** that is named after the game you are developing.
 
-You can also specify which version you wish to install by adding `#[version number]` at
+You can also specify which version you wish to install by adding `@[version number]` at
 the end of the line.
+
+### As a TypeScript project
+
+```shell
+npm install mage --create --typescript --prefix my-gameserver
+cd my-gameserver
+```
+
+```powershell
+npm install mage --create --typescript --prefix my-gameserver
+cd my-gameserver
+```
+
+MAGE can also create TypeScript projects; to do so, all you need to do is to
+add the `typescript` or `ts` flag to the previous command.
 
 ## Upgrading MAGE in an existing project
 

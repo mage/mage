@@ -1,0 +1,7 @@
+#!/usr/bin/env ts-node
+
+// We only need this file to specify that
+// we should run using ts-node instead of node.
+
+// Require the JavaScript runtime
+require('./mage');
