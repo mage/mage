@@ -18,6 +18,13 @@ describe('A matryoshka instance', function () {
 		done();
 	});
 
+	it('should handle calls without new.', function (done) {
+		var matryoshka = Matryoshka(); // eslint-disable-line new-cap
+
+		assert(matryoshka instanceof Matryoshka);
+		done();
+	});
+
 	it('should wrap anything.', function (done) {
 		var a = new Matryoshka();
 		var b = new Matryoshka(null);
@@ -44,6 +51,25 @@ describe('A matryoshka instance', function () {
 		assert.strictEqual(g.getValue().hello.getValue(), 'world');
 
 		done();
+	});
+
+	it('can tell you the type of a matryoshka (arrays are scalars too).', () => {
+		var a = new Matryoshka();
+		var b = new Matryoshka(null);
+		var c = new Matryoshka(true);
+		var d = new Matryoshka(1);
+		var e = new Matryoshka('hi');
+		var f = new Matryoshka([0, 2, 100]);
+		var g = new Matryoshka({ hello: 'world' });
+
+		// Basic value types.
+		assert.strictEqual(a.getType(), 'scalar');
+		assert.strictEqual(b.getType(), 'scalar');
+		assert.strictEqual(c.getType(), 'scalar');
+		assert.strictEqual(d.getType(), 'scalar');
+		assert.strictEqual(e.getType(), 'scalar');
+		assert.strictEqual(f.getType(), 'scalar');
+		assert.strictEqual(g.getType(), 'object');
 	});
 
 	it('can have a source.', function (done) {
@@ -152,6 +178,114 @@ describe('A matryoshka instance', function () {
 
 		assert(mC.getValue().hello.getValue());
 		assert(mC.getValue().world.getValue());
+
+		done();
+	});
+
+	it('attempting to tunnel with a non-array throws an error.', function (done) {
+		var m = new Matryoshka();
+
+		assert.throws(
+			function () {
+				m.tunnel('blah');
+			},
+			/Addressing must be done with an array of strings/
+		);
+
+		done();
+	});
+
+	it('attempting to tunnel with non-string elements throws an error.', function (done) {
+		var m = new Matryoshka({ hello: 'world' });
+
+		assert.throws(
+			function () {
+				m.tunnel([1234]);
+			},
+			/Path segment was not a string: 1234/
+		);
+
+		done();
+	});
+
+	it('should return undefined when the tunnel goes past the end of a matryoshka', function () {
+		var m = new Matryoshka({ hello: 'world', bye: null });
+		var t1 = m.tunnel(['hello', 'there']);
+		var t2 = m.tunnel(['bye', 'you']);
+
+		assert.strictEqual(t1, undefined);
+		assert.strictEqual(t2, undefined);
+	});
+
+	it('should return a new matryoshka representing the endpoint of a tunnel path', function () {
+		var m = new Matryoshka({ a: { b: { c: 'blah', d: ['an', 'array', '!'] } } });
+		var t = m.tunnel(['a', 'b']);
+
+		assert.ok(t instanceof Matryoshka);
+		assert.deepEqual(t.getRaw(), { c: 'blah', d: ['an', 'array', '!'] });
+	});
+
+	it('can be used to tell you where config originates from', function (done) {
+		var mA = new Matryoshka({ a: 'hello' }, 'first source');
+		var mB = new Matryoshka({ b: 'world' }, 'second source');
+		var mC = Matryoshka.merge(mA, mB);
+
+		assert.equal(mC.getSourceWithPath(['a']), 'first source');
+		assert.equal(mC.getSourceWithPath(['b']), 'second source');
+
+		done();
+	});
+
+	it('can be used to give you a list of sources where config originates from', function (done) {
+		var mA = new Matryoshka({ c: { a: 'hello' } }, 'first source');
+		var mB = new Matryoshka({ c: { b: 'world' } }, 'second source');
+		var mC = new Matryoshka({ d: { e: 'something else' } }, 'third source');
+
+		var merged = Matryoshka.merge(mA, mB, mC);
+
+		assert.deepEqual(merged.getAllSourcesWithPath(['c']).sort(), ['first source', 'second source']);
+
+		done();
+	});
+
+	it('returns undefined as the source of paths that go nowhere', function (done) {
+		var m = new Matryoshka({ a: 'hello' });
+
+		assert.strictEqual(m.getSourceWithPath(['a', 'b']), undefined);
+		assert.deepEqual(m.getAllSourcesWithPath(['a', 'b']), []);
+
+		done();
+	});
+
+	it('merging throws when an arguments is not a matryoshka', function (done) {
+		assert.throws(
+			function () {
+				Matryoshka.merge(new Matryoshka({ a: 'hello' }), {});
+			},
+			/Arguments must be matryoshka instances./
+		);
+
+		done();
+	});
+
+	it('merging throws when no arguments are given', function (done) {
+		assert.throws(
+			function () {
+				Matryoshka.merge();
+			},
+			/Merge takes at least one Matryoshka instance./
+		);
+
+		done();
+	});
+
+	it('merging picks the second of two matryoshka in type conflicts', function (done) {
+		var mA = new Matryoshka({ b: { a: 'hello' } }, 'first source');
+		var mB = new Matryoshka({ b: ['an', 'array'] }, 'second source');
+
+		var merged = Matryoshka.merge(mA, mB);
+
+		assert.deepEqual(merged.getRaw(), { b: ['an', 'array'] });
 
 		done();
 	});
