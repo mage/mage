@@ -14,6 +14,7 @@ toc_footers:
 includes:
   - Requirements
   - Installation
+  - Templates
   - API
   - SDKs
   - Configuration
