@@ -1,8 +1,4 @@
 /node_modules
-/components
-/test/browser/build
-/test/integration/components
-/test/integration/node_modules
 /tmp
 .swp
 *.swp
@@ -32,4 +28,5 @@ check.txt
 # reports (.eslintrc is generated for plato to use)
 /complexity-report
 /coverage-report
+/coveralls
 .eslintrc
