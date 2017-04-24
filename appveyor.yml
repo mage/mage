@@ -1,0 +1,25 @@
+environment:
+  matrix:
+    - nodejs_version: '7'
+    - nodejs_version: '6'
+    - nodejs_version: '5'
+    - nodejs_version: '4'
+
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - npm -g install npm@latest
+  - set PATH=%APPDATA%\npm;%PATH%
+  - set NODE_ENV=development
+  - npm install
+
+matrix:
+  fast_finish: true
+
+build: off
+
+shallow_clone: false
+
+test_script:
+  - node --version
+  - npm --version
+  - npm test
