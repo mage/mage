@@ -55,7 +55,7 @@
     "epipebomb": "1.0.0",
     "forwarded-for": "1.0.1",
     "function-arguments": "1.0.8",
-    "glob": "4.3.2",
+    "glob": "7.1.1",
     "handlebars": "4.0.6",
     "heapdump": "0.3.7",
     "http-close": "0.0.2",
@@ -75,7 +75,7 @@
     "semver": "5.3.0",
     "source-map": "0.1.31",
     "tabalot": "0.8.0",
-    "tomes": "0.2.3",
+    "tomes": "0.3.0",
     "wizcorp-deep-copy.js": "0.1.0",
     "wizcorp-timer.js": "0.2.0",
     "ws": "1.1.1"
