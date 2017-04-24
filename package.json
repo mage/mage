@@ -105,7 +105,7 @@
     "istanbul": "0.4.5",
     "mktemp": "0.4.0",
     "mocha": "3.2.0",
-    "mocha-reporter": "0.0.2",
+    "mocha-reporter": "0.0.3",
     "mysql": "2.5.4",
     "npm-run-all": "4.0.2",
     "plato": "1.7.0",

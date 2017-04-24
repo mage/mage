@@ -16,7 +16,7 @@ indent_style = tab
 indent_style = space
 indent_size = 2
 
-[{*.yaml,.eslintrc}]
+[{*.yml,*.yaml,.eslintrc}]
 indent_style = space
 indent_size = 2
 
