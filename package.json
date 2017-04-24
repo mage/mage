@@ -22,6 +22,7 @@
     "test:unit-rebuild": "npm rebuild && npm run test:unit",
     "test": "run-s test:lint test:unit test:security",
     "postinstall": "link-require ./lib:lib && node ./scripts/install.js",
+    "report:coveralls": "istanbul cover _mocha --root lib --include-all-sources --report lcovonly --dir coveralls -- -R mocha-reporter ./test/index.js && cat ./coveralls/lcov.info | coveralls && rm -rf ./coveralls",
     "report:coverage": "istanbul cover _mocha --root lib --include-all-sources --report html --dir coverage-report -- -R mocha-reporter ./test/index.js",
     "report:complexity:create-config": "yaml2json .eslintrc.yml > .eslintrc",
     "report:complexity:create-report": "plato -r -d complexity-report -e .eslintrc ./lib ./test ./scripts",
@@ -97,6 +98,7 @@
     "ldapjs": "~0.7.1"
   },
   "devDependencies": {
+    "coveralls": "2.13.0",
     "cross-env": "4.0.0",
     "eslint": "3.17.0",
     "eslint-plugin-json": "1.2.0",
@@ -105,6 +107,7 @@
     "istanbul": "0.4.5",
     "mktemp": "0.4.0",
     "mocha": "3.2.0",
+    "mocha-lcov-reporter": "1.3.0",
     "mocha-reporter": "0.0.3",
     "mysql": "2.5.4",
     "npm-run-all": "4.0.2",
