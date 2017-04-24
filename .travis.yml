@@ -1,0 +1,38 @@
+language: node_js
+node_js:
+  - 4
+  - 6
+  - 7
+
+script: npm test
+
+env:
+  global:
+    - NODE_ENV=development
+    - CXX=g++-4.8
+    - ZMQ=4.1.5
+    - ZMQ_REPO=zeromq4-1
+
+before_install:
+  - mkdir ldlocal
+  - export LDHACK=`pwd`/ldlocal
+  - export LDFLAGS=-L$LDHACK/lib
+  - export CFLAGS=-I$LDHACK/include
+  - export LD_RUN_PATH=$LDHACK/lib
+  - export LD_LIBRARY_PATH=$LDHACK/lib
+  - export PKG_CONFIG_PATH=$LDHACK/lib/pkgconfig
+  - wget https://github.com/zeromq/$ZMQ_REPO/releases/download/v$ZMQ/zeromq-$ZMQ.tar.gz
+  - tar xzvf zeromq-$ZMQ.tar.gz
+  - cd zeromq-$ZMQ
+  - ./autogen.sh
+  - ./configure --prefix=$LDHACK
+  - make -j
+  - make install
+  - cd ..
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
