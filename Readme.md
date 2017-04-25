@@ -5,7 +5,7 @@
 [![npm](https://img.shields.io/npm/dt/mage.svg?style=flat-square)](https://www.npmjs.com/package/mage)
 [![Gitter](https://img.shields.io/gitter/room/mage-framework/mage.svg?style=flat-square)](https://gitter.im/mage-framework/mage)
 
-[![Build Status: Linux](https://img.shields.io/travis/mage/mage.svg?style=flat-square&label=ci%20linux)](https://travis-ci.org/mage/mage)
+[![Build Status: Linux & macOS](https://img.shields.io/travis/mage/mage.svg?style=flat-square&label=ci%20linux%2Fmacos)](https://travis-ci.org/mage/mage)
 [![Build Status: Windows](https://img.shields.io/appveyor/ci/mage/mage/master.svg?style=flat-square&label=ci%20windows)](https://ci.appveyor.com/project/github/mage/mage/branch/master)
 [![Coveralls branch](https://img.shields.io/coveralls/mage/mage/master.svg?style=flat-square)](https://coveralls.io/github/mage/mage)
 
