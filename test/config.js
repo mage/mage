@@ -10,16 +10,9 @@ function compareArrays(a, b) {
 	}
 }
 
-describe('A matryoshka instance', function () {
+describe.only('A matryoshka instance', function () {
 	it('should be constructable.', function (done) {
 		var matryoshka = new Matryoshka();
-
-		assert(matryoshka instanceof Matryoshka);
-		done();
-	});
-
-	it('should handle calls without new.', function (done) {
-		var matryoshka = Matryoshka(); // eslint-disable-line new-cap
 
 		assert(matryoshka instanceof Matryoshka);
 		done();
