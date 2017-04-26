@@ -1,5 +1,6 @@
 node_modules/**
+complexity-report/**
 coverage-report/**
-plato-report/**
+coveralls/**
 docs/**
 docs-sources/**
