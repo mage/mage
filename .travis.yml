@@ -2,6 +2,8 @@ os:
   - linux
   - osx
 
+dist: trusty
+
 language: node_js
 node_js:
   - 4
@@ -12,7 +14,6 @@ node_js:
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install zmq; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CXX=g++-4.8; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y libzmq3-dev; fi
 
@@ -22,10 +23,3 @@ script:
 env:
   global:
     - NODE_ENV=development
-
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
