@@ -16,9 +16,6 @@ apps:
         # Number of seconds to keep user command responses cached (to mitigate weak client connections)
         responseCache: 30
 
-        # The maximum access level for this app (user commands with a higher level are not exposed)
-        access: user
-
 # Define how we want to log debug information, notices, warnings, errors, etc
 
 logging:
