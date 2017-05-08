@@ -8,6 +8,7 @@
 [![Build Status: Linux & macOS](https://img.shields.io/travis/mage/mage.svg?style=flat-square&label=ci%20linux%2Fmacos)](https://travis-ci.org/mage/mage)
 [![Build Status: Windows](https://img.shields.io/appveyor/ci/mage/mage/master.svg?style=flat-square&label=ci%20windows)](https://ci.appveyor.com/project/github/mage/mage/branch/master)
 [![Coveralls branch](https://img.shields.io/coveralls/mage/mage/master.svg?style=flat-square)](https://coveralls.io/github/mage/mage)
+[![Greenkeeper badge](https://badges.greenkeeper.io/mage/mage.svg)](https://greenkeeper.io/)
 
 Game Server Framework for Node.js
 
