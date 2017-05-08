@@ -14,6 +14,8 @@ Game Server Framework for Node.js
 Install
 -------
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/mage/mage.svg)](https://greenkeeper.io/)
+
 ### Linux, macOS
 
 ```bash
