@@ -52,7 +52,7 @@
     "http-close": "0.0.2",
     "js-yaml": "3.8.3",
     "jsonlint": "1.6.2",
-    "link-require": "0.0.6",
+    "link-require": "0.0.7",
     "localstash": "0.2.0",
     "memoizee": "0.4.4",
     "memwatch-next": "0.3.0",
