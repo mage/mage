@@ -76,7 +76,7 @@ describe('auth', function () {
 		});
 	});
 
-	after(function () {
+	afterEach(function () {
 		auth.getSessionModule = oldFns.getSessionModule;
 		auth.getHashConfiguration = oldFns.getHashConfiguration;
 		auth.getArchivistTopic = oldFns.getArchivistTopic;

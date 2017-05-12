@@ -8,6 +8,7 @@ require('./state');
 require('./savvy');
 require('./archivist');
 require('./commandCenter');
+require('./apps');
 require('./serviceDiscovery');
 require('./processMessenger');
 require('./msgServer');

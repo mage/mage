@@ -1,9 +1,11 @@
-var assert = require('assert');
-var http = require('http');
-var WebSocket = require('ws');
-var pathJoin = require('path').join;
-var urlParse = require('url').parse;
-var fs = require('fs');
+'use strict';
+
+const assert = require('assert');
+const http = require('http');
+const WebSocket = require('ws');
+const pathJoin = require('path').join;
+const urlParse = require('url').parse;
+const fs = require('fs');
 
 
 function devNull() {
@@ -13,7 +15,7 @@ function devNull() {
 devNull.data = devNull;
 devNull.log = devNull;
 
-var logger = {
+const logger = {
 	verbose: devNull,
 	debug: devNull,
 	info: devNull,
@@ -27,14 +29,14 @@ var logger = {
 describe('http', function () {
 	require('./HttpRouter');
 
-	var httpServer;
-	var port = 0;
-	var host = '127.0.0.1';
-	var url;
-	var wsUrl;
+	let httpServer;
+	const port = 0;
+	const host = '127.0.0.1';
+	let url;
+	let wsUrl;
 
-	var sockPath = pathJoin(__dirname, 'test.sock');
-	var checkTxtPath = pathJoin(__dirname, 'check.txt');
+	let sockPath = pathJoin(__dirname, 'test.sock');
+	const checkTxtPath = pathJoin(__dirname, 'check.txt');
 
 	if (process.platform === 'win32') {
 		sockPath = pathJoin('\\\\.\\pipe', sockPath);
@@ -42,7 +44,7 @@ describe('http', function () {
 
 	function getResponseParser(cb) {
 		return function (res) {
-			var result = '';
+			let result = '';
 
 			res.setEncoding('utf8');
 
@@ -61,8 +63,8 @@ describe('http', function () {
 	}
 
 	function req(method, path, headers, data, cb) {
-		var parsed = urlParse(url + (path === '*' ? '' : path));
-		var options = {
+		const parsed = urlParse(url + (path === '*' ? '' : path));
+		const options = {
 			method: method || 'GET',
 			hostname: parsed.hostname,
 			port: parsed.port,
@@ -70,7 +72,7 @@ describe('http', function () {
 			headers: headers
 		};
 
-		var request = http.request(options, getResponseParser(cb)).on('error', cb);
+		const request = http.request(options, getResponseParser(cb)).on('error', cb);
 		request.end(data || undefined);
 	}
 
@@ -97,7 +99,9 @@ describe('http', function () {
 
 		it('exposes correct URLs', function () {
 			assert.strictEqual(httpServer.getBaseUrl(), '');
-			assert.strictEqual(httpServer.getBaseUrl({ host: 'example.com' }), 'http://example.com');
+
+			// object notation is no longer supported
+			assert.throws(() => { httpServer.expose({ host: 'example.com' }); });
 
 			httpServer.expose();
 			assert.strictEqual(httpServer.getRouteUrl('/hello'), '/hello');
@@ -112,13 +116,7 @@ describe('http', function () {
 			assert.strictEqual(httpServer.getBaseUrl(), 'http://foo:123/bar');
 			assert.strictEqual(httpServer.getRouteUrl('/hello'), 'http://foo:123/bar/hello');
 
-			httpServer.expose({
-				protocol: 'https',
-				host: 'example.com',
-				port: 123,
-				path: '/hello/world/'
-			});
-
+			httpServer.expose('https://example.com:123/hello/world/');
 			assert.strictEqual(httpServer.getBaseUrl(), 'https://example.com:123/hello/world');
 			assert.strictEqual(httpServer.getRouteUrl('/yay'), 'https://example.com:123/hello/world/yay');
 		});
@@ -149,20 +147,20 @@ describe('http', function () {
 
 
 	describe('Routing', function () {
-		var proxyEndpoint;
-		var proxyAddress;
+		let proxyEndpoint;
+		let proxyAddress;
 
 		function testRoute(type, requestTest, responseTest) {
-			var route = '/route-test/' + type;
+			const route = '/route-test/' + type;
 			httpServer.addRoute(route, requestTest, type);
 			get(route + '?a=1&b=2', responseTest);
 		}
 
 		function testWsRoute(type, requestTest, responseTest) {
-			var route = '/wsroute-test/' + type;
+			const route = '/wsroute-test/' + type;
 			httpServer.addRoute(route, requestTest, type);
 
-			var ws = new WebSocket(wsUrl + route + '?a=1&b=2');
+			const ws = new WebSocket(wsUrl + route + '?a=1&b=2');
 			ws.on('open', function () {
 				responseTest(ws);
 			});
@@ -177,7 +175,7 @@ describe('http', function () {
 			});
 
 			proxyEndpoint.listen(0, function () {
-				var address = proxyEndpoint.address();
+				const address = proxyEndpoint.address();
 				proxyAddress = address;
 
 				done();
@@ -239,7 +237,7 @@ describe('http', function () {
 		});
 
 		it('runs "websocket" routes', function (done) {
-			var received = false;
+			let received = false;
 
 			function reqTest(client, urlInfo) {
 				assert.ok(urlInfo && typeof urlInfo === 'object');
@@ -319,7 +317,7 @@ describe('http', function () {
 		});
 
 		it('can register a regex as a route', function (done) {
-			var route = /^\/regex-route(\/|$)/;
+			const route = /^\/regex-route(\/|$)/;
 			httpServer.addRoute(route, function (req, res) {
 				res.end('done');
 			}, 'simple');
@@ -456,7 +454,7 @@ describe('http', function () {
 		});
 
 		it('can serve a custom favicon', function (done) {
-			var buff = new Buffer('hello-world');
+			const buff = new Buffer('hello-world');
 
 			assert.throws(function () {
 				httpServer.setFavicon();
@@ -484,14 +482,14 @@ describe('http', function () {
 
 	describe('CORS', function () {
 		it('configures CORS', function () {
-			var funky = {
+			const funky = {
 				origin: 'http://foo.com',
 				methods: ['options', 'GET', 'PoSt'],
 				credentials: true,
 				maxAge: 100
 			};
 
-			var real = {
+			const real = {
 				origin: 'http://foo.com',
 				methods: 'OPTIONS, GET, POST',
 				credentials: true,
@@ -503,7 +501,7 @@ describe('http', function () {
 		});
 
 		it('serves CORS options', function (done) {
-			var headers = {
+			const headers = {
 				'Access-Control-Request-Headers': 'x-helloworld',
 				Origin: 'http://www.example.com'
 			};
@@ -519,7 +517,7 @@ describe('http', function () {
 		});
 
 		it('serves CORS options on the "*" URI', function (done) {
-			var headers = {
+			const headers = {
 				'Access-Control-Request-Headers': 'x-helloasterisk',
 				Origin: 'http://www.example.com'
 			};
@@ -535,7 +533,7 @@ describe('http', function () {
 		});
 
 		it('serves files with CORS meta data', function (done) {
-			var headers = {
+			const headers = {
 				Origin: 'http://www.example.com'
 			};
 
