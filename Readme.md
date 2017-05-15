@@ -9,7 +9,18 @@
 [![Build Status: Windows](https://img.shields.io/appveyor/ci/mage/mage/master.svg?style=flat-square&label=ci%20windows)](https://ci.appveyor.com/project/mage/mage/branch/master)
 [![Coveralls branch](https://img.shields.io/coveralls/mage/mage/master.svg?style=flat-square)](https://coveralls.io/github/mage/mage)
 
-Game Server Framework for Node.js
+What is MAGE?
+-------------
+
+MAGE is a Game Server Framework for Node.js. It allows game developers to quickly create
+highly interactive games that are performant and scalable.
+
+MAGE comes with multiple server modules; we also officially support many client-side SDKs:
+
+| Name             | Language             | Location                                           |
+| ---------------- | -------------------- | -------------------------------------------------- |
+| mage-js-sdk      | JavaScript (browser) | [GitHub](https://github.com/mage/mage-sdk-js)      |
+| mage-sdk-unity   | C# (For Unity)       | [GitHub](https://github.com/mage/mage-sdk-unity)   |
 
 Install
 -------
