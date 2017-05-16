@@ -11,7 +11,7 @@ mage.useModules([
 	'time'
 ]);
 
-// Here, you will load your application-specific modules.
-// Alternatively, you could also load each modules manually
-// in the same way you would load MAGE modules (see below).
+// Here you will load your application-specific modules.
+// Alternatively, you could also load each module manually
+// by calling mage.useModules like above.
 mage.useApplicationModules();
