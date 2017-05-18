@@ -2,6 +2,171 @@
 
 declare type VaultOperation = 'add' | 'set' | 'del' | 'touch';
 
+declare class VaultValue {
+    /**
+     * The topic of origin
+     *
+     * @type {string}
+     * @memberOf VaultValue
+     */
+    topic: string;
+
+    /**
+     * The index by which this value can be accessed
+     *
+     * @type {string[]}
+     * @memberOf VaultValue
+     */
+    index: string[];
+
+    /**
+     * Expiration timeout (unix timestamp, in seconds)
+     *
+     * If undefined, this value will never expire.
+     *
+     * @type {(number | undefined)}
+     * @memberOf VaultValue
+     */
+    expirationTime?: number;
+
+    /**
+     * Archivist media type
+     *
+     * @type {ArchivistMediaType}
+     * @memberOf VaultValue
+     */
+    mediaType: ArchivistMediaType;
+
+    /**
+     * Is the value going to be deleted from our vault backends?
+     *
+     * @type {boolean}
+     * @memberof VaultValue
+     */
+    didExist: boolean;
+
+    /**
+     * Will the value be created in our vault backends?
+     *
+     * @type {boolean}
+     * @memberof VaultValue
+     */
+    willExist: boolean;
+
+    /**
+     * The data stored in this entry
+     *
+     * @type {*}
+     * @memberOf VaultValue
+     */
+    data: any;
+
+    /**
+     * Delete the currently scheduled operation for this vault value
+     */
+    resetOperation(): void;
+
+    /**
+     * Check if an operation has been scheduled on this vault value
+     *
+     * @returns {boolean}
+     *
+     * @memberof VaultValue
+     */
+    hasOperation(): boolean;
+
+    /**
+     * Return the operation scheduled for execution on this vault value
+     *
+     * @param {string} vault
+     * @returns {(VaultOperation | null)}
+     *
+     * @memberof VaultValue
+     */
+    getOperationForVault(vault: string): VaultOperation | null;
+
+    /**
+     * Register a read miss
+     *
+     * You should not have to call this manually in most cases.
+     *
+     * @param {string} vault
+     *
+     * @memberof VaultValue
+     */
+    registerReadMiss(vault: string): void;
+
+    /**
+     * Schedule a value add to the different vault backends
+     *
+     * @param {string} mediaType
+     * @param {*} data
+     * @param {string} encoding
+     *
+     * @memberof VaultValue
+     */
+    add(mediaType: string, data: any, encoding: string): void;
+
+    /**
+     * Schedule a data set on the different vault backends
+     *
+     * @param {string} mediaType
+     * @param {*} data
+     * @param {string} encoding
+     *
+     * @memberof VaultValue
+     */
+    set(mediaType: string, data: any, encoding: string): void;
+
+    /**
+     * Schedule the set of the expiration time for the vault value (on supported vault backends)
+     *
+     * @param {number} expirationTime
+     *
+     * @memberof VaultValue
+     */
+    touch(expirationTime: number): void;
+
+    /**
+     * Mark the vault value for deletion in the different vault backends
+     *
+     * @memberof VaultValue
+     */
+    del(): void;
+
+    /**
+     * Retrieve the data diff for this vault value.
+     *
+     * This will only works on values with a mediaType supporting diffs (so currently, only tomes)
+     *
+     * @returns {(object[]|null)}
+     *
+     * @memberof VaultValue
+     */
+    getDiff(): object[]|null;
+
+    /**
+     * Apply a diff to the vault value.
+     *
+     * This will only works on values with a mediaType supporting diffs (so currently, only tomes)
+     *
+     * @param {*} diff
+     *
+     * @memberof VaultValue
+     */
+    applyDiff(diff: any): void;
+}
+
+/**
+ * Abstracted data store access interface
+ *
+ * In general, you will be accessing an archivist instance
+ * through a state object:
+ *
+ * ```javaascript
+ * state.archivist.set('player', { userId: userId }, { name: 'someone' });
+ * ```
+ */
 declare class Archivist {
     /**
      * Check whether a given exists in any of our vaults

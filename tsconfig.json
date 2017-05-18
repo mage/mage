@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "baseUrl": "../",
+    "typeRoots": [
+        "../"
+    ],
+    "types": [],
+    "isolatedModules": true,
+    "noEmit": true
+  },
+  "files": [
+    "mage.d.ts"
+  ]
+}

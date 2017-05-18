@@ -8,7 +8,7 @@
     "mail": "info@wizcorp.jp",
     "url": "http://github.com/mage/mage/issues"
   },
-  "types": "./types.d.ts",
+  "types": "./mage.d.ts",
   "engines": {
     "node": "^4 || ^6 || ^7 || ^8",
     "typescript": "^2.2"
@@ -32,7 +32,9 @@
     "report:complexity:cleanup-config": "rm .eslintrc",
     "report:complexity": "run-s report:complexity:*",
     "report": "run-p report:complexity report:coverage",
-    "docs:build": "node ./scripts/compile-docs",
+    "docs:build": "run-s docs:build:userguide docs:build:api",
+    "docs:build:userguide": "node ./scripts/compile-docs",
+    "docs:build:api": "./node_modules/.bin/typedoc --hideGenerator --out docs/api --includeDeclarations --name mage --excludeExternals --readme none",
     "clean:deps": "node ./scripts/rmrf.js node_modules",
     "clean:report": "node ./scripts/rmrf.js coverage-report complexity-report",
     "clean:docs": "node ./scripts/rmrf.js docs",
@@ -111,6 +113,8 @@
     "retire": "1.3.1",
     "rimraf": "2.6.1",
     "sqlite3": "3.1.8",
+    "typedoc": "0.7.0",
+    "typescript": "2.3.2",
     "yamljs": "0.2.10",
     "zmq": "2.15.3"
   },
