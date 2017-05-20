@@ -1431,22 +1431,22 @@ declare namespace mage {
              * is not currently connected.
              *
              * @param {(string | string[])} actorId
-             * @param {string} eventName
+             * @param {string | number} eventName
              * @param {*} data
              *
              * @memberOf State
              */
-            emit(actorId: string | string[], eventName: string, data: any): void;
+            emit<T>(actorId: string | string[], eventName: string | number, data: T): void;
 
             /**
              * Broadcast an event to all connected users
              *
-             * @param {string} eventName
+             * @param {string | number} eventName
              * @param {*} data
              *
              * @memberOf State
              */
-            broadcast(eventName: string, data: any): void;
+            broadcast<T>(eventName: string | number, data: T): void;
 
             /**
              * Register a session on the user
