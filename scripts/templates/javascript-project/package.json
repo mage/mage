@@ -5,6 +5,7 @@
   "repository": "%APP_REPO%",
   "author": "%APP_AUTHOR%",
   "license": "%APP_LICENSE%",
+  "main": "./lib/index.js",
   "scripts": {
     "help": "     echo 'Display help information (this screen)' &&   npm run",
     "mage": "     echo 'Run the mage binary'  &&                     mage",
