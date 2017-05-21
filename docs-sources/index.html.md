@@ -23,6 +23,7 @@ includes:
   - Actors
   - Archivist
   - Events
+  - Time
   - Logging
   - HTTP
   - Clustering

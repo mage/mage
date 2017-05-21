@@ -1830,7 +1830,7 @@ declare class Mage extends NodeJS.EventEmitter {
      * or simulations (run an instance of your game server faster to, for instance, play a full
      * week of your game within a few hours).
      *
-     * See https://github.com/mage/mage/tree/master/lib/modules/time for more details.
+     * See https://mage.github.io/mage/#time-manipulation for more details.
      * @memberOf Mage
      */
     time: {
