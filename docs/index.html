@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>MAGE User Guide</title>
 
@@ -316,12 +317,14 @@ whenever you start up the game.</p>
 
 <h2 id="setting-up-a-new-mage-project">Setting up a new MAGE project</h2>
 
+<h3 id="as-a-javascript-project">As a JavaScript project</h3>
+
 <blockquote>
 <p>Replace my-gameserver with how you wish to name your game</p>
 </blockquote>
-<pre class="highlight shell tab-shell"><code>npm install mage --bootstrap --prefix my-gameserver
+<pre class="highlight shell tab-shell"><code>npm install mage --create --prefix my-gameserver
 <span class="nb">cd </span>my-gameserver
-</code></pre><pre class="highlight powershell tab-powershell"><code>npm install mage --bootstrap --prefix my-gameserver
+</code></pre><pre class="highlight powershell tab-powershell"><code>npm install mage --create --prefix my-gameserver
 <span class="nb">cd </span>my-gameserver
 </code></pre>
 <blockquote>
@@ -330,11 +333,20 @@ whenever you start up the game.</p>
 <pre class="highlight shell tab-shell"><code>npm run develop
 </code></pre><pre class="highlight powershell tab-powershell"><code>npm run develop
 </code></pre>
-<p>Running the following steps is the easiest way to bootstrap a new project. Do this <strong>from inside an
+<p>Running the following steps is the easiest way to create a new project. Do this <strong>from inside an
 empty folder</strong> that is named after the game you are developing.</p>
 
-<p>You can also specify which version you wish to install by adding <code class="prettyprint">#[version number]</code> at
+<p>You can also specify which version you wish to install by adding <code class="prettyprint">@[version number]</code> at
 the end of the line.</p>
+
+<h3 id="as-a-typescript-project">As a TypeScript project</h3>
+<pre class="highlight shell tab-shell"><code>npm install mage --create --typescript --prefix my-gameserver
+<span class="nb">cd </span>my-gameserver
+</code></pre><pre class="highlight powershell tab-powershell"><code>npm install mage --create --typescript --prefix my-gameserver
+<span class="nb">cd </span>my-gameserver
+</code></pre>
+<p>MAGE can also create TypeScript projects; to do so, all you need to do is to
+add the <code class="prettyprint">typescript</code> or <code class="prettyprint">ts</code> flag to the previous command.</p>
 
 <h2 id="upgrading-mage-in-an-existing-project">Upgrading MAGE in an existing project</h2>
 
@@ -1198,11 +1210,11 @@ seeing warnings and errors will be sufficient.</p>
 </thead><tbody>
 <tr>
 <td>verbose</td>
-<td>Low-level debug information (I/O details, etc). Reserved to MAGE internals.</td>
+<td>Low-level debug information (I/O details, etc); reserved to MAGE internals</td>
 </tr>
 <tr>
 <td>debug</td>
-<td>Game server debugging information.</td>
+<td>Game server debugging information</td>
 </tr>
 <tr>
 <td>info</td>
@@ -1214,23 +1226,23 @@ seeing warnings and errors will be sufficient.</p>
 </tr>
 <tr>
 <td>warning</td>
-<td>An unusual situation occurred, which should required analysis.</td>
+<td>An unusual situation occurred, which requires analysis</td>
 </tr>
 <tr>
 <td>error</td>
-<td>A user request caused an error. The user should still be able to continue using the services.</td>
+<td>A user request caused an error. The user should still be able to continue using the services</td>
 </tr>
 <tr>
 <td>critical</td>
-<td>A user is now stuck in a broken state which the system cannot naturally repair.</td>
+<td>A user is now stuck in a broken state which the system cannot naturally repair</td>
 </tr>
 <tr>
 <td>alert</td>
-<td>Internal services (data store API calls failed, etc) or external services are failing.</td>
+<td>Internal services (data store API calls failed, etc) or external services are failing</td>
 </tr>
 <tr>
 <td>emergency</td>
-<td>The app cannot boot or stopped unexpectedly.</td>
+<td>The app cannot boot or stopped unexpectedly</td>
 </tr>
 </tbody></table>
 
