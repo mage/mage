@@ -1362,7 +1362,7 @@ declare namespace mage {
          */
         interface IUserCommand {
             acl?: string[];
-            execute(state: IState, ...args: any[]): any;
+            execute<T>(state: IState, ...args: any[]): Promise<T>;
         }
 
         export interface IState {
