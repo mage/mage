@@ -67,8 +67,8 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    getValue(topicName: string, index: mage.archivist.IArchivistIndex, options: mage.archivist.IArchivistGetOptions, callback: ArchivistGetCallback<VaultValue>): void;
-    getValue(topicName: string, index: mage.archivist.IArchivistIndex, callback: ArchivistGetCallback<VaultValue>): void;
+    getValue(topicName: string, index: mage.archivist.IArchivistIndex, options: mage.archivist.IArchivistGetOptions, callback: ArchivistGetCallback<mage.archivist.IVaultValue>): void;
+    getValue(topicName: string, index: mage.archivist.IArchivistIndex, callback: ArchivistGetCallback<mage.archivist.IVaultValue>): void;
 
     /**
      * Retrieve multiple values
