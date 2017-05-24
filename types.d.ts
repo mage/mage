@@ -1,30 +1,5 @@
 /// <reference types="node" />
 
-/**
- * The media type defines how the data will be deserialized when read from a topic, and
- * how it will be serialized before it is written to a topic.
- */
-declare type ArchivistMediaType = 'application/json' | 'application/octet-stream' | 'application/x-tome' | 'text/plain' | string;
-
-/**
- * Defines to what type of data structure a topic instance will be deserialized into. It is also used
- * in some cases to specify to a serialization method what is the data type of the data we are feeding in.
- */
-declare type ArchivistEncoding = 'utf8' | 'buffer' | 'live';
-
-/**
- * Callback functions
- */
-declare type ArchivistExistsCallback = (error: Error|null, doesValueExist: boolean) => void;
-
-declare type ArchivistGetCallback<T> = (error: Error|null, value: T) => void;
-
-declare type ArchivistMGetCallback<T> = (error: Error|null, value: T[]) => void;
-
-declare type ArchivistListCallback = (error: Error|null, indexes: mage.archivist.IArchivistIndex[]) => void;
-
-declare type ArchivistDistributeCallback = (preDistributionErrors: Error[], distributionErrors: Error[]) => void;
-
 declare type VaultOperation = 'add' | 'set' | 'del' | 'touch';
 
 declare class Archivist {
@@ -37,7 +12,7 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    exists(topicName: string, index: mage.archivist.IArchivistIndex, callback: ArchivistExistsCallback): void;
+    exists(topicName: string, index: mage.archivist.IArchivistIndex, callback: mage.archivist.ArchivistExistsCallback): void;
 
     /**
      * Retrieve a value
@@ -52,8 +27,8 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    get<T>(topicName: string, index: mage.archivist.IArchivistIndex, options: mage.archivist.IArchivistGetOptions | undefined, callback: ArchivistGetCallback<T>): void;
-    get<T>(topicName: string, index: mage.archivist.IArchivistIndex, callback: ArchivistGetCallback<T>): void;
+    get<T>(topicName: string, index: mage.archivist.IArchivistIndex, options: mage.archivist.IArchivistGetOptions | undefined, callback: mage.archivist.ArchivistGetCallback<T>): void;
+    get<T>(topicName: string, index: mage.archivist.IArchivistIndex, callback: mage.archivist.ArchivistGetCallback<T>): void;
 
     /**
      * Retrieve the VaultValue object for a given key
@@ -67,8 +42,8 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    getValue(topicName: string, index: mage.archivist.IArchivistIndex, options: mage.archivist.IArchivistGetOptions | undefined, callback: ArchivistGetCallback<mage.archivist.IVaultValue>): void;
-    getValue(topicName: string, index: mage.archivist.IArchivistIndex, callback: ArchivistGetCallback<mage.archivist.IVaultValue>): void;
+    getValue(topicName: string, index: mage.archivist.IArchivistIndex, options: mage.archivist.IArchivistGetOptions | undefined, callback: mage.archivist.ArchivistGetCallback<mage.archivist.IVaultValue>): void;
+    getValue(topicName: string, index: mage.archivist.IArchivistIndex, callback: mage.archivist.ArchivistGetCallback<mage.archivist.IVaultValue>): void;
 
     /**
      * Retrieve multiple values
@@ -82,8 +57,8 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    mget<T>(queries: mage.archivist.IArchivistQuery[], options: mage.archivist.IArchivistGetOptions | undefined, callback: ArchivistMGetCallback<T>): void;
-    mget<T>(queries: mage.archivist.IArchivistQuery[], callback: ArchivistMGetCallback<T>): void;
+    mget<T>(queries: mage.archivist.IArchivistQuery[], options: mage.archivist.IArchivistGetOptions | undefined, callback: mage.archivist.ArchivistMGetCallback<T>): void;
+    mget<T>(queries: mage.archivist.IArchivistQuery[], callback: mage.archivist.ArchivistMGetCallback<T>): void;
 
     /**
      * Retrieve multiple VaultValue objects
@@ -96,8 +71,8 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    mgetValues(queries: mage.archivist.IArchivistQuery[], options: mage.archivist.IArchivistGetOptions | undefined, callback:  ArchivistMGetCallback<mage.archivist.IVaultValue>): void;
-    mgetValues(queries: mage.archivist.IArchivistQuery[], callback: ArchivistMGetCallback<mage.archivist.IVaultValue>): void;
+    mgetValues(queries: mage.archivist.IArchivistQuery[], options: mage.archivist.IArchivistGetOptions | undefined, callback: mage.archivist.ArchivistMGetCallback<mage.archivist.IVaultValue>): void;
+    mgetValues(queries: mage.archivist.IArchivistQuery[], callback: mage.archivist.ArchivistMGetCallback<mage.archivist.IVaultValue>): void;
 
     /**
      * Scan the backend vault for matching indexes, and return them
@@ -122,8 +97,8 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    list(topicName: string, partialIndex: mage.archivist.IArchivistIndex, options: mage.archivist.IArchivistListOptions | undefined, callback: ArchivistListCallback): void;
-    list(topicName: string, partialIndex: mage.archivist.IArchivistIndex, callback: ArchivistListCallback): void;
+    list(topicName: string, partialIndex: mage.archivist.IArchivistIndex, options: mage.archivist.IArchivistListOptions | undefined, callback: mage.archivist.ArchivistListCallback): void;
+    list(topicName: string, partialIndex: mage.archivist.IArchivistIndex, callback: mage.archivist.ArchivistListCallback): void;
 
     /**
      * Add a new topic value by index.
@@ -141,7 +116,7 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    add<T>(topicName: string, index: mage.archivist.IArchivistIndex, data: T, mediaType: ArchivistMediaType, encoding: ArchivistEncoding, expirationTime: number): void;
+    add<T>(topicName: string, index: mage.archivist.IArchivistIndex, data: T, mediaType: mage.archivist.ArchivistMediaType, encoding: mage.archivist.ArchivistEncoding, expirationTime?: number): void;
 
     /**
      * Set the value for an existing index.
@@ -155,7 +130,7 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    set<T>(topicName: string, index: mage.archivist.IArchivistIndex, data: T, mediaType: ArchivistMediaType, encoding: ArchivistEncoding, expirationTime: number): void;
+    set<T>(topicName: string, index: mage.archivist.IArchivistIndex, data: T, mediaType: mage.archivist.ArchivistMediaType, encoding: mage.archivist.ArchivistEncoding, expirationTime?: number): void;
 
     /**
      * Delete a topic by index.
@@ -176,7 +151,7 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    touch(topicName: string, index: mage.archivist.IArchivistIndex, expirationTime: number): void;
+    touch(topicName: string, index: mage.archivist.IArchivistIndex, expirationTime?: number): void;
 
     /**
      *
@@ -186,7 +161,7 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    distribute(callback: ArchivistDistributeCallback): void;
+    distribute(callback: mage.archivist.ArchivistDistributeCallback): void;
 }
 
 /**
@@ -1042,6 +1017,31 @@ declare var mage: Mage;
 
 declare namespace mage {
     namespace archivist {
+        /**
+         * The media type defines how the data will be deserialized when read from a topic, and
+         * how it will be serialized before it is written to a topic.
+         */
+        type ArchivistMediaType = 'application/json' | 'application/octet-stream' | 'application/x-tome' | 'text/plain' | string;
+
+        /**
+         * Defines to what type of data structure a topic instance will be deserialized into. It is also used
+         * in some cases to specify to a serialization method what is the data type of the data we are feeding in.
+         */
+        type ArchivistEncoding = 'utf8' | 'buffer' | 'live';
+
+        /**
+         * Callback functions
+         */
+        type ArchivistExistsCallback = (error: Error|null, doesValueExist: boolean) => void;
+
+        type ArchivistGetCallback<T> = (error: Error|null, value: T) => void;
+
+        type ArchivistMGetCallback<T> = (error: Error|null, value: T[]) => void;
+
+        type ArchivistListCallback = (error: Error|null, indexes: mage.archivist.IArchivistIndex[]) => void;
+
+        type ArchivistDistributeCallback = (preDistributionErrors: Error[], distributionErrors: Error[]) => void;
+
         interface IArchivistGetOptions {
             /**
              * Is the value optional?
