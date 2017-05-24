@@ -52,7 +52,7 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    get<T>(topicName: string, index: mage.archivist.IArchivistIndex, options: mage.archivist.IArchivistGetOptions, callback: ArchivistGetCallback<T>): void;
+    get<T>(topicName: string, index: mage.archivist.IArchivistIndex, options: mage.archivist.IArchivistGetOptions | undefined, callback: ArchivistGetCallback<T>): void;
     get<T>(topicName: string, index: mage.archivist.IArchivistIndex, callback: ArchivistGetCallback<T>): void;
 
     /**
@@ -67,7 +67,7 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    getValue(topicName: string, index: mage.archivist.IArchivistIndex, options: mage.archivist.IArchivistGetOptions, callback: ArchivistGetCallback<mage.archivist.IVaultValue>): void;
+    getValue(topicName: string, index: mage.archivist.IArchivistIndex, options: mage.archivist.IArchivistGetOptions | undefined, callback: ArchivistGetCallback<mage.archivist.IVaultValue>): void;
     getValue(topicName: string, index: mage.archivist.IArchivistIndex, callback: ArchivistGetCallback<mage.archivist.IVaultValue>): void;
 
     /**
@@ -82,7 +82,7 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    mget<T>(queries: mage.archivist.IArchivistQuery[], options: mage.archivist.IArchivistGetOptions, callback: ArchivistMGetCallback<T>): void;
+    mget<T>(queries: mage.archivist.IArchivistQuery[], options: mage.archivist.IArchivistGetOptions | undefined, callback: ArchivistMGetCallback<T>): void;
     mget<T>(queries: mage.archivist.IArchivistQuery[], callback: ArchivistMGetCallback<T>): void;
 
     /**
@@ -96,7 +96,7 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    mgetValues(queries: mage.archivist.IArchivistQuery[], options: mage.archivist.IArchivistGetOptions, callback:  ArchivistMGetCallback<mage.archivist.IVaultValue>): void;
+    mgetValues(queries: mage.archivist.IArchivistQuery[], options: mage.archivist.IArchivistGetOptions | undefined, callback:  ArchivistMGetCallback<mage.archivist.IVaultValue>): void;
     mgetValues(queries: mage.archivist.IArchivistQuery[], callback: ArchivistMGetCallback<mage.archivist.IVaultValue>): void;
 
     /**
@@ -122,7 +122,7 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    list(topicName: string, partialIndex: mage.archivist.IArchivistIndex, options: mage.archivist.IArchivistListOptions, callback: ArchivistListCallback): void;
+    list(topicName: string, partialIndex: mage.archivist.IArchivistIndex, options: mage.archivist.IArchivistListOptions | undefined, callback: ArchivistListCallback): void;
     list(topicName: string, partialIndex: mage.archivist.IArchivistIndex, callback: ArchivistListCallback): void;
 
     /**
