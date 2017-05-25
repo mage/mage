@@ -58,7 +58,9 @@ declare class Archivist {
      * @memberOf Archivist
      */
     mget<T>(queries: mage.archivist.IArchivistQuery[], options: mage.archivist.IArchivistGetOptions | undefined, callback: mage.archivist.ArchivistMGetCallback<T>): void;
+    mget<T>(queries: mage.archivist.INamedArchivistQuery, options: mage.archivist.IArchivistGetOptions | undefined, callback: mage.archivist.ArchivistNamedMGetCallback<T>): void;
     mget<T>(queries: mage.archivist.IArchivistQuery[], callback: mage.archivist.ArchivistMGetCallback<T>): void;
+    mget<T>(queries: mage.archivist.INamedArchivistQuery, callback: mage.archivist.ArchivistNamedMGetCallback<T>): void;
 
     /**
      * Retrieve multiple VaultValue objects
@@ -1038,6 +1040,8 @@ declare namespace mage {
 
         type ArchivistMGetCallback<T> = (error: Error|null, value: T[]) => void;
 
+        type ArchivistNamedMGetCallback<T> = (error: Error|null, value: { [name: string]: T }) => void;
+
         type ArchivistListCallback = (error: Error|null, indexes: mage.archivist.IArchivistIndex[]) => void;
 
         type ArchivistDistributeCallback = (preDistributionErrors: Error[], distributionErrors: Error[]) => void;
@@ -1115,7 +1119,7 @@ declare namespace mage {
         interface IArchivistIndex { [id: string] : string; }
 
         /**
-         * An ArchivistQuery is a combination of a topic name, and
+         * An IArchivistQuery is a combination of a topic name, and
          * an ArchivistIndex. When making query, it is possible to give only a
          * partial index, that is an index which only defines a value for
          * some (not all) the index's fields.
@@ -1123,6 +1127,17 @@ declare namespace mage {
         interface IArchivistQuery {
             topic: string;
             index: IArchivistIndex;
+        }
+
+        /**
+         * An INamedArchivistQuery can be used with mget
+         * to retrieve multiple values at once in a key-value map.
+         *
+         * Note you can also pass IArchivistIndex[] to mget
+         * instead if you wish to receive back an interatable array.
+         */
+        interface INamedArchivistQuery {
+           [name: string]: IArchivistIndex
         }
 
         /**
