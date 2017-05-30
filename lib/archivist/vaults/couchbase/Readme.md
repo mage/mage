@@ -74,7 +74,7 @@ config:
     options:
         user: Administrator         # optional, usually not required
         password: "password"        # optional, usually not required
-        host: [ "localhost:8091" ]  # optional
+        hosts: [ "localhost:8091" ] # optional
         bucket: default             # optional
     prefix: "prefix for all keys"   # eg: "bob/"
     flagStyle: default              # "default" or "node-memcached"
