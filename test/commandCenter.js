@@ -61,6 +61,28 @@ describe('commandCenter', function () {
 
 				cc.setupUserCommand('user', 'login', mod);
 			});
+
+			it('If exports.default is present, its content is used for the user command (for TypeScript)', function () {
+				const mod = {
+					default: {
+						execute: function (state, cb) {
+							cb();
+						}
+					}
+				};
+
+				cc.setupUserCommand('user', 'login', mod);
+			});
+
+			it('User commands may be classes with static methods', function () {
+				class mod {
+					static execute(state, cb) {
+						cb();
+					}
+				};
+
+				cc.setupUserCommand('user', 'login', mod);
+			});
 		});
 
 		describe('getPublicConfig()', function () {
