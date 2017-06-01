@@ -10,14 +10,14 @@
 ._.DS_Store
 .htpasswd
 .pidfile
-npm-debug.log
 .digest-cache.json
 check.txt
 .vagrant
 *.heapsnapshot
 
-# YARN local install
+# package managers
 .yarn
+npm-debug.log
 
 # Retire cache
 .retire-cache
