@@ -14,9 +14,10 @@ network can access this metadata!
 ## Configuration
 
 To use service discovery, configuration is mandatory. Due to the nature of cloud based solutions such as Amazon EC2,
-mDNS will fail to work correctly and you will need to setup an alternative. For now the only alternative is zookeeper.
+mDNS will fail to work correctly and you will need to setup an alternative. Possible alternatives are `zookeeper` and
+`consul`.
 
-The `mDNS` configuration is as follows:
+The [`mDNS`](./engines/mdns) configuration is as follows:
 
 ```yaml
 server:
@@ -26,7 +27,7 @@ server:
             description: "UniqueIdOnTheNetwork" # optional
 ```
 
-The `zookeeper` configuration is as follows:
+The [`zookeeper`](./engines/zookeeper) configuration is as follows:
 
 ```yaml
 server:
@@ -36,7 +37,20 @@ server:
             hosts: "192.168.1.12:2181,192.168.3.18:2181,etc..."
 ```
 
-The `single` configuration is as follows:
+The [`consul`](./engines/consul) configuration is as follows:
+
+```yaml
+server:
+    serviceDiscovery:
+        engine: consul
+        options:
+            interface: enp4s0
+            # optional
+            consul:
+                host: consul.service.dc.consul
+```
+
+The [`single`](./engines/single) configuration is as follows:
 
 ```yaml
 server:
