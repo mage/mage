@@ -118,7 +118,7 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    add<T>(topicName: string, index: mage.archivist.IArchivistIndex, data: T, mediaType: mage.archivist.ArchivistMediaType, encoding: mage.archivist.ArchivistEncoding, expirationTime?: number): void;
+    add<T>(topicName: string, index: mage.archivist.IArchivistIndex, data: T, mediaType?: mage.archivist.ArchivistMediaType, encoding?: mage.archivist.ArchivistEncoding, expirationTime?: number): void;
 
     /**
      * Set the value for an existing index.
@@ -132,7 +132,7 @@ declare class Archivist {
      *
      * @memberOf Archivist
      */
-    set<T>(topicName: string, index: mage.archivist.IArchivistIndex, data: T, mediaType: mage.archivist.ArchivistMediaType, encoding: mage.archivist.ArchivistEncoding, expirationTime?: number): void;
+    set<T>(topicName: string, index: mage.archivist.IArchivistIndex, data: T, mediaType?: mage.archivist.ArchivistMediaType, encoding?: mage.archivist.ArchivistEncoding, expirationTime?: number): void;
 
     /**
      * Delete a topic by index.
