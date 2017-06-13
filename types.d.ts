@@ -400,6 +400,256 @@ declare class Logger {
     emergency: Log;
 }
 
+/**
+ * There is currently only 1 flag, namely ‘TRACK_ROUTE’.
+ *
+ * When this flag is active, the returnRoute must be kept
+ * around in the envelope as it travels across the network.
+ */
+declare type MmrpEnvelopeFlag = 'NONE' | 'TRACK_ROUTE' | int
+
+/**
+ * Data which may be put into an MMRP envelope
+ */
+declare type MmrpEnvelopeMessage = string | Buffer
+
+/**
+ *
+ */
+declare type MmrpEnvelopeRoute = string[]
+
+/**
+ * MMRP Envelopes are used to encapsulate data to
+ * be sent between MAGE nodes.
+ *
+ * @class MmrpEnvelope
+ */
+declare class MmrpEnvelope {
+    constructor(eventName: string, messages: MmrpEnvelopeMessage[], route: MmrpEnvelopeRoute, returnRoute: MmrpEnvelopeRoute, flags: MmrpEnvelopeFlag | MmrpEnvelopeFlag[]);
+
+    /**
+     * Sets the message part(s) of the envelope
+     *
+     * The event name is what one will listen to, but prefixed
+     * with 'delivery.'. Example:
+     *
+     * ```javascript
+     * mmrpNode.on('delivery.MyEventName', (...args) => console.log(...args))
+     * ```
+     *
+     * @param {string} eventName
+     * @param {MmrpEnvelopeMessage} message
+     * @param {Function} callback
+     *
+     * @memberof MmrpEnvelope
+     */
+    setMessage(eventName: string, message: MmrpEnvelopeMessage): void;
+
+    /**
+     * Appends a message part to the envelope
+     *
+     * @param {MmrpEnvelopeMessage} message
+     *
+     * @memberof MmrpEnvelope
+     */
+    addMessage(message: MmrpEnvelopeMessage): void;
+
+    /**
+     * Sets the route that the envelope needs to take to reach its destination
+     *
+     * @param {MmrpEnvelopeRoute} route
+     *
+     * @memberof MmrpEnvelope
+     */
+    setRoute(route: MmrpEnvelopeRoute): void;
+
+    /**
+     * Prepends a route to the existing envelope route
+     *
+     * @param {MmrpEnvelopeRoute} route
+     *
+     * @memberof MmrpEnvelope
+     */
+    injectRoute(route: MmrpEnvelopeRoute): void;
+
+    /**
+     * Removes a route part from the start of the route, if the value matches,
+     * or empties the entire route if the given identity is undefined
+     *
+     * @param {string} [identity]
+     *
+     * @memberof MmrpEnvelope
+     */
+    consumeRoute(identity?: string): void;
+
+    /**
+     * Returns true if the route has not been fully consumed, false otherwise
+     *
+     * @returns {boolean}
+     *
+     * @memberof MmrpEnvelope
+     */
+    routeRemains(): boolean;
+
+    /**
+     * Returns the final address in the route
+     *
+     * @returns {string}
+     *
+     * @memberof MmrpEnvelope
+     */
+    getFinalDestination(): string;
+
+    /**
+     * Returns true if this envelope tracks and contains the sender's route, false otherwise
+     *
+     * @returns {boolean}
+     *
+     * @memberof MmrpEnvelope
+     */
+    hasReturnRoute(): boolean;
+
+    /**
+     * Set the return route for this message
+     *
+     * Used whenever a reply is required
+     *
+     * @param {(string | string[])} route
+     *
+     * @memberof MmrpEnvelope
+     */
+    setReturnRoute(route: MmrpEnvelopeRoute): void;
+
+    /**
+     * Prepends a route to the existing return route
+     *
+     * @param {string} route
+     *
+     * @memberof MmrpEnvelope
+     */
+    injectSender(route: string): void;
+
+    /**
+     * Returns the final portion of the return route
+     *
+     * This identifies the node on which the original sender
+     * resides.
+     *
+     * @returns {string}
+     *
+     * @memberof MmrpEnvelope
+     */
+    getInitialSource(): string;
+
+    /**
+     *
+     *
+     * @param {*} flags
+     *
+     * @memberof MmrpEnvelope
+     */
+    setMeta(flags: MmrpEnvelopeFlag | MmrpEnvelopeFlag[]): void;
+
+    /**
+     * True if a flag is set
+     *
+     * @returns {boolean}
+     *
+     * @memberof MmrpEnvelope
+     */
+    isFlagged(): boolean;
+
+    /**
+     * Retrieves the flags's string representation
+     *
+     * @returns {string[]}
+     *
+     * @memberof MmrpEnvelope
+     */
+    getFlags(): string[];
+
+    /**
+     * Set a flag value
+     *
+     * @param {*} flag
+     * @returns {boolean}
+     *
+     * @memberof MmrpEnvelope
+     */
+    setFlag(flag: MmrpEnvelopeFlag): boolean;
+}
+
+/**
+ * MMRP Nodes are created to transmit data encapsulated
+ * into MmrpEnvelopes across MAGE servers within a cluster
+ *
+ * @class MmrpNode
+ */
+declare class MmrpNode {
+    constructor(role: 'relay' | 'client' | 'both', cfg: any, clusterId: string);
+
+    /**
+     * Connects the dealer to a particular URI (if not already connected) and sends it a handshake.
+     *
+     * @param {string} uri
+     * @param {string} clusterId
+     * @param {Function} [callback]
+     */
+    connect(uri: string, clusterId: string, callback?: Function): void;
+
+    /**
+     * Disconnects the dealer from a given URI (if connected)
+     *
+     * @param {string} uri
+     */
+    disconnect(uri: string): void;
+
+    /**
+     * Announce a relay as available. It should be connected to if appropriate.
+     *
+     * @param {string} uri
+     * @param {string} clusterId
+     * @param {Function} [callback]
+     */
+    relayUp(uri: string, clusterId: string, callback?: Function): void;
+
+    /**
+     * Announce a relay as no longer available. It will disconnect from this relay if connected.
+     *
+     * @param {string} uri
+     */
+    relayDown(uri: string): void;
+
+    /**
+     * Sends a message along a route of identities
+     *
+     * @param {MmrpEnvelope} envelope   The envelope to send
+     * @param {number} [attempts]   Number of times to try resending of the route does not currently exist
+     * @param {Function} cb         Callback that may receive an error if routing failed
+     * @return {number}             Number of bytes sent
+     */
+    send(envelope: MmrpEnvelope, attempts: number | null, callback: Function): number;
+
+    /**
+     * Broadcasts an envelope across the entire mesh of relays and clients.
+     *
+     * @param {Envelope} envelope
+     * @param {string} [routingStyle]   "*" (to all relays and clients), "*:c" (to all clients), "*:r" (to all peer relays)
+     * @return {number}                 Number of bytes sent
+     */
+    broadcast(envelope: MmrpEnvelope, routingStyle: string): number;
+
+    /**
+     * Closes all sockets on this node and removes all event listeners as we won't be emitting anymore.
+     */
+    close(): void;
+}
+
+/**
+ * MAGE session class
+ *
+ * @class Session
+ */
 declare class Session {
     /**
      * Key/value meta data object to store with the session
@@ -900,6 +1150,118 @@ declare class Mage extends NodeJS.EventEmitter {
      * @memberOf Mage
      */
     logger: Logger;
+
+    /**
+     * Message Server
+     *
+     * The message server is used for state propagation across
+     * multiple MAGE servers in a cluster; it can also be used directly
+     * by MAGE developer to transfer data across servers.
+     *
+     * @memberof Mage
+     */
+    msgServer: {
+        /**
+         * Message Server
+         */
+        mmrp: {
+            Envelope: MmrpEnvelope;
+            MmrpNode: MmrpNode;
+        }
+
+        /**
+         * Check whether the Message Server is enabled
+         *
+         * See https://mage.github.io/mage/api.html#subsystems
+         * for mor details on how to enable message server.
+         *
+         * @returns {boolean}
+         */
+        isEnabled(): boolean;
+
+        /**
+         * Retrieve the underlying MMRP Node instance
+         * used by this Message Server instance.
+         *
+         * @returns {MmrpNode}
+         */
+        getMmrpNode(): MmrpNode;
+
+        /**
+         * Retrieve the unique cluster identifier
+         *
+         * @returns {string}
+         */
+        getClusterId(): string;
+
+        /**
+         * Retreive the configuration used by this Message
+         * Server instance
+         *
+         * @returns {*}
+         */
+        getPublicConfig(): any;
+
+        /**
+         * Get the URL to use to connect to this Message
+         * Stream's instance
+         *
+         * @returns {string}
+         */
+        getMsgStreamUrl(): string;
+
+        /**
+         * Send a message to a remote Message Server instance
+         *
+         * @param {string} address
+         * @param {string} clusterId
+         * @param {MmrpEnvelope} message
+         */
+        send(address: string, clusterId: string, message: MmrpEnvelope): void;
+
+        /**
+         * Broadcast a message to all connected Message Server instance
+         *
+         * @param {MmrpEnvelope} message
+         */
+        broadcast(message: MmrpEnvelope): void;
+
+        /**
+         * Send a confirmation message
+         *
+         * @param {string} address
+         * @param {string} clusterId
+         * @param {string[]} msgIds
+         */
+        confirm(address: string, clusterId: string, msgIds: string[]): void;
+
+        /**
+         * Mark a given address as connected
+         *
+         * @param {string} address
+         * @param {string} clusterId
+         * @param {('never' | 'always' | 'ondelivery')} [disconnects]
+         */
+        connect(address: string, clusterId: string, disconnects?: 'never' | 'always' | 'ondelivery'): void;
+
+        /**
+         * Mark a given address as disconnected
+         *
+         * @param {string} address
+         * @param {string} clusterId
+         */
+        disconnect(address: string, clusterId: string): void;
+
+        /**
+         * Close the network connection for this Message Server
+         */
+        close(): void;
+
+        on(eventName: string, onEvent: (envelope: MmrpEnvelope) => void): void;
+        once(eventName: string, onEvent: (envelope: MmrpEnvelope) => void): void;
+        removeAllListeners(eventName: string): void;
+        removeListener(eventName: string, callback: Function): void;
+    }
 
     /**
      * Session module
