@@ -1,7 +1,7 @@
 var cluster = require('cluster');
 
 if (cluster.isWorker) {
-	var Messenger = require('lib/processMessenger');
+	var Messenger = require('../../lib/processMessenger');
 	var messenger = new Messenger('test');
 
 	if (cluster.worker.id <= 4) {
