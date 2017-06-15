@@ -406,7 +406,7 @@ declare class Logger {
  * When this flag is active, the returnRoute must be kept
  * around in the envelope as it travels across the network.
  */
-declare type MmrpEnvelopeFlag = 'NONE' | 'TRACK_ROUTE' | int
+declare type MmrpEnvelopeFlag = 'NONE' | 'TRACK_ROUTE' | number
 
 /**
  * Data which may be put into an MMRP envelope
@@ -1032,6 +1032,78 @@ declare class Mage extends NodeJS.EventEmitter {
          */
         State: { new(): mage.core.IState };
 
+
+        /**
+         * Archivist core module
+         *
+         * This module can be used to access things such as topic
+         * configuration and vault backends.
+         */
+        archivist: {
+            /**
+             * Retrieve an object containing all the
+             * existing vault backend instances
+             *
+             * @returns {{ [vaultName: string]: any }}
+             */
+            getPersistentVaults(): { [vaultName: string]: any }
+
+            /**
+             * Used to confirm the abilities of the topic on this configured system
+             *
+             * Not all vaults can implement the full spectrum of internals required
+             * by the higher level APIs; this method allows developers to verify
+             * whether a given vault backend support the functionalities it needs.
+             *
+             * @param {string}   topic           The topic to test.
+             * @param {string[]} [index]         The index signature this topic should conform to.
+             * @param {string[]} [operations]    The operations that every vault associated with this topic must
+             *                                   support. Values: 'list', 'get', 'add', 'set', 'touch', 'del'
+             * @param {boolean} [indexIsPartial] True if the given index signature is allowed to be incomplete.
+             */
+            assertTopicAbilities(topicName: string, index?: string[], requiredOperations?: string[], isIndexPartial?: boolean): any
+
+            /**
+             * Close all vaults instances
+             *
+             * @returns {*}
+             */
+            closeVaults(): any
+
+            /**
+             * Check if a topic is defined
+             *
+             * @param {string} topicName
+             * @returns {boolean}
+             */
+            topicExists(topicName: string): boolean
+
+            /**
+             * Retrieve a map of all existing topics
+             *
+             * @returns {{ [topicName: string]: mage.archivist.ITopic }}
+             */
+            getTopics(): { [topicName: string]: mage.archivist.ITopic }
+
+            /**
+             *
+             *
+             * @param {string} topicName
+             * @returns {*}
+             */
+            getTopicApi(topicName: string, vaultName: string): mage.archivist.ITopicApi | null
+
+            /**
+             * Migrate all current vaults to a given version
+             *
+             * This will look at the list of available migration scripts
+             * and execute them if needed.
+             *
+             * @returns {*}
+             */
+            migrateToVersion(targetVersion: string, callback: (error: Error | null) => void): any
+        }
+
         /**
          * Configuration core module
          */
@@ -1545,6 +1617,59 @@ declare namespace mage {
             readOptions?: mage.archivist.IArchivistGetOptions,
             afterLoad?: () => void,
             beforeDistribute?: () => void
+        }
+
+        /**
+         * Contains the index fields, and methods for
+         * processing a given topics on a given vault backend
+         *
+         * @interface ITopicApi
+         */
+        interface ITopicApi {
+            /**
+             * List of index fields
+             *
+             * @type {string[]}
+             * @memberof ITopicApi
+             */
+            index: string[]
+
+            /**
+             * Serialize the data
+             *
+             * @memberof ITopicApi
+             */
+            serialize?: (value: any) => {mediaType: mage.archivist.ArchivistMediaType, data: any, encoding: string }
+
+            /**
+             * Deserialize the data
+             *
+             * @memberof ITopicApi
+             */
+            deserialize?: (mediaType: mage.archivist.ArchivistMediaType, data: any, encoding: string) => any
+
+            /**
+             * Generate a storage key from the topic name and the index information
+             *
+             * @memberof ITopicApi
+             */
+            createKey?: (topicName: string, index: mage.archivist.IArchivistIndex) => any,
+
+            /**
+             * Shard function
+             *
+             *
+             * @memberof ITopicApi
+             */
+            shard?: (value: mage.archivist.IVaultValue) => string | number,
+
+            /**
+             * Object containing the ACL information, per level
+             *
+             * @type {*}
+             * @memberof ITopicApi
+             */
+            acl?: { [level: string]: { ops: VaultOperation | 'get' | '*', shard?: boolean } }
         }
 
         interface IVaultValue {
