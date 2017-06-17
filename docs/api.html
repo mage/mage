@@ -2295,23 +2295,34 @@ network can access this metadata!</p>
 <h2 id="configuration">Configuration</h2>
 
 <p>To use service discovery, configuration is mandatory. Due to the nature of cloud based solutions such as Amazon EC2,
-mDNS will fail to work correctly and you will need to setup an alternative. For now the only alternative is zookeeper.</p>
+mDNS will fail to work correctly and you will need to setup an alternative. Possible alternatives are <code class="prettyprint">zookeeper</code> and
+<code class="prettyprint">consul</code>.</p>
 
-<p>The <code class="prettyprint">mDNS</code> configuration is as follows:</p>
+<p>The <a href="./engines/mdns"><code class="prettyprint">mDNS</code></a> configuration is as follows:</p>
 <pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
     <span class="na">serviceDiscovery</span><span class="pi">:</span>
         <span class="na">engine</span><span class="pi">:</span> <span class="s">mdns</span>
         <span class="na">options</span><span class="pi">:</span>
             <span class="na">description</span><span class="pi">:</span> <span class="s2">"</span><span class="s">UniqueIdOnTheNetwork"</span> <span class="c1"># optional</span>
 </code></pre>
-<p>The <code class="prettyprint">zookeeper</code> configuration is as follows:</p>
+<p>The <a href="./engines/zookeeper"><code class="prettyprint">zookeeper</code></a> configuration is as follows:</p>
 <pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
     <span class="na">serviceDiscovery</span><span class="pi">:</span>
         <span class="na">engine</span><span class="pi">:</span> <span class="s">zookeeper</span>
         <span class="na">options</span><span class="pi">:</span>
             <span class="na">hosts</span><span class="pi">:</span> <span class="s2">"</span><span class="s">192.168.1.12:2181,192.168.3.18:2181,etc..."</span>
 </code></pre>
-<p>The <code class="prettyprint">single</code> configuration is as follows:</p>
+<p>The <a href="./engines/consul"><code class="prettyprint">consul</code></a> configuration is as follows:</p>
+<pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
+    <span class="na">serviceDiscovery</span><span class="pi">:</span>
+        <span class="na">engine</span><span class="pi">:</span> <span class="s">consul</span>
+        <span class="na">options</span><span class="pi">:</span>
+            <span class="na">interface</span><span class="pi">:</span> <span class="s">enp4s0</span>
+            <span class="c1"># optional</span>
+            <span class="na">consul</span><span class="pi">:</span>
+                <span class="na">host</span><span class="pi">:</span> <span class="s">consul.service.dc.consul</span>
+</code></pre>
+<p>The <a href="./engines/single"><code class="prettyprint">single</code></a> configuration is as follows:</p>
 <pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
     <span class="na">serviceDiscovery</span><span class="pi">:</span>
         <span class="na">engine</span><span class="pi">:</span> <span class="s">single</span>
