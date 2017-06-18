@@ -4,6 +4,15 @@ declare type VaultOperation = 'add' | 'set' | 'del' | 'touch';
 
 declare class Archivist {
     /**
+     * Contains an in-memory copy of all the
+     * VaultValue loaded by this instance.
+     *
+     * @type {{ [key: string]: mage.archivist.IVaultValue }}
+     * @memberof Archivist
+     */
+    loaded: { [key: string]: mage.archivist.IVaultValue }
+
+    /**
      * Check whether a given exists in any of our vaults
      *
      * @param {string} topicName
