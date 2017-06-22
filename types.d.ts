@@ -1148,6 +1148,125 @@ declare class Mage extends NodeJS.EventEmitter {
         }
 
         /**
+         * The core logger is the logger instance used internally
+         * by MAGE to log different events; for your application,
+         * you should most likely use `mage.logger` instead
+         */
+        logger: Logger;
+
+        /**
+         * Message Server
+         *
+         * The message server is used for state propagation across
+         * multiple MAGE servers in a cluster; it can also be used directly
+         * by MAGE developer to transfer data across servers.
+         *
+         * @memberof Mage
+         */
+        msgServer: {
+            /**
+             * Message Server
+             */
+            mmrp: {
+                Envelope: MmrpEnvelope;
+                MmrpNode: MmrpNode;
+            }
+
+            /**
+             * Check whether the Message Server is enabled
+             *
+             * See https://mage.github.io/mage/api.html#subsystems
+             * for mor details on how to enable message server.
+             *
+             * @returns {boolean}
+             */
+            isEnabled(): boolean;
+
+            /**
+             * Retrieve the underlying MMRP Node instance
+             * used by this Message Server instance.
+             *
+             * @returns {MmrpNode}
+             */
+            getMmrpNode(): MmrpNode;
+
+            /**
+             * Retrieve the unique cluster identifier
+             *
+             * @returns {string}
+             */
+            getClusterId(): string;
+
+            /**
+             * Retreive the configuration used by this Message
+             * Server instance
+             *
+             * @returns {*}
+             */
+            getPublicConfig(): any;
+
+            /**
+             * Get the URL to use to connect to this Message
+             * Stream's instance
+             *
+             * @returns {string}
+             */
+            getMsgStreamUrl(): string;
+
+            /**
+             * Send a message to a remote Message Server instance
+             *
+             * @param {string} address
+             * @param {string} clusterId
+             * @param {MmrpEnvelope} message
+             */
+            send(address: string, clusterId: string, message: MmrpEnvelope): void;
+
+            /**
+             * Broadcast a message to all connected Message Server instance
+             *
+             * @param {MmrpEnvelope} message
+             */
+            broadcast(message: MmrpEnvelope): void;
+
+            /**
+             * Send a confirmation message
+             *
+             * @param {string} address
+             * @param {string} clusterId
+             * @param {string[]} msgIds
+             */
+            confirm(address: string, clusterId: string, msgIds: string[]): void;
+
+            /**
+             * Mark a given address as connected
+             *
+             * @param {string} address
+             * @param {string} clusterId
+             * @param {('never' | 'always' | 'ondelivery')} [disconnects]
+             */
+            connect(address: string, clusterId: string, disconnects?: 'never' | 'always' | 'ondelivery'): void;
+
+            /**
+             * Mark a given address as disconnected
+             *
+             * @param {string} address
+             * @param {string} clusterId
+             */
+            disconnect(address: string, clusterId: string): void;
+
+            /**
+             * Close the network connection for this Message Server
+             */
+            close(): void;
+
+            on(eventName: string, onEvent: (envelope: MmrpEnvelope) => void): void;
+            once(eventName: string, onEvent: (envelope: MmrpEnvelope) => void): void;
+            removeAllListeners(eventName: string): void;
+            removeListener(eventName: string, callback: Function): void;
+        }
+
+        /**
          * Sampler core module
          *
          * Used for keeping tracks of local server metrics. This is useful
@@ -1222,118 +1341,6 @@ declare class Mage extends NodeJS.EventEmitter {
      * @memberOf Mage
      */
     logger: Logger;
-
-    /**
-     * Message Server
-     *
-     * The message server is used for state propagation across
-     * multiple MAGE servers in a cluster; it can also be used directly
-     * by MAGE developer to transfer data across servers.
-     *
-     * @memberof Mage
-     */
-    msgServer: {
-        /**
-         * Message Server
-         */
-        mmrp: {
-            Envelope: MmrpEnvelope;
-            MmrpNode: MmrpNode;
-        }
-
-        /**
-         * Check whether the Message Server is enabled
-         *
-         * See https://mage.github.io/mage/api.html#subsystems
-         * for mor details on how to enable message server.
-         *
-         * @returns {boolean}
-         */
-        isEnabled(): boolean;
-
-        /**
-         * Retrieve the underlying MMRP Node instance
-         * used by this Message Server instance.
-         *
-         * @returns {MmrpNode}
-         */
-        getMmrpNode(): MmrpNode;
-
-        /**
-         * Retrieve the unique cluster identifier
-         *
-         * @returns {string}
-         */
-        getClusterId(): string;
-
-        /**
-         * Retreive the configuration used by this Message
-         * Server instance
-         *
-         * @returns {*}
-         */
-        getPublicConfig(): any;
-
-        /**
-         * Get the URL to use to connect to this Message
-         * Stream's instance
-         *
-         * @returns {string}
-         */
-        getMsgStreamUrl(): string;
-
-        /**
-         * Send a message to a remote Message Server instance
-         *
-         * @param {string} address
-         * @param {string} clusterId
-         * @param {MmrpEnvelope} message
-         */
-        send(address: string, clusterId: string, message: MmrpEnvelope): void;
-
-        /**
-         * Broadcast a message to all connected Message Server instance
-         *
-         * @param {MmrpEnvelope} message
-         */
-        broadcast(message: MmrpEnvelope): void;
-
-        /**
-         * Send a confirmation message
-         *
-         * @param {string} address
-         * @param {string} clusterId
-         * @param {string[]} msgIds
-         */
-        confirm(address: string, clusterId: string, msgIds: string[]): void;
-
-        /**
-         * Mark a given address as connected
-         *
-         * @param {string} address
-         * @param {string} clusterId
-         * @param {('never' | 'always' | 'ondelivery')} [disconnects]
-         */
-        connect(address: string, clusterId: string, disconnects?: 'never' | 'always' | 'ondelivery'): void;
-
-        /**
-         * Mark a given address as disconnected
-         *
-         * @param {string} address
-         * @param {string} clusterId
-         */
-        disconnect(address: string, clusterId: string): void;
-
-        /**
-         * Close the network connection for this Message Server
-         */
-        close(): void;
-
-        on(eventName: string, onEvent: (envelope: MmrpEnvelope) => void): void;
-        once(eventName: string, onEvent: (envelope: MmrpEnvelope) => void): void;
-        removeAllListeners(eventName: string): void;
-        removeListener(eventName: string, callback: Function): void;
-    }
 
     /**
      * Session module
