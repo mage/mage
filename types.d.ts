@@ -425,7 +425,15 @@ declare type MmrpEnvelopeRoute = string[]
  * @class MmrpEnvelope
  */
 declare class MmrpEnvelope {
-    constructor(eventName: string, messages: MmrpEnvelopeMessage[], route: MmrpEnvelopeRoute, returnRoute: MmrpEnvelopeRoute, flags: MmrpEnvelopeFlag | MmrpEnvelopeFlag[]);
+    constructor(eventName: string, messages: MmrpEnvelopeMessage[], route?: MmrpEnvelopeRoute, returnRoute?: MmrpEnvelopeRoute, flags?: MmrpEnvelopeFlag | MmrpEnvelopeFlag[]);
+
+    /**
+     * List of messages
+     *
+     * @type {MmrpEnvelopeMessage[]}
+     * @memberof MmrpEnvelope
+     */
+    public messages: MmrpEnvelopeMessage[]
 
     /**
      * Sets the message part(s) of the envelope
@@ -637,12 +645,17 @@ declare class MmrpNode {
      * @param {string} [routingStyle]   "*" (to all relays and clients), "*:c" (to all clients), "*:r" (to all peer relays)
      * @return {number}                 Number of bytes sent
      */
-    broadcast(envelope: MmrpEnvelope, routingStyle: string): number;
+    broadcast(envelope: MmrpEnvelope, routingStyle?: string): number;
 
     /**
      * Closes all sockets on this node and removes all event listeners as we won't be emitting anymore.
      */
     close(): void;
+
+    on(eventName: string, onEvent: (envelope: MmrpEnvelope) => void): void;
+    once(eventName: string, onEvent: (envelope: MmrpEnvelope) => void): void;
+    removeAllListeners(eventName: string): void;
+    removeListener(eventName: string, callback: Function): void;
 }
 
 /**
@@ -1168,8 +1181,8 @@ declare class Mage extends NodeJS.EventEmitter {
              * Message Server
              */
             mmrp: {
-                Envelope: MmrpEnvelope;
-                MmrpNode: MmrpNode;
+                Envelope: typeof MmrpEnvelope;
+                MmrpNode: typeof MmrpNode;
             }
 
             /**
@@ -1259,11 +1272,6 @@ declare class Mage extends NodeJS.EventEmitter {
              * Close the network connection for this Message Server
              */
             close(): void;
-
-            on(eventName: string, onEvent: (envelope: MmrpEnvelope) => void): void;
-            once(eventName: string, onEvent: (envelope: MmrpEnvelope) => void): void;
-            removeAllListeners(eventName: string): void;
-            removeListener(eventName: string, callback: Function): void;
         }
 
         /**
@@ -1873,6 +1881,27 @@ declare namespace mage {
             acl?: string[];
             execute<T>(state: IState, ...args: any[]): Promise<T>;
         }
+
+        /**
+         * Logger interface
+         *
+         * This is useful when you wish, for instance, to add a logger
+         * instance to a class.
+         *
+         * ```typescript
+         * class MyClass {
+         *   private _logger: mage.core.ILogger
+         *
+         *   constructor() {
+         *     this._logger = mage.logger.context('MyClass')
+         *   }
+         * }
+         * ```
+         *
+         * @interface ILogger
+         * @extends {Logger}
+         */
+        interface ILogger extends Logger {}
 
         export interface IState {
             /**
