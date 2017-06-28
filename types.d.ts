@@ -719,6 +719,50 @@ declare class Session {
      * @memberOf Session
      */
     version: string;
+
+    /**
+     * Expires the session and communicates it
+     * to the client passing the given reason
+     *
+     * @param state
+     * @param reason
+     */
+    expire(state: mage.core.IState, reason: string): void
+
+    /**
+     * Recalculates a new expiration time for
+     * the session and saves it
+     *
+     * @param {mage.core.IState} state
+     * @memberof Session
+     */
+    extend(state: mage.core.IState): void
+
+    /**
+     * Returns data for the given key
+     *
+     * @param {string} key
+     * @returns {*}
+     * @memberof Session
+     */
+    getData(key: string): any
+
+    /**
+     * Sets data at a given key
+     *
+     * @param {string} key
+     * @param {*} value
+     * @memberof Session
+     */
+    setData(key: string, value: any): void
+
+    /**
+     * Deletes the data at a given key
+     *
+     * @param {string} key
+     * @memberof Session
+     */
+    delData(key: string): void
 }
 
 /**
@@ -1353,7 +1397,10 @@ declare class Mage extends NodeJS.EventEmitter {
     /**
      * Session module
      *
-     * The session module can be used to
+     * The session module can be used to create a session
+     * object, which will then normally be accessible through
+     * the `state.session` key on the state object received
+     * through user commands.
      *
      * @memberOf Mage
      */
