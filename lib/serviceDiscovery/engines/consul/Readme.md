@@ -19,7 +19,7 @@ use a different service.
 ### Configuration
 
 In the `server.serviceDiscovery.options` object the following options exists:
- - __interface (required)__: The interface to advertise, such as `eth0` or `enp4s0`.
+ - __interface (optional)__: The interface to advertise, such as `eth0` or `enp4s0`, defaults to first available interface.
  - __ttl (optional)__: The interval at which we should renew our consul session in milliseconds. If the server
             crashes hard the advertisement will be removed after this TTL expires. Defaults to 30000.
  - __consul (optional)__: Options to pass to the `node-consul` module, see [the documentation](https://github.com/silas/node-consul#consuloptions).
