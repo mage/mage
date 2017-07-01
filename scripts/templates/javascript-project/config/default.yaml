@@ -45,13 +45,13 @@ logging:
 server:
     # The clientHost (a fancy word for the HTTP server that serves all requests)
     clientHost:
-        transports:
-            # Use long polling as an asynchronous event delivery mechanism
-            longpolling:
-                # Respond a short heartbeat message on the long poller every N seconds
-                heartbeat: 30
         # Make the HTTP server available on port 8080
         bind: "http://0.0.0.0:8080"
+
+    # Configure which transports to use and in which order to attempt (websocket, longpolling, shortpolling)
+    msgStream:
+        detect:
+            - longpolling
 
     # Set cluster to boolean true to have as many workers as this machine has cores, or a number
     # if you want to be more precise.
