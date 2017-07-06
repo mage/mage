@@ -659,6 +659,21 @@ declare class MmrpNode {
 }
 
 /**
+ * Service discovery service events
+ */
+declare type ServiceEventName = 'up' | 'down' | 'error'
+
+/**
+ * Service discovery callback function for 'up' and 'down' events
+ */
+declare type ServiceEventHandler = (serviceNode: mage.core.IServiceNode) => void
+
+/**
+ * Service discovery callback function for 'error' events
+ */
+declare type ServiceErrorEventHandler = (error: Error) => void
+
+/**
  * MAGE session class
  *
  * @class Session
@@ -1379,6 +1394,28 @@ declare class Mage extends NodeJS.EventEmitter {
              */
             timedSample(path: string[], id: string, delta: number): void;
         }
+
+        /**
+         * The Service Discovery library is a library that allows you to announce and discover services
+         * on the local network, through different types of engines.
+         *
+         * See https://mage.github.io/mage/api.html#service-discovery for more details
+         *
+         * @memberof Mage
+         */
+        serviceDiscovery: {
+            /**
+             * Create a service instance
+             *
+             * Service instances can be used to announce services as well
+             * as listen for service instance appearing and disappearing.
+             *
+             * @param {string} name
+             * @param {('tcp' | 'udp')} type
+             * @returns {mage.core.IService}
+             */
+            createService(name: string, type: 'tcp' | 'udp'): mage.core.IService
+        }
     };
 
     /**
@@ -1949,6 +1986,148 @@ declare namespace mage {
          * @extends {Logger}
          */
         interface ILogger extends Logger {}
+
+        /**
+         * IService interface
+         *
+         * IService is an interface describing the service instance
+         * returned by `mage.core.serviceDiscovery.createService`
+         *
+         * For some examples of how you can use this API, see
+         * https://mage.github.io/mage/api.html#examples
+         *
+         * @export
+         * @interface IService
+         */
+        export interface IService {
+            /**
+             * Announce the service as a new available service instance
+             *
+             * @param {number} port
+             * @param {*} metadata
+             * @param {(error?: Error) => void} callback
+             * @memberof IService
+             */
+            announce(port: number, metadata: any, callback: (error?: Error) => void): void;
+
+            /**
+             * Start listening for the presence of service instances
+             *
+             * @memberof IService
+             */
+            discover(): void;
+
+            /**
+             * Event listener
+             *
+             * @param {ServiceEventName} eventName
+             * @param {(ServiceEventHandler | ServiceErrorEventHandler)} handler
+             * @memberof IService
+             */
+            on(eventName: ServiceEventName, handler: ServiceEventHandler | ServiceErrorEventHandler): void;
+
+            /**
+             * Event listener
+             *
+             * @param {ServiceEventName} eventName
+             * @param {(ServiceEventHandler | ServiceErrorEventHandler)} handler
+             * @memberof IService
+             */
+            once(eventName: ServiceEventName, handler: ServiceEventHandler | ServiceErrorEventHandler): void;
+
+            /**
+             * Remove all instances of an event listener
+             *
+             * @param {ServiceEventName} eventName
+             * @param {(ServiceEventHandler | ServiceErrorEventHandler)} handler
+             * @memberof IService
+             */
+            removeAllListeners(eventName: ServiceEventName): void;
+
+            /**
+             * Remove an instance of an event listener
+             *
+             * @param {ServiceEventName} eventName
+             * @param {(ServiceEventHandler | ServiceErrorEventHandler)} handler
+             * @memberof IService
+             */
+            removeListener(eventName: ServiceEventName, handler: ServiceEventHandler | ServiceErrorEventHandler): void;
+        }
+
+        /**
+         * IServiceNode interface
+         *
+         * IServiceNode are received through the `on` and `once` event listeners;
+         * they normally contain the network information and metadata necessary for
+         * you to be able to connect and use this service instance.
+         *
+         * @export
+         * @interface IServiceNode
+         */
+        export interface IServiceNode {
+            /**
+             * Host name
+             *
+             * @type {string}
+             * @memberof IServiceNode
+             */
+            host: string;
+
+            /**
+             * Port number
+             *
+             * @type {number}
+             * @memberof IServiceNode
+             */
+            port: number;
+
+            /**
+             * List of available addresses
+             *
+             * Some services may be running on machines with more than one
+             * network interface; here, you will find a list of all announced
+             * IP addresses to connect through those different interfaces.
+             *
+             * @type {string[]}
+             * @memberof IServiceNode
+             */
+            addresses: string[];
+
+            /**
+             * Metadata
+             *
+             * This data is the same as the one that gets registered
+             * through `IService.announce`.
+             *
+             * @type {*}
+             * @memberof IServiceNode
+             */
+            data: any;
+
+            /**
+             * Returns whether this node is running on the local machine or not,
+             * based on the announced IP addresses
+             *
+             * @returns {boolean}
+             * @memberof IServiceNode
+             */
+            isLocal(): boolean;
+
+            /**
+             * Retrieve an IP from the addresses list
+             *
+             * The `network` parameter is an array containing the network list
+             * where your service is. The CIDR notation is used to represent the networks.
+             *
+             * This method may return `null` if no addresses could be found within
+             * the list of provided networks, or if the node provides no networks.
+             *
+             * @param {(4 | 6)} version
+             * @param {string[]} [networks]
+             * @memberof IServiceNode
+             */
+            getIp(version: 4 | 6, networks?: string[]): string | null;
+        }
 
         export interface IState {
             /**
