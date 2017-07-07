@@ -2131,6 +2131,19 @@ declare namespace mage {
 
         export interface IState {
             /**
+             * Actor ID
+             *
+             * Depending on how the state object was created, the actor ID
+             * may hold different meaning; however, it will in most cases
+             * hold the session ID of the user currently executing the user command.
+             * This will only apply to users authenticated through the auth module.
+             *
+             * @type {string}
+             * @memberof IState
+             */
+            actorId: string | null;
+
+            /**
              * Archivist instance
              *
              * When a state is received through a user command, use this archvist instance
