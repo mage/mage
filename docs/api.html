@@ -2793,44 +2793,6 @@ address and clusterId you pass are valid, and that user remains logged in, the m
   </span><span class="p">[</span><span class="s2">"another.event"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s2">"etc"</span><span class="p">:</span><span class="kc">false</span><span class="p">}],</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre>
-<h2 id="testing-your-application-with-aeriscloud-and-marathon">Testing your application with AerisCloud and Marathon</h2>
-
-<p>When using AerisCloud to test your application across a cluster of servers using the Marathon service, please make sure
-to include the following configuration in <code class="prettyprint">config/marathon.yaml</code>. Over time, the addresses below may change, so always
-stay in touch with your friendly local system administrator to make sure these make sense.</p>
-<pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
-    <span class="na">clientHost</span><span class="pi">:</span>
-        <span class="na">expose</span><span class="pi">:</span> <span class="s">null</span>
-        <span class="na">bind</span><span class="pi">:</span>
-            <span class="na">port</span><span class="pi">:</span> <span class="s">PORT0</span>
-    <span class="na">serviceDiscovery</span><span class="pi">:</span>
-        <span class="na">engine</span><span class="pi">:</span> <span class="s2">"</span><span class="s">zookeeper"</span>
-        <span class="na">options</span><span class="pi">:</span>
-            <span class="na">hosts</span><span class="pi">:</span> <span class="s2">"</span><span class="s">192.168.2.21:2181"</span>
-    <span class="na">mmrp</span><span class="pi">:</span>
-        <span class="na">bind</span><span class="pi">:</span>
-            <span class="na">port</span><span class="pi">:</span> <span class="s">PORT1</span>
-        <span class="na">network</span><span class="pi">:</span>
-            <span class="pi">-</span> <span class="s2">"</span><span class="s">192.168.2"</span>
-</code></pre>
-<p>Your Makefile needs to replace the magical constants PORT0 and PORT1 in this file when running. Here&rsquo;s an example of
-the marathon Make target:</p>
-<pre class="highlight make tab-make"><code><span class="nl">.PHONY</span><span class="o">:</span> <span class="nf">marathon</span>
-
-<span class="nl">marathon</span><span class="o">:</span>
-    <span class="err">source</span> <span class="err">/opt/nvm/nvm.sh</span> <span class="err">&amp;&amp;</span> <span class="err">\</span>
-    <span class="err">sed</span> <span class="err">-i</span> <span class="s2">"s/PORT0/${PORT0}/"</span> <span class="err">config/marathon.yaml</span> <span class="err">&amp;&amp;</span> <span class="err">\</span>
-    <span class="err">sed</span> <span class="err">-i</span> <span class="s2">"s/PORT1/${PORT1}/"</span> <span class="err">config/marathon.yaml</span> <span class="err">&amp;&amp;</span> <span class="err">\</span>
-    <span class="err">sed</span> <span class="err">-i</span> <span class="s2">"s/PORT/${PORT}/"</span> <span class="err">config/marathon.yaml</span> <span class="err">&amp;&amp;</span> <span class="err">\</span>
-    <span class="err">nvm</span> <span class="err">use</span> <span class="err">0.10.33</span> <span class="err">&amp;&amp;</span> <span class="err">\</span>
-    <span class="nv">NODE_ENV</span><span class="o">=</span>production,marathon <span class="nv">HOME</span><span class="o">=</span><span class="k">${</span><span class="nv">MESOS_DIRECTORY</span><span class="k">}</span> make deps <span class="o">&amp;&amp;</span> <span class="se">\</span>
-    <span class="nv">NODE_ENV</span><span class="o">=</span>production,marathon node .
-</code></pre>
-<p>When pushing the application to Marathon, you need to select ports for PORT0 and PORT1. An example:</p>
-<pre class="highlight shell tab-shell"><code>aeriscloud marathon office/jp push -p 80 16001
-</code></pre>
-<p>For more information about using Marathon, please read the <a href="https://github.com/Wizcorp/AerisCloud/blob/master/docs/walkthrough/marathon.md">documentation</a></p>
-
           <h1 id="mmrp">MMRP</h1>
 
 <h2 id="general-concept">General concept</h2>
