@@ -1,4 +1,47 @@
 #!/usr/bin/env node
 
-var app = require(process.cwd());
+const path = require('path');
+const cwd = process.cwd();
+
+let app;
+
+try {
+	app = require(cwd);
+} catch (error) {
+	console.error('');
+	console.error('Failed to load MAGE application:');
+	console.error('');
+	console.error(error.stack);
+	console.error('');
+	console.error('Make sure to properly set the value of "main" in your package.json,');
+	console.error('and that your code is valid.');
+
+	process.exit(-1);
+}
+
+
+if (!app.boot) {
+	const isTypeScript = !!require.extensions.ts;
+	const extension = isTypeScript ? 'ts' : 'js';
+
+	const packageJson = require(path.join(cwd, 'package.json'));
+	const main = packageJson.main || `./index.${extension}`;
+
+	console.error('');
+	console.error(`Failed to load MAGE application: mage is not exported by ${main}`);
+	console.error('');
+	console.error('Make sure to require or import MAGE, configure it, and export it back:');
+	console.error('');
+
+	if (isTypeScript) {
+		console.error('  import * as mage from \'mage\';');
+		console.error('  export = mage;');
+	} else {
+		console.error('  var mage = module.exports = require(\'mage\');');
+	}
+
+	console.error('');
+	process.exit(-1);
+}
+
 app.boot();
