@@ -428,6 +428,18 @@ declare class MmrpEnvelope {
     constructor(eventName: string, messages: MmrpEnvelopeMessage[], route?: MmrpEnvelopeRoute, returnRoute?: MmrpEnvelopeRoute, flags?: MmrpEnvelopeFlag | MmrpEnvelopeFlag[]);
 
     /**
+     * Return route
+     *
+     * This will be set on envelopes received by `.on(`delivery`)`
+     * if `envelope.setFlag('TRACK_ROUTE')` was called before
+     * sending the envelope.
+     *
+     * The returnRoute can then be used after reception
+     * to send back a reply if needed.
+     */
+    public returnRoute?: MmrpEnvelopeRoute
+
+    /**
      * List of messages
      *
      * @type {MmrpEnvelopeMessage[]}
