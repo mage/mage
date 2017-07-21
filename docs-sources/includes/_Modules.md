@@ -17,7 +17,7 @@ functionality for a certain subject (users, ranking, shop, etc),
 and expose API (called user commands) that are accessible through
 the different client SDKs.
 
-## Module setup
+## Module setup and teardown
 
 > lib/modules/players/index.js
 
@@ -26,15 +26,28 @@ exports.setup = function (state, callback) {
   // load some data
   callSomething('someData', callback);
 };
+
+exports.teardown = function (state, callback) {
+  // load some data
+  callSomething('someData', callback);
+};
 ```
 
-A MAGE module is no different from any Node.js module, except for one special function you may
-choose to export: `setup`. The setup function will run when MAGE boots up allowing your module
+MAGE modules can optionally have the two following hooks:
+
+  * **setup**: When the server is started
+  * **teardown**: When the server is about to be stopped
+
+The setup function will run when MAGE boots up allowing your module
 to prepare itself, for example by loading vital information from a data store into memory.
 This function is optional, so if you do not have a setup phase, you don't need to add it.
 
-Note that by default, modules will have 5000 milliseconds to complete setup; should you need
-longer than that, you will need to set `exports.setupTimeout` to the value of your choice.
+Teardown functions in a similar way; you may want to store to database
+some data you have been keeping in memory, or send some notifications to your users.
+
+Note that by default, each hook will have 5000 milliseconds to complete; should you need
+longer than that, you will need to set `exports.setupTimeout` and `exports.teardownTimeout`
+respectively to the value of your choice.
 
 ## Module methods
 
