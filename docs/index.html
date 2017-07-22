@@ -221,7 +221,7 @@
       <div id="toc">
       </div>
         <ul class="toc-footer">
-            <li><a href='./api.html'>API Documentation</a></li>
+            <li><a href='./api/index.html'>API Documentation</a></li>
             <li><a href='https://github.com/mage/mage'>GitHub</a></li>
             <li><a href='https://wizcorp.jp/mage'>MAGE website</a></li>
             <li><a href='https://wizcorp.jp/'>Wizcorp website</a></li>
@@ -233,7 +233,7 @@
         <div class="title">MAGE User Guide</div>
         <p>Here you will find both the basic documentation and API
 reference for MAGE. If you are looking for API documentation,
-please have a look at the <a href="api.html">API reference</a>.</p>
+please have a look at the <a href="./api.html">API reference</a>.</p>
 
 <h2 id="questions-and-issues">Questions and issues</h2>
 
@@ -389,7 +389,7 @@ of MAGE. To do so, you can use the <code class="prettyprint">master</code> branc
 <p>Before you jump into the API documentation, you will most likely want
 to read through this document so to get familiar with the basics of MAGE.</p>
 
-<p><a href="api.html">API documentation</a></p>
+<p><a href="./api/index.html">API documentation</a></p>
 
           <h1 id="client-sdks">Client SDKs</h1>
 
@@ -710,7 +710,7 @@ the actions will not be executed; the two <code class="prettyprint">mage.players
 would only store information if the call succeded.</p>
 
 <p>For more information about the API you use to access your data store, please read the
-<a href="api.html#archivist">Archivist</a> API documentation.</p>
+<a href="./api.html#archivist">Archivist</a> API documentation.</p>
 
 <h2 id="transactional-event-emission">Transactional event emission</h2>
 
@@ -743,7 +743,7 @@ were to return an error, the event emitted by <code class="prettyprint">state.em
 player referenced by <code class="prettyprint">playerId</code>.</p>
 
 <p>For more information on the State API and how events are emitted, please read the
-<a href="api.html#archivist">State</a> API documentation.</p>
+<a href="./api.html#archivist">State</a> API documentation.</p>
 
           <h1 id="actors-sessions">Actors &amp; Sessions</h1>
 
@@ -849,8 +849,9 @@ uses Archivist behind the scenes to store credentials for newly created users.</
                 <span class="na">path</span><span class="pi">:</span> <span class="s">./filevault/itemVault</span>
 </code></pre>
 <aside class="warning">
-Not all vaults support all operations! Please refer to the
-[Vault API documentation](./api.html#file-vault) for more details.
+Not all vaults support every operations! Below you will find
+a short configuration description for each available vault backends
+alongside a list of supported operations for that backend.
 </aside>
 
 <p>As mentioned, vaults are used by archivist to store data. Currently, the following backend
@@ -906,6 +907,527 @@ targets are supported:</p>
 
 <p>Vaults can have different configuration for different environments, as long as the Archivist
 API set used in your project is provided by the different vault backends you wish to use.</p>
+
+<h3 id="file-vault-backend">File vault backend</h3>
+
+<p>The file vault can be used to store data directly in your project. A ommon
+case for the use of the file vault backend is static data storage.</p>
+<pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">file</span>
+<span class="na">config</span><span class="pi">:</span>
+    <span class="na">path</span><span class="pi">:</span> <span class="s">./filevault</span>
+    <span class="na">disableExpiration</span><span class="pi">:</span> <span class="s">true</span>  <span class="c1"># optional (default: false)</span>
+</code></pre>
+<table><thead>
+<tr>
+<th>operation</th>
+<th style="text-align: center">supported</th>
+<th>implementation</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>list</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">fs.readdir(config.path);</code></td>
+</tr>
+<tr>
+<td>get</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">fs.readFile(&#39;myfile.filevault&#39; and &#39;myfile.json&#39;);</code></td>
+</tr>
+<tr>
+<td>add</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">fs.writeFile(&#39;myfile.filevault&#39; and &#39;myfile.json&#39;);</code></td>
+</tr>
+<tr>
+<td>set</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">fs.writeFile(&#39;myfile.filevault&#39; and &#39;myfile.json&#39;);</code></td>
+</tr>
+<tr>
+<td>touch</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">fs.readFile(&#39;myfile.filevault&#39;); fs.writeFile(&#39;myfile.filevault&#39;);</code></td>
+</tr>
+<tr>
+<td>del</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">fs.readFile(&#39;myfile.filevault&#39;); fs.unlink(&#39;myfile.filevault&#39; and &#39;myfile.json&#39;);</code></td>
+</tr>
+</tbody></table>
+
+<h3 id="memory">Memory</h3>
+<pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">memory</span>
+</code></pre>
+<p>The memory vault backend can be used to keep data in-memory
+for the duration of the execution of your MAGE instance. Data
+will not be persisted to disk.</p>
+
+<table><thead>
+<tr>
+<th>operation</th>
+<th style="text-align: center">supported</th>
+<th>implementation</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>list</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">for (var trueName in cache) { }</code></td>
+</tr>
+<tr>
+<td>get</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">deserialize(cache[trueName(fullIndex, topic)])</code></td>
+</tr>
+<tr>
+<td>add</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">cache[trueName(fullIndex, topic)] = serialize(data)</code></td>
+</tr>
+<tr>
+<td>set</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">cache[trueName(fullIndex, topic)] = serialize(data)</code></td>
+</tr>
+<tr>
+<td>touch</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">setTimeout()</code></td>
+</tr>
+<tr>
+<td>del</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">delete cache[trueName(fullIndex, topic)]</code></td>
+</tr>
+</tbody></table>
+
+<h3 id="client">Client</h3>
+
+<p>This vault is used to send updates to the player, so that their data is
+always synchronized in real time.</p>
+
+<p>This vault is always created when an archivist is instantiated by a
+<code class="prettyprint">State</code> object, using a name identical to the type: <code class="prettyprint">client</code>.</p>
+
+<p>This vault type requires no configuration.</p>
+
+<h3 id="supported-operations">Supported operations</h3>
+
+<table><thead>
+<tr>
+<th>operation</th>
+<th style="text-align: center">supported</th>
+<th>implementation</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>list</td>
+<td style="text-align: center"></td>
+<td></td>
+</tr>
+<tr>
+<td>get</td>
+<td style="text-align: center"></td>
+<td></td>
+</tr>
+<tr>
+<td>add</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">state.emitToActors(&#39;archivist:set&#39;)</code></td>
+</tr>
+<tr>
+<td>set</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">state.emitToActors(&#39;archivist:set&#39; or &#39;archivist:applyDiff&#39;)</code></td>
+</tr>
+<tr>
+<td>touch</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">state.emitToActors(&#39;archivist:touch&#39;)</code></td>
+</tr>
+<tr>
+<td>del</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">state.emitToActors(&#39;archivist:del&#39;)</code></td>
+</tr>
+</tbody></table>
+
+<h3 id="couchbase">Couchbase</h3>
+<pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">couchbase</span>
+<span class="na">config</span><span class="pi">:</span>
+    <span class="na">options</span><span class="pi">:</span>
+        <span class="c1"># List of hosts in the cluster</span>
+        <span class="na">hosts</span><span class="pi">:</span> <span class="pi">[</span> <span class="s2">"</span><span class="s">localhost:8091"</span> <span class="pi">]</span>
+
+        <span class="c1"># optional</span>
+        <span class="na">user</span><span class="pi">:</span> <span class="s">Administrator</span>
+        <span class="na">password</span><span class="pi">:</span> <span class="s2">"</span><span class="s">password"</span>
+
+        <span class="c1"># optional</span>
+        <span class="na">bucket</span><span class="pi">:</span> <span class="s">default</span>
+
+        <span class="c1"># optional, useful if you share a bucket with other applications</span>
+        <span class="na">prefix</span><span class="pi">:</span> <span class="s2">"</span><span class="s">bob/"</span>
+</code></pre>
+<p><code class="prettyprint">user</code> and <code class="prettyprint">password</code> are optional, however, you will need to configure
+configure them if you with to create the underlying bucket
+through <code class="prettyprint">archivist:create</code>, or to create views and query indexes
+through <code class="prettyprint">archivist:migrate</code>.</p>
+
+<table><thead>
+<tr>
+<th>operation</th>
+<th style="text-align: center">supported</th>
+<th>implementation</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>list</td>
+<td style="text-align: center"></td>
+<td></td>
+</tr>
+<tr>
+<td>get</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">couchbase.get()</code></td>
+</tr>
+<tr>
+<td>add</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">couchbase.add()</code></td>
+</tr>
+<tr>
+<td>set</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">couchbase.set()</code></td>
+</tr>
+<tr>
+<td>touch</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">couchbase.touch()</code></td>
+</tr>
+<tr>
+<td>del</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">couchbase.remove()</code></td>
+</tr>
+</tbody></table>
+
+<h3 id="mysql">MySQL</h3>
+<pre class="highlight yaml tab-yaml"><code>        <span class="na">mysql</span><span class="pi">:</span>
+            <span class="na">type</span><span class="pi">:</span> <span class="s">mysql</span>
+            <span class="na">config</span><span class="pi">:</span>
+                <span class="na">options</span><span class="pi">:</span>
+                    <span class="na">host</span><span class="pi">:</span> <span class="s2">"</span><span class="s">myhost"</span>
+                    <span class="na">user</span><span class="pi">:</span> <span class="s2">"</span><span class="s">myuser"</span>
+                    <span class="na">password</span><span class="pi">:</span> <span class="s2">"</span><span class="s">mypassword"</span>
+                    <span class="na">database</span><span class="pi">:</span> <span class="s2">"</span><span class="s">mydb"</span>
+</code></pre>
+<p>The available connection options are documented in the <a href="https://github.com/felixge/node-mysql#connection-options">node-mysql readme</a>.
+For pool options please look at <a href="https://github.com/felixge/node-mysql#pool-options">Pool options</a>.</p>
+
+<table><thead>
+<tr>
+<th>operation</th>
+<th style="text-align: center">supported</th>
+<th>implementation</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>list</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">SELECT FROM table WHERE partialIndex</code></td>
+</tr>
+<tr>
+<td>get</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">SELECT FROM table WHERE fullIndex</code></td>
+</tr>
+<tr>
+<td>add</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">INSERT INTO table SET ?</code></td>
+</tr>
+<tr>
+<td>set</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">INSERT INTO table SET ? ON DUPLICATE KEY UPDATE ?</code></td>
+</tr>
+<tr>
+<td>touch</td>
+<td style="text-align: center"></td>
+<td></td>
+</tr>
+<tr>
+<td>del</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">DELETE FROM table WHERE fullIndex</code></td>
+</tr>
+</tbody></table>
+
+<h3 id="elasticsearch">Elasticsearch</h3>
+<pre class="highlight yaml tab-yaml"><code><span class="na">elasticsearch</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">elasticsearch</span>
+    <span class="na">config</span><span class="pi">:</span>
+        <span class="c1"># this is the default index used for storage, you can override this in your code if necessary</span>
+        <span class="na">index</span><span class="pi">:</span> <span class="s">testgame</span>
+
+        <span class="c1"># here is your server configuration</span>
+        <span class="na">server</span><span class="pi">:</span>
+            <span class="na">hostname</span><span class="pi">:</span> <span class="s1">'</span><span class="s">192.168.2.176'</span>
+            <span class="na">port</span><span class="pi">:</span> <span class="s">9200</span>
+            <span class="na">secure</span><span class="pi">:</span> <span class="s">false</span>
+</code></pre>
+<table><thead>
+<tr>
+<th>operation</th>
+<th style="text-align: center">supported</th>
+<th>implementation</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>list</td>
+<td style="text-align: center"></td>
+<td></td>
+</tr>
+<tr>
+<td>get</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">elasticsearch.get</code></td>
+</tr>
+<tr>
+<td>add</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">elasticsearch.index</code> with op_type set to <code class="prettyprint">create</code></td>
+</tr>
+<tr>
+<td>set</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">elasticsearch.index</code></td>
+</tr>
+<tr>
+<td>touch</td>
+<td style="text-align: center"></td>
+<td></td>
+</tr>
+<tr>
+<td>del</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">elasticsearch.del</code></td>
+</tr>
+</tbody></table>
+
+<h3 id="dynamodb">DynamoDB</h3>
+<pre class="highlight yaml tab-yaml"><code><span class="na">dynamodb</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">dynamodb"</span>
+    <span class="na">config</span><span class="pi">:</span>
+        <span class="na">accessKeyId</span><span class="pi">:</span> <span class="s2">"</span><span class="s">The</span><span class="nv"> </span><span class="s">access</span><span class="nv"> </span><span class="s">ID</span><span class="nv"> </span><span class="s">provided</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">Amazon"</span>
+        <span class="na">secretAccessKey</span><span class="pi">:</span> <span class="s2">"</span><span class="s">The</span><span class="nv"> </span><span class="s">secret</span><span class="nv"> </span><span class="s">ID</span><span class="nv"> </span><span class="s">provided</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">Amazon"</span>
+        <span class="na">region</span><span class="pi">:</span> <span class="s2">"</span><span class="s">A</span><span class="nv"> </span><span class="s">valid</span><span class="nv"> </span><span class="s">region.</span><span class="nv"> </span><span class="s">Refer</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">Amazon</span><span class="nv"> </span><span class="s">doc</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">ask</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">sysadmin.</span><span class="nv"> </span><span class="s">Asia</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">ap-northeast-1"</span>
+</code></pre>
+<table><thead>
+<tr>
+<th>operation</th>
+<th style="text-align: center">supported</th>
+<th>implementation</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>list</td>
+<td style="text-align: center"></td>
+<td></td>
+</tr>
+<tr>
+<td>get</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">DynamoDB.getItem</code></td>
+</tr>
+<tr>
+<td>add</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">DynamoDB.putItem</code> with <code class="prettyprint">Expect.exists = false</code> set to the index keys</td>
+</tr>
+<tr>
+<td>set</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">DynamoDB.putItem</code></td>
+</tr>
+<tr>
+<td>touch</td>
+<td style="text-align: center"></td>
+<td></td>
+</tr>
+<tr>
+<td>del</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">DynamoDB.deleteItem</code></td>
+</tr>
+</tbody></table>
+
+<h3 id="manta">Manta</h3>
+<pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">manta</span>
+<span class="na">config</span><span class="pi">:</span>
+    <span class="c1"># url is optional</span>
+    <span class="na">url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://us-east.manta.joyent.com"</span>
+    <span class="na">user</span><span class="pi">:</span> <span class="s">bob</span>
+    <span class="na">sign</span><span class="pi">:</span>
+        <span class="na">keyId</span><span class="pi">:</span> <span class="s2">"</span><span class="s">a3:81:a2:2c:8f:c0:18:43:8a:1e:cd:12:40:fa:65:2a"</span>
+
+        <span class="c1"># key may be replaced with "keyPath" (path to a private key file),</span>
+        <span class="c1"># or omitted to fallback to "~/.ssh/id_rsa"</span>
+        <span class="na">key</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="no">-----BEGIN RSA PRIVATE KEY-----</span>
+          <span class="no">..etc..</span>
+          <span class="no">-----END RSA PRIVATE KEY-----</span>
+</code></pre>
+<p><code class="prettyprint">keyId</code> is the fingerprint of your public key, which can be retrieved by running:</p>
+
+<p><code class="prettyprint">ssh-keygen -l -f $HOME/.ssh/id_rsa.pub | awk &#39;{print $2}&#39;</code></p>
+
+<table><thead>
+<tr>
+<th>operation</th>
+<th style="text-align: center">supported</th>
+<th>implementation</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>list</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">manta.ls()</code></td>
+</tr>
+<tr>
+<td>get</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">manta.get()</code></td>
+</tr>
+<tr>
+<td>add</td>
+<td style="text-align: center"></td>
+<td></td>
+</tr>
+<tr>
+<td>set</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">manta.put()</code></td>
+</tr>
+<tr>
+<td>touch</td>
+<td style="text-align: center"></td>
+<td></td>
+</tr>
+<tr>
+<td>del</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">manta.unlink()</code></td>
+</tr>
+</tbody></table>
+
+<h3 id="redis">Redis</h3>
+<pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">redis</span>
+<span class="na">config</span><span class="pi">:</span>
+  <span class="na">port</span><span class="pi">:</span> <span class="s">6379</span>
+  <span class="na">host</span><span class="pi">:</span> <span class="s2">"</span><span class="s">127.0.0.1"</span>
+  <span class="na">options</span><span class="pi">:</span> <span class="pi">{}</span>
+  <span class="na">prefix</span><span class="pi">:</span> <span class="s2">"</span><span class="s">key/prefix/"</span>
+</code></pre>
+<p>The <code class="prettyprint">options</code> object is described in the <a href="https://npmjs.org/package/redis">node-redis readme</a>.
+Both <code class="prettyprint">options</code> and <code class="prettyprint">prefix</code> are optional. The option <code class="prettyprint">return_buffers</code> is turned on by default by the
+Archivist, because the default serialization will prepend values with meta data (in order to
+preserve mediaType awareness).</p>
+
+<table><thead>
+<tr>
+<th>operation</th>
+<th style="text-align: center">supported</th>
+<th>implementation</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>list</td>
+<td style="text-align: center"></td>
+<td></td>
+</tr>
+<tr>
+<td>get</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">redis.get()</code></td>
+</tr>
+<tr>
+<td>add</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">redis.set(&#39;NX&#39;)</code></td>
+</tr>
+<tr>
+<td>set</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">redis.set()</code></td>
+</tr>
+<tr>
+<td>touch</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">redis.expire()</code></td>
+</tr>
+<tr>
+<td>del</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">redis.del()</code></td>
+</tr>
+</tbody></table>
+
+<h3 id="memcached">Memcached</h3>
+<pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">memcached</span>
+<span class="na">config</span><span class="pi">:</span>
+    <span class="na">servers</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">1.2.3.4:11211"</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">1.2.3.5:11411"</span>
+    <span class="na">options</span><span class="pi">:</span>
+        <span class="na">foo</span><span class="pi">:</span> <span class="s">bar</span>
+    <span class="na">prefix</span><span class="pi">:</span> <span class="s2">"</span><span class="s">prefix</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">all</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">keys"</span>
+</code></pre>
+<p>The usage of the <code class="prettyprint">servers</code> and <code class="prettyprint">options</code> properties are described in the
+<a href="https://npmjs.org/package/memcached">node-memcached readme</a>. Both <code class="prettyprint">options</code> and <code class="prettyprint">prefix</code> are
+optional.</p>
+
+<table><thead>
+<tr>
+<th>operation</th>
+<th style="text-align: center">supported</th>
+<th>implementation</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>list</td>
+<td style="text-align: center"></td>
+<td></td>
+</tr>
+<tr>
+<td>get</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">memcached.get()</code></td>
+</tr>
+<tr>
+<td>add</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">memcached.add()</code></td>
+</tr>
+<tr>
+<td>set</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">memcached.set()</code></td>
+</tr>
+<tr>
+<td>touch</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">memcached.touch()</code></td>
+</tr>
+<tr>
+<td>del</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">memcached.del()</code></td>
+</tr>
+</tbody></table>
 
 <h2 id="topics">Topics</h2>
 
@@ -1150,7 +1672,7 @@ you may want to send an event after a certain amount of time, or once something 
 in the database. To do so, you will need to create your own State of that. You will also need
 to make sure to manually close that state.</p>
 
-<p>For more information, please read the <a href="api.html#states">State API documentation</a>.</p>
+<p>For more information, please read the <a href="./api.html#states">State API documentation</a>.</p>
 
 <h2 id="broadcasting-events">Broadcasting events</h2>
 
@@ -1311,8 +1833,214 @@ context is now appended to the terminal output.</p>
 </tr>
 </tbody></table>
 
-<p>Please see the <a href="api.html#configuration67">Logging configuration</a>
+<p>Please see the <a href="./api.html#configuration67">Logging configuration</a>
 section of the API documentation for more details.</p>
+
+          <h1 id="http-server">HTTP Server</h1>
+
+<p>You might end up in a case where you would like to do one
+of the following:</p>
+
+<ol>
+<li>Serve files from your MAGE server (useful when developing HTML5 games)</li>
+<li>Serve service status files (or content)</li>
+<li>Proxy requests to a remote server through MAGE</li>
+</ol>
+
+<p>To this end, MAGE provides to developers an <a href="./api/interfaces/_mage_d_.imagecore.html#httpserver">API</a> that will allow you
+to do such things.</p>
+
+<h2 id="cross-origin-resource-sharing-cors">Cross-Origin Resource Sharing (CORS)</h2>
+
+<p>If you want your application to span multiple domains, you need to enable CORS. For information on
+what CORS is, please consult the following websites.</p>
+
+<ul>
+<li><a href="http://www.html5rocks.com/en/tutorials/cors/">HTML5 Rocks tutorial</a></li>
+<li><a href="https://developer.mozilla.org/en/docs/HTTP/Access_control_CORS">Mozilla</a></li>
+<li><a href="http://www.w3.org/TR/cors/">w3c spec</a></li>
+</ul>
+
+<h3 id="performance">Performance</h3>
+
+<p>Keep in mind that using CORS will often cause so-called &ldquo;preflight&rdquo; requests. A preflight request
+is an HTTP <code class="prettyprint">OPTIONS</code> request to the server to confirm if a request is allowed to be made in a manner
+that is considered safe for the user. Only after this confirmation will a real <code class="prettyprint">GET</code> or <code class="prettyprint">POST</code>
+request be made. All this happens invisible to the end user and developer, but there is a
+performance penalty that you pay, caused by this extra round trip to the server.</p>
+
+<h3 id="using-authentication-and-cors">Using authentication and CORS</h3>
+
+<p>If you use <code class="prettyprint">Basic</code> or any other HTTP authentication mechanism, you cannot configure CORS to allow
+any origin using the <code class="prettyprint">*</code> wildcard symbol. In that case, you must specify exactly which origin is
+allowed to access your server.</p>
+
+<h3 id="configuration">Configuration</h3>
+
+<p>In your configuration, you can enable CORS like this:</p>
+<pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
+    <span class="na">clientHost</span><span class="pi">:</span>
+        <span class="na">cors</span><span class="pi">:</span>
+            <span class="na">methods</span><span class="pi">:</span> <span class="s2">"</span><span class="s">GET,</span><span class="nv"> </span><span class="s">POST,</span><span class="nv"> </span><span class="s">OPTIONS"</span>
+            <span class="na">origin</span><span class="pi">:</span> <span class="s2">"</span><span class="s">http://mage-app.wizcorp.jp"</span>
+            <span class="na">credentials</span><span class="pi">:</span> <span class="s">true</span>
+</code></pre>
+<ul>
+<li><code class="prettyprint">methods</code> (optional) lists which HTTP request methods are acceptable.</li>
+<li><code class="prettyprint">origin</code> (optional) sets the required origin, may be (and defaults to) <code class="prettyprint">&quot;*&quot;</code></li>
+<li><code class="prettyprint">credentials</code> (optional) must be set to <code class="prettyprint">true</code> if you want cookies and HTTP
+authentication to be usable at all. You can then no longer use the wildcard origin.</li>
+</ul>
+
+<h2 id="log-configuration">Log Configuration</h2>
+<pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
+    <span class="na">quietRoutes</span><span class="pi">:</span> <span class="c1"># Filter out debug and verbose logs for URLs matching these regex</span>
+        <span class="pi">-</span> <span class="s">^\/check\.txt</span>
+        <span class="pi">-</span> <span class="s">^\/favicon\.ico</span>
+    <span class="na">longRoutes</span><span class="pi">:</span> <span class="c1"># Filter out long warnings for U##### What does it change for other browsers?</span>
+
+<span class="s">Absolutely nothing. And you can still apply the retry logic on network errors, it's not a bad idea.RLs matching these regex</span>
+        <span class="s">- ^\/msgstream</span>
+    <span class="s">longThreshold</span><span class="pi">:</span> <span class="s">500</span> <span class="c1"># The number of milliseconds before a request is considered to be taking too long</span>
+</code></pre>
+<p>The following logs will be filtered out when the url for the request matches any regex in the
+<code class="prettyprint">quietRoutes</code>:</p>
+<pre class="highlight plaintext tab-plaintext"><code>m-28019 - 19:58:44.830     &lt;debug&gt; [MAGE http] Received HTTP GET request: /check.txt
+m-28019 - 19:58:44.830   &lt;verbose&gt; [MAGE http] Following HTTP route /check.txt
+</code></pre>
+<p>The following log will be shown for any http request that takes longer than the configured
+<code class="prettyprint">longThreshold</code> and can be filtered out when the url for the request matches any reges in the
+<code class="prettyprint">longRoutes</code>:</p>
+<pre class="highlight plaintext tab-plaintext"><code>m-876 - 20:08:58.193   &lt;warning&gt; [MAGE http] /app/pc/landing completed in 1181 msec
+</code></pre>
+          <h1 id="clustering">Clustering</h1>
+
+<p>At some point during development, you will want to start looking into
+deploying multiple instances of your game servers; once you do, you will need
+to change your configuration to tell MAGE instances:</p>
+
+<ol>
+<li>How they can find each others (through service discovery);</li>
+<li>How they can connect to each others (through MAGE&rsquo;s Message Relay Protocol, or MMRP).</li>
+</ol>
+
+<p>This section will cover how you can configure these two services for different
+development and production use-cases.</p>
+
+<h2 id="cluster-identification">Cluster identification</h2>
+<pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
+    <span class="na">serviceName</span><span class="pi">:</span> <span class="s">applicationName-environmentID</span>
+</code></pre>
+<p>Currently the message server system will identify itself as being a part of a cluster by using the application root package name and version. However in environment where multiple instances of the same application and version are run, there will be conflicts with the messaging system. (e.g. inside single box which houses multiple test environments).</p>
+
+<p>To prevent pollution and contamination of messages, the server.serviceName configuration entry needs to be set, to give each environment a unique identifier.</p>
+
+<h2 id="service-discovery">Service discovery</h2>
+<pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
+    <span class="na">serviceDiscovery</span><span class="pi">:</span> <span class="s">false</span>
+</code></pre>
+<p>Service discovery takes care of letting each MAGE servers where they can find
+the other servers.</p>
+
+<table><thead>
+<tr>
+<th>Engine</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>single</td>
+<td>In-memory discovery service (useful during development)</td>
+</tr>
+<tr>
+<td>mdns</td>
+<td>Bonjour/MDNS-based service discovery</td>
+</tr>
+<tr>
+<td>zookeeper</td>
+<td><a href="https://zookeeper.apache.org/">ZooKeeper</a>-based service discovery</td>
+</tr>
+<tr>
+<td>consul</td>
+<td><a href="https://www.consul.io/">Consul</a>-based service discovery</td>
+</tr>
+</tbody></table>
+
+<p>By default, service discovery is disabled. To enable it, you will need
+to specify what engine you wish to use, and what configuration you wish
+to use for that engine.</p>
+
+<h3 id="single">Single</h3>
+<pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
+    <span class="na">serviceDiscovery</span><span class="pi">:</span>
+        <span class="na">engine</span><span class="pi">:</span> <span class="s">single</span>
+</code></pre>
+<p>The single engine can be used during development to locally allow the use of the service
+discovery API. It will only find the local server.</p>
+
+<h3 id="bonjour-mdns">Bonjour/MDNS</h3>
+<pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
+    <span class="na">serviceDiscovery</span><span class="pi">:</span>
+        <span class="na">engine</span><span class="pi">:</span> <span class="s">mdns</span>
+        <span class="na">options</span><span class="pi">:</span>
+            <span class="c1"># Provide a unique identifier. You will need to configure</span>
+            <span class="c1"># this when you have multiple instances of your game cluster</span>
+            <span class="c1"># running on the same network, so to avoid MAGE servers from one</span>
+            <span class="c1"># cluster from connecting to your cluster.</span>
+            <span class="na">description</span><span class="pi">:</span> <span class="s2">"</span><span class="s">UniqueIdOnTheNetwork"</span>
+</code></pre>
+<p>The MDNS engine will use MDNS broadcasts to let all MAGE servers on a given network
+when new servers appear or disappear.</p>
+
+<p>This engine is very convenient, since it allows for service discovery without having to
+configure any additonal services. However, note that certain network (such as the ones
+provided by AWS) wil not allow broadcasts, and so you will not be able to use this engine
+in such case.</p>
+
+<h3 id="zookeeper">ZooKeeper</h3>
+<pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
+    <span class="na">serviceDiscovery</span><span class="pi">:</span>
+        <span class="na">engine</span><span class="pi">:</span> <span class="s">zookeeper</span>
+        <span class="na">options</span><span class="pi">:</span>
+            <span class="c1"># List of available ZooKeeper nodes (comma-separated)</span>
+            <span class="na">hosts</span><span class="pi">:</span> <span class="s2">"</span><span class="s">192.168.1.12:2181,192.168.3.18:2181"</span>
+
+            <span class="c1"># Additional options to pass to the client library.</span>
+            <span class="c1"># See https://github.com/alexguan/node-zookeeper-client#client-createclientconnectionstring-options</span>
+            <span class="c1"># for more details</span>
+            <span class="na">options</span><span class="pi">:</span>
+                <span class="na">sessionTimeout</span><span class="pi">:</span> <span class="s">30000</span>
+</code></pre>
+<p>The zookeeper engine will use ZooKeeper to announce MAGE servers.</p>
+
+<h3 id="consul">Consul</h3>
+<pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
+    <span class="na">serviceDiscovery</span><span class="pi">:</span>
+        <span class="na">engine</span><span class="pi">:</span> <span class="s">consul</span>
+        <span class="na">options</span><span class="pi">:</span>
+            <span class="c1"># Interface to announce</span>
+            <span class="na">interface</span><span class="pi">:</span> <span class="s">enp4s0</span>
+
+            <span class="c1"># optional</span>
+            <span class="na">consul</span><span class="pi">:</span>
+                <span class="na">host</span><span class="pi">:</span> <span class="s">consul.service.dc.consul</span>
+</code></pre>
+<p>The consul engine will use Consul to announce MAGE servers.</p>
+
+<h2 id="mage-message-relay-protocol-mmrp">MAGE Message Relay Protocol (MMRP)</h2>
+<pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
+    <span class="na">mmrp</span><span class="pi">:</span>
+        <span class="na">bind</span><span class="pi">:</span>
+            <span class="na">host</span><span class="pi">:</span> <span class="s2">"</span><span class="s">*"</span>  <span class="c1"># asterisk for 0.0.0.0, or a valid IP address</span>
+            <span class="na">port</span><span class="pi">:</span> <span class="s2">"</span><span class="s">*"</span>  <span class="c1"># asterisk for any port, or a valid integer</span>
+        <span class="na">network</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s2">"</span><span class="s">192.168.2"</span>  <span class="c1"># formatted according to https://www.npmjs.com/package/netmask</span>
+</code></pre>
+<p>MMRP (MAGE Message Relay Protocol) is the messaging layer between node instances. It is used to enable communication between multiple MAGE instances and between the different node processes run by MAGE. In the end, it allows messages to flow from one user to another.</p>
+
+<p>MMRP depends on <a href="./#service-discovery">service discovery</a>
+to announce relays on the network to each process. The protocol and library
+used to communicate between processes is <a href="http://zeromq.org/">ZeroMQ</a>.</p>
 
           <h1 id="metrics">Metrics</h1>
 
@@ -1414,7 +2142,7 @@ access them.</p>
 <p>Sampler values are defined on-the-fly; therefore, you must be careful when
 choosing a sampler key for your metrics, so to avoid overlaps.</p>
 
-<p>See <a href="api.html#api69">the sampler API documentation</a> for more documentation.</p>
+<p>See <a href="./api.html#api69">the sampler API documentation</a> for more documentation.</p>
 
           <h1 id="production">Production</h1>
 

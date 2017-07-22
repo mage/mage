@@ -74,7 +74,7 @@
 					</div>
 					<p>In general, you will be accessing an archivist instance
 					through a state object:</p>
-					<pre><code class="lang-javaascript">state.archivist.get()
+					<pre><code class="lang-javascript">state.archivist.set(<span class="hljs-string">'player'</span>, { <span class="hljs-attr">userId</span>: userId }, { <span class="hljs-attr">name</span>: <span class="hljs-string">'someone'</span> });
 </code></pre>
 				</div>
 			</section>
@@ -115,13 +115,13 @@
 					<a name="add" class="tsd-anchor"></a>
 					<h3>add</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">add&lt;T&gt;<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, mediaType<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.html#archivistmediatype" class="tsd-signature-type">ArchivistMediaType</a>, encoding<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.html#archivistencoding" class="tsd-signature-type">ArchivistEncoding</a>, expirationTime<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">add&lt;T&gt;<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, mediaType<span class="tsd-signature-symbol">?: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistmediatype" class="tsd-signature-type">ArchivistMediaType</a>, encoding<span class="tsd-signature-symbol">?: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistencoding" class="tsd-signature-type">ArchivistEncoding</a>, expirationTime<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L309">mage.d.ts:309</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L288">mage.d.ts:288</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -155,13 +155,13 @@
 									<h5>data: <span class="tsd-signature-type">T</span></h5>
 								</li>
 								<li>
-									<h5>mediaType: <a href="../modules/_mage_d_.html#archivistmediatype" class="tsd-signature-type">ArchivistMediaType</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> mediaType: <a href="../modules/_mage_d_.mage.archivist.html#archivistmediatype" class="tsd-signature-type">ArchivistMediaType</a></h5>
 								</li>
 								<li>
-									<h5>encoding: <a href="../modules/_mage_d_.html#archivistencoding" class="tsd-signature-type">ArchivistEncoding</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> encoding: <a href="../modules/_mage_d_.mage.archivist.html#archivistencoding" class="tsd-signature-type">ArchivistEncoding</a></h5>
 								</li>
 								<li>
-									<h5>expirationTime: <span class="tsd-signature-type">number</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> expirationTime: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -180,7 +180,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L333">mage.d.ts:333</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L312">mage.d.ts:312</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -212,13 +212,13 @@
 					<a name="distribute" class="tsd-anchor"></a>
 					<h3>distribute</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">distribute<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.html#archivistdistributecallback" class="tsd-signature-type">ArchivistDistributeCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">distribute<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistdistributecallback" class="tsd-signature-type">ArchivistDistributeCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L354">mage.d.ts:354</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L333">mage.d.ts:333</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -231,7 +231,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>callback: <a href="../modules/_mage_d_.html#archivistdistributecallback" class="tsd-signature-type">ArchivistDistributeCallback</a></h5>
+									<h5>callback: <a href="../modules/_mage_d_.mage.archivist.html#archivistdistributecallback" class="tsd-signature-type">ArchivistDistributeCallback</a></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -244,13 +244,13 @@
 					<a name="exists" class="tsd-anchor"></a>
 					<h3>exists</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">exists<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.html#archivistexistscallback" class="tsd-signature-type">ArchivistExistsCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">exists<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistexistscallback" class="tsd-signature-type">ArchivistExistsCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L205">mage.d.ts:205</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L182">mage.d.ts:182</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -272,7 +272,7 @@
 									<h5>index: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a></h5>
 								</li>
 								<li>
-									<h5>callback: <a href="../modules/_mage_d_.html#archivistexistscallback" class="tsd-signature-type">ArchivistExistsCallback</a></h5>
+									<h5>callback: <a href="../modules/_mage_d_.mage.archivist.html#archivistexistscallback" class="tsd-signature-type">ArchivistExistsCallback</a></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -285,14 +285,14 @@
 					<a name="get" class="tsd-anchor"></a>
 					<h3>get</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">get&lt;T&gt;<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.html#archivistgetcallback" class="tsd-signature-type">ArchivistGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-						<li class="tsd-signature tsd-kind-icon">get&lt;T&gt;<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.html#archivistgetcallback" class="tsd-signature-type">ArchivistGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">get&lt;T&gt;<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistgetcallback" class="tsd-signature-type">ArchivistGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">get&lt;T&gt;<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistgetcallback" class="tsd-signature-type">ArchivistGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L220">mage.d.ts:220</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L197">mage.d.ts:197</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -322,10 +322,10 @@
 									<h5>index: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a></h5>
 								</li>
 								<li>
-									<h5>options: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a></h5>
+									<h5>options: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
 								</li>
 								<li>
-									<h5>callback: <a href="../modules/_mage_d_.html#archivistgetcallback" class="tsd-signature-type">ArchivistGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>callback: <a href="../modules/_mage_d_.mage.archivist.html#archivistgetcallback" class="tsd-signature-type">ArchivistGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -335,7 +335,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L221">mage.d.ts:221</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L198">mage.d.ts:198</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -353,7 +353,7 @@
 									<h5>index: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a></h5>
 								</li>
 								<li>
-									<h5>callback: <a href="../modules/_mage_d_.html#archivistgetcallback" class="tsd-signature-type">ArchivistGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>callback: <a href="../modules/_mage_d_.mage.archivist.html#archivistgetcallback" class="tsd-signature-type">ArchivistGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -364,14 +364,14 @@
 					<a name="getvalue" class="tsd-anchor"></a>
 					<h3>get<wbr>Value</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Value<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.html#archivistgetcallback" class="tsd-signature-type">ArchivistGetCallback</a><span class="tsd-signature-symbol">&lt;</span><a href="_mage_d_.vaultvalue.html" class="tsd-signature-type">VaultValue</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Value<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.html#archivistgetcallback" class="tsd-signature-type">ArchivistGetCallback</a><span class="tsd-signature-symbol">&lt;</span><a href="_mage_d_.vaultvalue.html" class="tsd-signature-type">VaultValue</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Value<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistgetcallback" class="tsd-signature-type">ArchivistGetCallback</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_mage_d_.mage.archivist.ivaultvalue.html" class="tsd-signature-type">IVaultValue</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Value<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistgetcallback" class="tsd-signature-type">ArchivistGetCallback</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_mage_d_.mage.archivist.ivaultvalue.html" class="tsd-signature-type">IVaultValue</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L235">mage.d.ts:235</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L212">mage.d.ts:212</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -394,10 +394,10 @@
 									<h5>index: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a></h5>
 								</li>
 								<li>
-									<h5>options: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a></h5>
+									<h5>options: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
 								</li>
 								<li>
-									<h5>callback: <a href="../modules/_mage_d_.html#archivistgetcallback" class="tsd-signature-type">ArchivistGetCallback</a><span class="tsd-signature-symbol">&lt;</span><a href="_mage_d_.vaultvalue.html" class="tsd-signature-type">VaultValue</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>callback: <a href="../modules/_mage_d_.mage.archivist.html#archivistgetcallback" class="tsd-signature-type">ArchivistGetCallback</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_mage_d_.mage.archivist.ivaultvalue.html" class="tsd-signature-type">IVaultValue</a><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -407,7 +407,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L236">mage.d.ts:236</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L213">mage.d.ts:213</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -419,7 +419,7 @@
 									<h5>index: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a></h5>
 								</li>
 								<li>
-									<h5>callback: <a href="../modules/_mage_d_.html#archivistgetcallback" class="tsd-signature-type">ArchivistGetCallback</a><span class="tsd-signature-symbol">&lt;</span><a href="_mage_d_.vaultvalue.html" class="tsd-signature-type">VaultValue</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>callback: <a href="../modules/_mage_d_.mage.archivist.html#archivistgetcallback" class="tsd-signature-type">ArchivistGetCallback</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_mage_d_.mage.archivist.ivaultvalue.html" class="tsd-signature-type">IVaultValue</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -430,14 +430,14 @@
 					<a name="list" class="tsd-anchor"></a>
 					<h3>list</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">list<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, partialIndex<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistlistoptions.html" class="tsd-signature-type">IArchivistListOptions</a>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.html#archivistlistcallback" class="tsd-signature-type">ArchivistListCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-						<li class="tsd-signature tsd-kind-icon">list<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, partialIndex<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.html#archivistlistcallback" class="tsd-signature-type">ArchivistListCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">list<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, partialIndex<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistlistoptions.html" class="tsd-signature-type">IArchivistListOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistlistcallback" class="tsd-signature-type">ArchivistListCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">list<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, partialIndex<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistlistcallback" class="tsd-signature-type">ArchivistListCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L290">mage.d.ts:290</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L269">mage.d.ts:269</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -467,10 +467,10 @@
 									<h5>partialIndex: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a></h5>
 								</li>
 								<li>
-									<h5>options: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistlistoptions.html" class="tsd-signature-type">IArchivistListOptions</a></h5>
+									<h5>options: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistlistoptions.html" class="tsd-signature-type">IArchivistListOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
 								</li>
 								<li>
-									<h5>callback: <a href="../modules/_mage_d_.html#archivistlistcallback" class="tsd-signature-type">ArchivistListCallback</a></h5>
+									<h5>callback: <a href="../modules/_mage_d_.mage.archivist.html#archivistlistcallback" class="tsd-signature-type">ArchivistListCallback</a></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -480,7 +480,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L291">mage.d.ts:291</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L270">mage.d.ts:270</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -492,7 +492,7 @@
 									<h5>partialIndex: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a></h5>
 								</li>
 								<li>
-									<h5>callback: <a href="../modules/_mage_d_.html#archivistlistcallback" class="tsd-signature-type">ArchivistListCallback</a></h5>
+									<h5>callback: <a href="../modules/_mage_d_.mage.archivist.html#archivistlistcallback" class="tsd-signature-type">ArchivistListCallback</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -503,14 +503,16 @@
 					<a name="mget" class="tsd-anchor"></a>
 					<h3>mget</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">mget&lt;T&gt;<span class="tsd-signature-symbol">(</span>queries<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistquery.html" class="tsd-signature-type">IArchivistQuery</a><span class="tsd-signature-symbol">[]</span>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-						<li class="tsd-signature tsd-kind-icon">mget&lt;T&gt;<span class="tsd-signature-symbol">(</span>queries<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistquery.html" class="tsd-signature-type">IArchivistQuery</a><span class="tsd-signature-symbol">[]</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">mget&lt;T&gt;<span class="tsd-signature-symbol">(</span>queries<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistquery.html" class="tsd-signature-type">IArchivistQuery</a><span class="tsd-signature-symbol">[]</span>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">mget&lt;T&gt;<span class="tsd-signature-symbol">(</span>queries<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.inamedarchivistquery.html" class="tsd-signature-type">INamedArchivistQuery</a>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistnamedmgetcallback" class="tsd-signature-type">ArchivistNamedMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">mget&lt;T&gt;<span class="tsd-signature-symbol">(</span>queries<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistquery.html" class="tsd-signature-type">IArchivistQuery</a><span class="tsd-signature-symbol">[]</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">mget&lt;T&gt;<span class="tsd-signature-symbol">(</span>queries<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.inamedarchivistquery.html" class="tsd-signature-type">INamedArchivistQuery</a>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistnamedmgetcallback" class="tsd-signature-type">ArchivistNamedMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L250">mage.d.ts:250</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L227">mage.d.ts:227</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -537,10 +539,10 @@
 									<h5>queries: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistquery.html" class="tsd-signature-type">IArchivistQuery</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
-									<h5>options: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a></h5>
+									<h5>options: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
 								</li>
 								<li>
-									<h5>callback: <a href="../modules/_mage_d_.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>callback: <a href="../modules/_mage_d_.mage.archivist.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -550,7 +552,33 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L251">mage.d.ts:251</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L228">mage.d.ts:228</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>queries: <a href="../interfaces/_mage_d_.mage.archivist.inamedarchivistquery.html" class="tsd-signature-type">INamedArchivistQuery</a></h5>
+								</li>
+								<li>
+									<h5>options: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
+								</li>
+								<li>
+									<h5>callback: <a href="../modules/_mage_d_.mage.archivist.html#archivistnamedmgetcallback" class="tsd-signature-type">ArchivistNamedMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L229">mage.d.ts:229</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -565,7 +593,30 @@
 									<h5>queries: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistquery.html" class="tsd-signature-type">IArchivistQuery</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
-									<h5>callback: <a href="../modules/_mage_d_.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>callback: <a href="../modules/_mage_d_.mage.archivist.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L230">mage.d.ts:230</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>queries: <a href="../interfaces/_mage_d_.mage.archivist.inamedarchivistquery.html" class="tsd-signature-type">INamedArchivistQuery</a></h5>
+								</li>
+								<li>
+									<h5>callback: <a href="../modules/_mage_d_.mage.archivist.html#archivistnamedmgetcallback" class="tsd-signature-type">ArchivistNamedMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -576,14 +627,14 @@
 					<a name="mgetvalues" class="tsd-anchor"></a>
 					<h3>mget<wbr>Values</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">mget<wbr>Values<span class="tsd-signature-symbol">(</span>queries<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistquery.html" class="tsd-signature-type">IArchivistQuery</a><span class="tsd-signature-symbol">[]</span>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><a href="_mage_d_.vaultvalue.html" class="tsd-signature-type">VaultValue</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-						<li class="tsd-signature tsd-kind-icon">mget<wbr>Values<span class="tsd-signature-symbol">(</span>queries<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistquery.html" class="tsd-signature-type">IArchivistQuery</a><span class="tsd-signature-symbol">[]</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><a href="_mage_d_.vaultvalue.html" class="tsd-signature-type">VaultValue</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">mget<wbr>Values<span class="tsd-signature-symbol">(</span>queries<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistquery.html" class="tsd-signature-type">IArchivistQuery</a><span class="tsd-signature-symbol">[]</span>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_mage_d_.mage.archivist.ivaultvalue.html" class="tsd-signature-type">IVaultValue</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">mget<wbr>Values<span class="tsd-signature-symbol">(</span>queries<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistquery.html" class="tsd-signature-type">IArchivistQuery</a><span class="tsd-signature-symbol">[]</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_mage_d_.mage.archivist.ivaultvalue.html" class="tsd-signature-type">IVaultValue</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L264">mage.d.ts:264</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L243">mage.d.ts:243</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -603,10 +654,10 @@
 									<h5>queries: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistquery.html" class="tsd-signature-type">IArchivistQuery</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
-									<h5>options: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a></h5>
+									<h5>options: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
 								</li>
 								<li>
-									<h5>callback: <a href="../modules/_mage_d_.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><a href="_mage_d_.vaultvalue.html" class="tsd-signature-type">VaultValue</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>callback: <a href="../modules/_mage_d_.mage.archivist.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_mage_d_.mage.archivist.ivaultvalue.html" class="tsd-signature-type">IVaultValue</a><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -616,7 +667,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L265">mage.d.ts:265</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L244">mage.d.ts:244</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -625,7 +676,7 @@
 									<h5>queries: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistquery.html" class="tsd-signature-type">IArchivistQuery</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
-									<h5>callback: <a href="../modules/_mage_d_.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><a href="_mage_d_.vaultvalue.html" class="tsd-signature-type">VaultValue</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>callback: <a href="../modules/_mage_d_.mage.archivist.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_mage_d_.mage.archivist.ivaultvalue.html" class="tsd-signature-type">IVaultValue</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -636,13 +687,13 @@
 					<a name="set" class="tsd-anchor"></a>
 					<h3>set</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">set&lt;T&gt;<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, mediaType<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.html#archivistmediatype" class="tsd-signature-type">ArchivistMediaType</a>, encoding<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.html#archivistencoding" class="tsd-signature-type">ArchivistEncoding</a>, expirationTime<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">set&lt;T&gt;<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, mediaType<span class="tsd-signature-symbol">?: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistmediatype" class="tsd-signature-type">ArchivistMediaType</a>, encoding<span class="tsd-signature-symbol">?: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistencoding" class="tsd-signature-type">ArchivistEncoding</a>, expirationTime<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L323">mage.d.ts:323</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L302">mage.d.ts:302</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -673,13 +724,13 @@
 									<h5>data: <span class="tsd-signature-type">T</span></h5>
 								</li>
 								<li>
-									<h5>mediaType: <a href="../modules/_mage_d_.html#archivistmediatype" class="tsd-signature-type">ArchivistMediaType</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> mediaType: <a href="../modules/_mage_d_.mage.archivist.html#archivistmediatype" class="tsd-signature-type">ArchivistMediaType</a></h5>
 								</li>
 								<li>
-									<h5>encoding: <a href="../modules/_mage_d_.html#archivistencoding" class="tsd-signature-type">ArchivistEncoding</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> encoding: <a href="../modules/_mage_d_.mage.archivist.html#archivistencoding" class="tsd-signature-type">ArchivistEncoding</a></h5>
 								</li>
 								<li>
-									<h5>expirationTime: <span class="tsd-signature-type">number</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> expirationTime: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -692,13 +743,13 @@
 					<a name="touch" class="tsd-anchor"></a>
 					<h3>touch</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">touch<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, expirationTime<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">touch<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, expirationTime<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L344">mage.d.ts:344</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L323">mage.d.ts:323</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -717,7 +768,7 @@
 									<h5>index: <a href="../interfaces/_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a></h5>
 								</li>
 								<li>
-									<h5>expirationTime: <span class="tsd-signature-type">number</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> expirationTime: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -790,34 +841,22 @@
 						<a href="_mage_d_.mage-1.html" class="tsd-kind-icon">Mage</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_mage_d_.mmrpenvelope.html" class="tsd-kind-icon">Mmrp<wbr>Envelope</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_mage_d_.mmrpnode.html" class="tsd-kind-icon">Mmrp<wbr>Node</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_mage_d_.session.html" class="tsd-kind-icon">Session</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_mage_d_.vaultvalue.html" class="tsd-kind-icon">Vault<wbr>Value</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../interfaces/_mage_d_.log.html" class="tsd-kind-icon">Log</a>
+						<a href="../interfaces/_mage_d_.ilog.html" class="tsd-kind-icon">ILog</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#archivistdistributecallback" class="tsd-kind-icon">Archivist<wbr>Distribute<wbr>Callback</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#archivistencoding" class="tsd-kind-icon">Archivist<wbr>Encoding</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#archivistexistscallback" class="tsd-kind-icon">Archivist<wbr>Exists<wbr>Callback</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#archivistgetcallback" class="tsd-kind-icon">Archivist<wbr>Get<wbr>Callback</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#archivistlistcallback" class="tsd-kind-icon">Archivist<wbr>List<wbr>Callback</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#archivistmgetcallback" class="tsd-kind-icon">ArchivistMGet<wbr>Callback</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#archivistmediatype" class="tsd-kind-icon">Archivist<wbr>Media<wbr>Type</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../interfaces/_mage_d_.imagecore.html" class="tsd-kind-icon">IMage<wbr>Core</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="../modules/_mage_d_.html#authenticatecallback" class="tsd-kind-icon">Authenticate<wbr>Callback</a>
@@ -829,7 +868,25 @@
 						<a href="../modules/_mage_d_.html#logincallback" class="tsd-kind-icon">Login<wbr>Callback</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_mage_d_.html#mmrpenvelopeflag" class="tsd-kind-icon">Mmrp<wbr>Envelope<wbr>Flag</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_mage_d_.html#mmrpenvelopemessage" class="tsd-kind-icon">Mmrp<wbr>Envelope<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_mage_d_.html#mmrpenveloperoute" class="tsd-kind-icon">Mmrp<wbr>Envelope<wbr>Route</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="../modules/_mage_d_.html#registercallback" class="tsd-kind-icon">Register<wbr>Callback</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_mage_d_.html#serviceerroreventhandler" class="tsd-kind-icon">Service<wbr>Error<wbr>Event<wbr>Handler</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_mage_d_.html#serviceeventhandler" class="tsd-kind-icon">Service<wbr>Event<wbr>Handler</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_mage_d_.html#serviceeventname" class="tsd-kind-icon">Service<wbr>Event<wbr>Name</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="../modules/_mage_d_.html#timeconfig" class="tsd-kind-icon">Time<wbr>Config</a>

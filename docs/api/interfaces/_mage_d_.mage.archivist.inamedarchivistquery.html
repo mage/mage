@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IArchivistGetOptions | mage</title>
+	<title>INamedArchivistQuery | mage</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -63,103 +63,45 @@
 					<a href="../modules/_mage_d_.mage.archivist.html">archivist</a>
 				</li>
 				<li>
-					<a href="_mage_d_.mage.archivist.iarchivistgetoptions.html">IArchivistGetOptions</a>
+					<a href="_mage_d_.mage.archivist.inamedarchivistquery.html">INamedArchivistQuery</a>
 				</li>
 			</ul>
-			<h1>Interface IArchivistGetOptions</h1>
+			<h1>Interface INamedArchivistQuery</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>An INamedArchivistQuery can be used with mget
+						to retrieve multiple values at once in a key-value map.</p>
+					</div>
+					<p>Note you can also pass IArchivistIndex[] to mget
+					instead if you wish to receive back an interatable array.</p>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IArchivistGetOptions</span>
+						<span class="target">INamedArchivistQuery</span>
 					</li>
 				</ul>
 			</section>
-			<section class="tsd-panel-group tsd-index-group">
-				<h2>Index</h2>
-				<section class="tsd-panel tsd-index-panel">
-					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
-							<h3>Properties</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_mage_d_.mage.archivist.iarchivistgetoptions.html#encodings" class="tsd-kind-icon">encodings</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_mage_d_.mage.archivist.iarchivistgetoptions.html#mediatypes" class="tsd-kind-icon">media<wbr>Types</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_mage_d_.mage.archivist.iarchivistgetoptions.html#optional" class="tsd-kind-icon">optional</a></li>
-							</ul>
-						</section>
+			<section class="tsd-panel tsd-kind-interface tsd-parent-kind-module">
+				<h3 class="tsd-before-signature">Indexable</h3>
+				<div class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">[</span>name: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><a href="_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a></div>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>An INamedArchivistQuery can be used with mget
+						to retrieve multiple values at once in a key-value map.</p>
 					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="encodings" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> encodings</h3>
-					<div class="tsd-signature tsd-kind-icon">encodings<span class="tsd-signature-symbol">:</span> <a href="../modules/_mage_d_.mage.archivist.html#archivistencoding" class="tsd-signature-type">ArchivistEncoding</a><span class="tsd-signature-symbol">[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L1962">mage.d.ts:1962</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Encoding</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{ArchivistEncoding[]}</p>
-							</dd>
-						</dl>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="mediatypes" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> media<wbr>Types</h3>
-					<div class="tsd-signature tsd-kind-icon">media<wbr>Types<span class="tsd-signature-symbol">:</span> <a href="../modules/_mage_d_.mage.archivist.html#archivistmediatype" class="tsd-signature-type">ArchivistMediaType</a><span class="tsd-signature-symbol">[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L1955">mage.d.ts:1955</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Media type</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{ArchivistMediaType[]}</p>
-							</dd>
-						</dl>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="optional" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> optional</h3>
-					<div class="tsd-signature tsd-kind-icon">optional<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L1948">mage.d.ts:1948</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Is the value optional?</p>
-						</div>
-						<p>Default is false; when false, <code>get</code> will trigger an error
-						if the value being queried does not exist.</p>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{boolean}</p>
-							</dd>
-						</dl>
-					</div>
-				</section>
+					<p>Note you can also pass IArchivistIndex[] to mget
+					instead if you wish to receive back an interatable array.</p>
+				</div>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -175,24 +117,9 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_mage_d_.mage.archivist.iacltest.html" class="tsd-kind-icon">IAcl<wbr>Test</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-module">
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-kind-icon">IArchivist<wbr>Get<wbr>Options</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_mage_d_.mage.archivist.iarchivistgetoptions.html#encodings" class="tsd-kind-icon">encodings</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_mage_d_.mage.archivist.iarchivistgetoptions.html#mediatypes" class="tsd-kind-icon">media<wbr>Types</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_mage_d_.mage.archivist.iarchivistgetoptions.html#optional" class="tsd-kind-icon">optional</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-kind-icon">IArchivist<wbr>Index</a>
 					</li>
@@ -208,9 +135,13 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_mage_d_.mage.archivist.iarchivisttopicvaultconfiguration.html" class="tsd-kind-icon">IArchivist<wbr>Topic<wbr>Vault<wbr>Configuration</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-module">
 						<a href="_mage_d_.mage.archivist.inamedarchivistquery.html" class="tsd-kind-icon">INamed<wbr>Archivist<wbr>Query</a>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_mage_d_.mage.archivist.itopic.html" class="tsd-kind-icon">ITopic</a>
 					</li>

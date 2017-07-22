@@ -6,7 +6,7 @@ language_tabs:
   - powershell
 
 toc_footers:
-  - <a href='./api.html'>API Documentation</a>
+  - <a href='./api/index.html'>API Documentation</a>
   - <a href='https://github.com/mage/mage'>GitHub</a>
   - <a href='https://wizcorp.jp/mage'>MAGE website</a>
   - <a href='https://wizcorp.jp/'>Wizcorp website</a>
@@ -23,6 +23,8 @@ includes:
   - Archivist
   - Events
   - Logging
+  - HTTP
+  - Clustering
   - Metrics
   - Production
 

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ITopic | mage</title>
+	<title>ITopicApi | mage</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -63,10 +63,10 @@
 					<a href="../modules/_mage_d_.mage.archivist.html">archivist</a>
 				</li>
 				<li>
-					<a href="_mage_d_.mage.archivist.itopic.html">ITopic</a>
+					<a href="_mage_d_.mage.archivist.itopicapi.html">ITopicApi</a>
 				</li>
 			</ul>
-			<h1>Interface ITopic</h1>
+			<h1>Interface ITopicApi</h1>
 		</div>
 	</div>
 </header>
@@ -76,11 +76,12 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Define the topic&#39;s configuration.</p>
+						<p>Contains the index fields, and methods for
+						processing a given topics on a given vault backend</p>
 					</div>
 					<dl class="tsd-comment-tags">
 						<dt>interface</dt>
-						<dd><p>ITopic</p>
+						<dd><p>ITopicApi</p>
 						</dd>
 					</dl>
 				</div>
@@ -89,7 +90,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ITopic</span>
+						<span class="target">ITopicApi</span>
 					</li>
 				</ul>
 			</section>
@@ -100,11 +101,12 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_mage_d_.mage.archivist.itopic.html#afterload" class="tsd-kind-icon">after<wbr>Load</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_mage_d_.mage.archivist.itopic.html#beforedistribute" class="tsd-kind-icon">before<wbr>Distribute</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_mage_d_.mage.archivist.itopic.html#index" class="tsd-kind-icon">index</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_mage_d_.mage.archivist.itopic.html#readoptions" class="tsd-kind-icon">read<wbr>Options</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_mage_d_.mage.archivist.itopic.html#vaults" class="tsd-kind-icon">vaults</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_mage_d_.mage.archivist.itopicapi.html#acl" class="tsd-kind-icon">acl</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_mage_d_.mage.archivist.itopicapi.html#createkey" class="tsd-kind-icon">create<wbr>Key</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_mage_d_.mage.archivist.itopicapi.html#deserialize" class="tsd-kind-icon">deserialize</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_mage_d_.mage.archivist.itopicapi.html#index" class="tsd-kind-icon">index</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_mage_d_.mage.archivist.itopicapi.html#serialize" class="tsd-kind-icon">serialize</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_mage_d_.mage.archivist.itopicapi.html#shard" class="tsd-kind-icon">shard</a></li>
 							</ul>
 						</section>
 					</div>
@@ -113,24 +115,38 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="afterload" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> after<wbr>Load</h3>
-					<div class="tsd-signature tsd-kind-icon">after<wbr>Load<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<a name="acl" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> acl</h3>
+					<div class="tsd-signature tsd-kind-icon">acl<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2074">mage.d.ts:2074</a></li>
+							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2128">mage.d.ts:2128</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Object containing the ACL information, per level</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{*}</p>
+							</dd>
+							<dt>memberof</dt>
+							<dd><p>ITopicApi</p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
-							<li class="tsd-parameter-siganture">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<li class="tsd-parameter-index-signature">
+								<h5><span class="tsd-signature-symbol">[</span>level: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">object</span></h5>
+								<ul class="tsd-parameters">
+									<li class="tsd-parameter">
+										<h5>ops<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.html#vaultoperation" class="tsd-signature-type">VaultOperation</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"get"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"*"</span></h5>
+									</li>
+									<li class="tsd-parameter">
+										<h5><span class="tsd-flag ts-flagOptional">Optional</span> shard<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span></h5>
 									</li>
 								</ul>
 							</li>
@@ -138,24 +154,90 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="beforedistribute" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> before<wbr>Distribute</h3>
-					<div class="tsd-signature tsd-kind-icon">before<wbr>Distribute<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<a name="createkey" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> create<wbr>Key</h3>
+					<div class="tsd-signature tsd-kind-icon">create<wbr>Key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2075">mage.d.ts:2075</a></li>
+							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2112">mage.d.ts:2112</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Generate a storage key from the topic name and the index information</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>memberof</dt>
+							<dd><p>ITopicApi</p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-siganture">
 								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><a href="_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>topicName: <span class="tsd-signature-type">string</span></h5>
+											</li>
+											<li>
+												<h5>index: <a href="_mage_d_.mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="deserialize" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> deserialize</h3>
+					<div class="tsd-signature tsd-kind-icon">deserialize<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2105">mage.d.ts:2105</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Deserialize the data</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>memberof</dt>
+							<dd><p>ITopicApi</p>
+							</dd>
+						</dl>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>mediaType<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistmediatype" class="tsd-signature-type">ArchivistMediaType</a>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, encoding<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>mediaType: <a href="../modules/_mage_d_.mage.archivist.html#archivistmediatype" class="tsd-signature-type">ArchivistMediaType</a></h5>
+											</li>
+											<li>
+												<h5>data: <span class="tsd-signature-type">any</span></h5>
+											</li>
+											<li>
+												<h5>encoding: <span class="tsd-signature-type">string</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 									</li>
 								</ul>
 							</li>
@@ -168,34 +250,115 @@
 					<div class="tsd-signature tsd-kind-icon">index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2071">mage.d.ts:2071</a></li>
+							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2091">mage.d.ts:2091</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>List of index fields</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string[]}</p>
+							</dd>
+							<dt>memberof</dt>
+							<dd><p>ITopicApi</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="readoptions" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> read<wbr>Options</h3>
-					<div class="tsd-signature tsd-kind-icon">read<wbr>Options<span class="tsd-signature-symbol">:</span> <a href="_mage_d_.mage.archivist.iarchivistgetoptions.html" class="tsd-signature-type">IArchivistGetOptions</a></div>
+					<a name="serialize" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> serialize</h3>
+					<div class="tsd-signature tsd-kind-icon">serialize<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2073">mage.d.ts:2073</a></li>
+							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2098">mage.d.ts:2098</a></li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="vaults" class="tsd-anchor"></a>
-					<h3>vaults</h3>
-					<div class="tsd-signature tsd-kind-icon">vaults<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2072">mage.d.ts:2072</a></li>
-						</ul>
-					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Serialize the data</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>memberof</dt>
+							<dd><p>ITopicApi</p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
-							<li class="tsd-parameter-index-signature">
-								<h5><span class="tsd-signature-symbol">[</span>name: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><a href="_mage_d_.mage.archivist.iarchivisttopicvaultconfiguration.html" class="tsd-signature-type">IArchivistTopicVaultConfiguration</a></h5>
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>value: <span class="tsd-signature-type">any</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
+										<ul class="tsd-parameters">
+											<li class="tsd-parameter">
+												<h5>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+											</li>
+											<li class="tsd-parameter">
+												<h5>encoding<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+											</li>
+											<li class="tsd-parameter">
+												<h5>media<wbr>Type<span class="tsd-signature-symbol">: </span><a href="../modules/_mage_d_.mage.archivist.html#archivistmediatype" class="tsd-signature-type">ArchivistMediaType</a></h5>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="shard" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> shard</h3>
+					<div class="tsd-signature tsd-kind-icon">shard<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2120">mage.d.ts:2120</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Shard function</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>memberof</dt>
+							<dd><p>ITopicApi</p>
+							</dd>
+						</dl>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><a href="_mage_d_.mage.archivist.ivaultvalue.html" class="tsd-signature-type">IVaultValue</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>value: <a href="_mage_d_.mage.archivist.ivaultvalue.html" class="tsd-signature-type">IVaultValue</a></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span>
+											<span class="tsd-signature-symbol"> | </span>
+											<span class="tsd-signature-type">number</span>
+										</h4>
+									</li>
+								</ul>
 							</li>
 						</ul>
 					</div>
@@ -236,33 +399,36 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_mage_d_.mage.archivist.inamedarchivistquery.html" class="tsd-kind-icon">INamed<wbr>Archivist<wbr>Query</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_mage_d_.mage.archivist.itopic.html" class="tsd-kind-icon">ITopic</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="_mage_d_.mage.archivist.itopic.html" class="tsd-kind-icon">ITopic</a>
+						<a href="_mage_d_.mage.archivist.itopicapi.html" class="tsd-kind-icon">ITopic<wbr>Api</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_mage_d_.mage.archivist.itopic.html#afterload" class="tsd-kind-icon">after<wbr>Load</a>
+								<a href="_mage_d_.mage.archivist.itopicapi.html#acl" class="tsd-kind-icon">acl</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_mage_d_.mage.archivist.itopic.html#beforedistribute" class="tsd-kind-icon">before<wbr>Distribute</a>
+								<a href="_mage_d_.mage.archivist.itopicapi.html#createkey" class="tsd-kind-icon">create<wbr>Key</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_mage_d_.mage.archivist.itopic.html#index" class="tsd-kind-icon">index</a>
+								<a href="_mage_d_.mage.archivist.itopicapi.html#deserialize" class="tsd-kind-icon">deserialize</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_mage_d_.mage.archivist.itopic.html#readoptions" class="tsd-kind-icon">read<wbr>Options</a>
+								<a href="_mage_d_.mage.archivist.itopicapi.html#index" class="tsd-kind-icon">index</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_mage_d_.mage.archivist.itopic.html#vaults" class="tsd-kind-icon">vaults</a>
+								<a href="_mage_d_.mage.archivist.itopicapi.html#serialize" class="tsd-kind-icon">serialize</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_mage_d_.mage.archivist.itopicapi.html#shard" class="tsd-kind-icon">shard</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="_mage_d_.mage.archivist.itopicapi.html" class="tsd-kind-icon">ITopic<wbr>Api</a>
-					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_mage_d_.mage.archivist.ivaultvalue.html" class="tsd-kind-icon">IVault<wbr>Value</a>
 					</li>

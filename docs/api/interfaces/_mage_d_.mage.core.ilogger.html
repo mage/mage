@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Logger | mage</title>
+	<title>ILogger | mage</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,24 +57,55 @@
 					<a href="../modules/_mage_d_.html">&quot;mage.d&quot;</a>
 				</li>
 				<li>
-					<a href="_mage_d_.logger.html">Logger</a>
+					<a href="../modules/_mage_d_.mage.html">mage</a>
+				</li>
+				<li>
+					<a href="../modules/_mage_d_.mage.core.html">core</a>
+				</li>
+				<li>
+					<a href="_mage_d_.mage.core.ilogger.html">ILogger</a>
 				</li>
 			</ul>
-			<h1>Class Logger</h1>
+			<h1>Interface ILogger</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Logger interface</p>
+					</div>
+					<p>This is useful when you wish, for instance, to add a logger
+					instance to a class.</p>
+					<pre><code class="lang-typescript"><span class="hljs-keyword">class</span> MyClass {
+  <span class="hljs-keyword">private</span> _logger: mage.core.ILogger
+
+  <span class="hljs-keyword">constructor</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">this</span>._logger = mage.logger.context(<span class="hljs-string">'MyClass'</span>)
+  }
+}
+</code></pre>
+					<dl class="tsd-comment-tags">
+						<dt>interface</dt>
+						<dd><p>ILogger</p>
+						</dd>
+						<dt>extends</dt>
+						<dd><p>{Logger}</p>
+						</dd>
+					</dl>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Logger</span>
+						<a href="../classes/_mage_d_.logger.html" class="tsd-signature-type">Logger</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<a href="../interfaces/_mage_d_.mage.core.ilogger.html" class="tsd-signature-type">ILogger</a>
+								<span class="target">ILogger</span>
 							</li>
 						</ul>
 					</li>
@@ -84,39 +115,40 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-not-exported">
+						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-not-exported"><a href="_mage_d_.logger.html#alert" class="tsd-kind-icon">alert</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-not-exported"><a href="_mage_d_.logger.html#critical" class="tsd-kind-icon">critical</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-not-exported"><a href="_mage_d_.logger.html#debug" class="tsd-kind-icon">debug</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-not-exported"><a href="_mage_d_.logger.html#emergency" class="tsd-kind-icon">emergency</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-not-exported"><a href="_mage_d_.logger.html#error" class="tsd-kind-icon">error</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-not-exported"><a href="_mage_d_.logger.html#info" class="tsd-kind-icon">info</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-not-exported"><a href="_mage_d_.logger.html#notice" class="tsd-kind-icon">notice</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-not-exported"><a href="_mage_d_.logger.html#verbose" class="tsd-kind-icon">verbose</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-not-exported"><a href="_mage_d_.logger.html#warning" class="tsd-kind-icon">warning</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_mage_d_.mage.core.ilogger.html#alert" class="tsd-kind-icon">alert</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_mage_d_.mage.core.ilogger.html#critical" class="tsd-kind-icon">critical</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_mage_d_.mage.core.ilogger.html#debug" class="tsd-kind-icon">debug</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_mage_d_.mage.core.ilogger.html#emergency" class="tsd-kind-icon">emergency</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_mage_d_.mage.core.ilogger.html#error" class="tsd-kind-icon">error</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_mage_d_.mage.core.ilogger.html#info" class="tsd-kind-icon">info</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_mage_d_.mage.core.ilogger.html#notice" class="tsd-kind-icon">notice</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_mage_d_.mage.core.ilogger.html#verbose" class="tsd-kind-icon">verbose</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_mage_d_.mage.core.ilogger.html#warning" class="tsd-kind-icon">warning</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-not-exported">
+						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="_mage_d_.logger.html#addcontexts" class="tsd-kind-icon">add<wbr>Contexts</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="_mage_d_.logger.html#context" class="tsd-kind-icon">context</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="_mage_d_.logger.html#disablechannel" class="tsd-kind-icon">disable<wbr>Channel</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="_mage_d_.logger.html#enablechannel" class="tsd-kind-icon">enable<wbr>Channel</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_mage_d_.mage.core.ilogger.html#addcontexts" class="tsd-kind-icon">add<wbr>Contexts</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_mage_d_.mage.core.ilogger.html#context" class="tsd-kind-icon">context</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_mage_d_.mage.core.ilogger.html#disablechannel" class="tsd-kind-icon">disable<wbr>Channel</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_mage_d_.mage.core.ilogger.html#enablechannel" class="tsd-kind-icon">enable<wbr>Channel</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="alert" class="tsd-anchor"></a>
 					<h3>alert</h3>
-					<div class="tsd-signature tsd-kind-icon">alert<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
+					<div class="tsd-signature tsd-kind-icon">alert<span class="tsd-signature-symbol">:</span> <a href="_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/_mage_d_.logger.html">Logger</a>.<a href="../classes/_mage_d_.logger.html#alert">alert</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L559">mage.d.ts:559</a></li>
 						</ul>
@@ -135,11 +167,12 @@
 						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="critical" class="tsd-anchor"></a>
 					<h3>critical</h3>
-					<div class="tsd-signature tsd-kind-icon">critical<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
+					<div class="tsd-signature tsd-kind-icon">critical<span class="tsd-signature-symbol">:</span> <a href="_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/_mage_d_.logger.html">Logger</a>.<a href="../classes/_mage_d_.logger.html#critical">critical</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L551">mage.d.ts:551</a></li>
 						</ul>
@@ -158,11 +191,12 @@
 						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="debug" class="tsd-anchor"></a>
 					<h3>debug</h3>
-					<div class="tsd-signature tsd-kind-icon">debug<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
+					<div class="tsd-signature tsd-kind-icon">debug<span class="tsd-signature-symbol">:</span> <a href="_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/_mage_d_.logger.html">Logger</a>.<a href="../classes/_mage_d_.logger.html#debug">debug</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L511">mage.d.ts:511</a></li>
 						</ul>
@@ -181,11 +215,12 @@
 						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="emergency" class="tsd-anchor"></a>
 					<h3>emergency</h3>
-					<div class="tsd-signature tsd-kind-icon">emergency<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
+					<div class="tsd-signature tsd-kind-icon">emergency<span class="tsd-signature-symbol">:</span> <a href="_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/_mage_d_.logger.html">Logger</a>.<a href="../classes/_mage_d_.logger.html#emergency">emergency</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L567">mage.d.ts:567</a></li>
 						</ul>
@@ -204,11 +239,12 @@
 						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="error" class="tsd-anchor"></a>
 					<h3>error</h3>
-					<div class="tsd-signature tsd-kind-icon">error<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
+					<div class="tsd-signature tsd-kind-icon">error<span class="tsd-signature-symbol">:</span> <a href="_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/_mage_d_.logger.html">Logger</a>.<a href="../classes/_mage_d_.logger.html#error">error</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L543">mage.d.ts:543</a></li>
 						</ul>
@@ -227,11 +263,12 @@
 						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="info" class="tsd-anchor"></a>
 					<h3>info</h3>
-					<div class="tsd-signature tsd-kind-icon">info<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
+					<div class="tsd-signature tsd-kind-icon">info<span class="tsd-signature-symbol">:</span> <a href="_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/_mage_d_.logger.html">Logger</a>.<a href="../classes/_mage_d_.logger.html#info">info</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L519">mage.d.ts:519</a></li>
 						</ul>
@@ -250,11 +287,12 @@
 						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="notice" class="tsd-anchor"></a>
 					<h3>notice</h3>
-					<div class="tsd-signature tsd-kind-icon">notice<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
+					<div class="tsd-signature tsd-kind-icon">notice<span class="tsd-signature-symbol">:</span> <a href="_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/_mage_d_.logger.html">Logger</a>.<a href="../classes/_mage_d_.logger.html#notice">notice</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L527">mage.d.ts:527</a></li>
 						</ul>
@@ -274,11 +312,12 @@
 						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="verbose" class="tsd-anchor"></a>
 					<h3>verbose</h3>
-					<div class="tsd-signature tsd-kind-icon">verbose<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
+					<div class="tsd-signature tsd-kind-icon">verbose<span class="tsd-signature-symbol">:</span> <a href="_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/_mage_d_.logger.html">Logger</a>.<a href="../classes/_mage_d_.logger.html#verbose">verbose</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L503">mage.d.ts:503</a></li>
 						</ul>
@@ -297,11 +336,12 @@
 						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="warning" class="tsd-anchor"></a>
 					<h3>warning</h3>
-					<div class="tsd-signature tsd-kind-icon">warning<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
+					<div class="tsd-signature tsd-kind-icon">warning<span class="tsd-signature-symbol">:</span> <a href="_mage_d_.ilog.html" class="tsd-signature-type">ILog</a></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/_mage_d_.logger.html">Logger</a>.<a href="../classes/_mage_d_.logger.html#warning">warning</a></p>
 						<ul>
 							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L535">mage.d.ts:535</a></li>
 						</ul>
@@ -321,17 +361,18 @@
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 					<a name="addcontexts" class="tsd-anchor"></a>
 					<h3>add<wbr>Contexts</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 						<li class="tsd-signature tsd-kind-icon">add<wbr>Contexts<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>contexts<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="../classes/_mage_d_.logger.html">Logger</a>.<a href="../classes/_mage_d_.logger.html#addcontexts">addContexts</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L446">mage.d.ts:446</a></li>
 								</ul>
@@ -369,15 +410,16 @@ logger.debug(<span class="hljs-string">'this will be contextualized to mymodule'
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 					<a name="context" class="tsd-anchor"></a>
 					<h3>context</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">context<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>contexts<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_mage_d_.logger.html" class="tsd-signature-type">Logger</a></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">context<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>contexts<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_mage_d_.logger.html" class="tsd-signature-type">Logger</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="../classes/_mage_d_.logger.html">Logger</a>.<a href="../classes/_mage_d_.logger.html#context">context</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L471">mage.d.ts:471</a></li>
 								</ul>
@@ -411,19 +453,20 @@ logger.debug(<span class="hljs-string">'this will be contextualized to mymodule'
 									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>contexts: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_mage_d_.logger.html" class="tsd-signature-type">Logger</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/_mage_d_.logger.html" class="tsd-signature-type">Logger</a></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 					<a name="disablechannel" class="tsd-anchor"></a>
 					<h3>disable<wbr>Channel</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 						<li class="tsd-signature tsd-kind-icon">disable<wbr>Channel<span class="tsd-signature-symbol">(</span>channelName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="../classes/_mage_d_.logger.html">Logger</a>.<a href="../classes/_mage_d_.logger.html#disablechannel">disableChannel</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L483">mage.d.ts:483</a></li>
 								</ul>
@@ -454,15 +497,16 @@ logger.debug(<span class="hljs-string">'this will be contextualized to mymodule'
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 					<a name="enablechannel" class="tsd-anchor"></a>
 					<h3>enable<wbr>Channel</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 						<li class="tsd-signature tsd-kind-icon">enable<wbr>Channel<span class="tsd-signature-symbol">(</span>channelName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="../classes/_mage_d_.logger.html">Logger</a>.<a href="../classes/_mage_d_.logger.html#enablechannel">enableChannel</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L495">mage.d.ts:495</a></li>
 								</ul>
@@ -501,120 +545,75 @@ logger.debug(<span class="hljs-string">'this will be contextualized to mymodule'
 					<li class="globals  ">
 						<a href="../index.html"><em>Globals</em></a>
 					</li>
-					<li class="current tsd-kind-external-module">
-						<a href="../modules/_mage_d_.html">"mage.d"</a>
-					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_mage_d_.archivist.html" class="tsd-kind-icon">Archivist</a>
-					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_mage_d_.logger.html" class="tsd-kind-icon">Logger</a>
+					<li class="current tsd-kind-interface tsd-parent-kind-module">
+						<a href="_mage_d_.mage.core.ilogger.html" class="tsd-kind-icon">ILogger</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
-								<a href="_mage_d_.logger.html#alert" class="tsd-kind-icon">alert</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_mage_d_.mage.core.ilogger.html#alert" class="tsd-kind-icon">alert</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
-								<a href="_mage_d_.logger.html#critical" class="tsd-kind-icon">critical</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_mage_d_.mage.core.ilogger.html#critical" class="tsd-kind-icon">critical</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
-								<a href="_mage_d_.logger.html#debug" class="tsd-kind-icon">debug</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_mage_d_.mage.core.ilogger.html#debug" class="tsd-kind-icon">debug</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
-								<a href="_mage_d_.logger.html#emergency" class="tsd-kind-icon">emergency</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_mage_d_.mage.core.ilogger.html#emergency" class="tsd-kind-icon">emergency</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
-								<a href="_mage_d_.logger.html#error" class="tsd-kind-icon">error</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_mage_d_.mage.core.ilogger.html#error" class="tsd-kind-icon">error</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
-								<a href="_mage_d_.logger.html#info" class="tsd-kind-icon">info</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_mage_d_.mage.core.ilogger.html#info" class="tsd-kind-icon">info</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
-								<a href="_mage_d_.logger.html#notice" class="tsd-kind-icon">notice</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_mage_d_.mage.core.ilogger.html#notice" class="tsd-kind-icon">notice</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
-								<a href="_mage_d_.logger.html#verbose" class="tsd-kind-icon">verbose</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_mage_d_.mage.core.ilogger.html#verbose" class="tsd-kind-icon">verbose</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
-								<a href="_mage_d_.logger.html#warning" class="tsd-kind-icon">warning</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_mage_d_.mage.core.ilogger.html#warning" class="tsd-kind-icon">warning</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-								<a href="_mage_d_.logger.html#addcontexts" class="tsd-kind-icon">add<wbr>Contexts</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_mage_d_.mage.core.ilogger.html#addcontexts" class="tsd-kind-icon">add<wbr>Contexts</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-								<a href="_mage_d_.logger.html#context" class="tsd-kind-icon">context</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_mage_d_.mage.core.ilogger.html#context" class="tsd-kind-icon">context</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-								<a href="_mage_d_.logger.html#disablechannel" class="tsd-kind-icon">disable<wbr>Channel</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_mage_d_.mage.core.ilogger.html#disablechannel" class="tsd-kind-icon">disable<wbr>Channel</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-								<a href="_mage_d_.logger.html#enablechannel" class="tsd-kind-icon">enable<wbr>Channel</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_mage_d_.mage.core.ilogger.html#enablechannel" class="tsd-kind-icon">enable<wbr>Channel</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_mage_d_.mage-1.html" class="tsd-kind-icon">Mage</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_mage_d_.mage.core.imodule.html" class="tsd-kind-icon">IModule</a>
 					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_mage_d_.mmrpenvelope.html" class="tsd-kind-icon">Mmrp<wbr>Envelope</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_mage_d_.mage.core.iservice.html" class="tsd-kind-icon">IService</a>
 					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_mage_d_.mmrpnode.html" class="tsd-kind-icon">Mmrp<wbr>Node</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_mage_d_.mage.core.iservicenode.html" class="tsd-kind-icon">IService<wbr>Node</a>
 					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_mage_d_.session.html" class="tsd-kind-icon">Session</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_mage_d_.mage.core.istate.html" class="tsd-kind-icon">IState</a>
 					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_mage_d_.vaultvalue.html" class="tsd-kind-icon">Vault<wbr>Value</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_mage_d_.mage.core.itask.html" class="tsd-kind-icon">ITask</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../interfaces/_mage_d_.ilog.html" class="tsd-kind-icon">ILog</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../interfaces/_mage_d_.imagecore.html" class="tsd-kind-icon">IMage<wbr>Core</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#authenticatecallback" class="tsd-kind-icon">Authenticate<wbr>Callback</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#configurationlabel" class="tsd-kind-icon">Configuration<wbr>Label</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#logincallback" class="tsd-kind-icon">Login<wbr>Callback</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#mmrpenvelopeflag" class="tsd-kind-icon">Mmrp<wbr>Envelope<wbr>Flag</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#mmrpenvelopemessage" class="tsd-kind-icon">Mmrp<wbr>Envelope<wbr>Message</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#mmrpenveloperoute" class="tsd-kind-icon">Mmrp<wbr>Envelope<wbr>Route</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#registercallback" class="tsd-kind-icon">Register<wbr>Callback</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#serviceerroreventhandler" class="tsd-kind-icon">Service<wbr>Error<wbr>Event<wbr>Handler</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#serviceeventhandler" class="tsd-kind-icon">Service<wbr>Event<wbr>Handler</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#serviceeventname" class="tsd-kind-icon">Service<wbr>Event<wbr>Name</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#timeconfig" class="tsd-kind-icon">Time<wbr>Config</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_mage_d_.html#vaultoperation" class="tsd-kind-icon">Vault<wbr>Operation</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_mage_d_.mage.core.iusercommand.html" class="tsd-kind-icon">IUser<wbr>Command</a>
 					</li>
 				</ul>
 			</nav>

@@ -106,7 +106,7 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_mage_d_.mage.core.iusercommand.html#execute" class="tsd-kind-icon">execute</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter"><a href="_mage_d_.mage.core.iusercommand.html#execute" class="tsd-kind-icon">execute</a></li>
 							</ul>
 						</section>
 					</div>
@@ -120,26 +120,32 @@
 					<div class="tsd-signature tsd-kind-icon">acl<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L1374">mage.d.ts:1374</a></li>
+							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2322">mage.d.ts:2322</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
 					<a name="execute" class="tsd-anchor"></a>
 					<h3>execute</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">execute<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><a href="_mage_d_.mage.core.istate.html" class="tsd-signature-type">IState</a>, <span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">execute&lt;T&gt;<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><a href="_mage_d_.mage.core.istate.html" class="tsd-signature-type">IState</a>, <span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L1375">mage.d.ts:1375</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2323">mage.d.ts:2323</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -149,7 +155,7 @@
 									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -166,7 +172,16 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_mage_d_.mage.core.ilogger.html" class="tsd-kind-icon">ILogger</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_mage_d_.mage.core.imodule.html" class="tsd-kind-icon">IModule</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_mage_d_.mage.core.iservice.html" class="tsd-kind-icon">IService</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_mage_d_.mage.core.iservicenode.html" class="tsd-kind-icon">IService<wbr>Node</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_mage_d_.mage.core.istate.html" class="tsd-kind-icon">IState</a>
@@ -182,7 +197,7 @@
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_mage_d_.mage.core.iusercommand.html#acl" class="tsd-kind-icon">acl</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
 								<a href="_mage_d_.mage.core.iusercommand.html#execute" class="tsd-kind-icon">execute</a>
 							</li>
 						</ul>

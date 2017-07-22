@@ -2,17 +2,11 @@
  * This scripts starts a small docker container containing a copy of slate
  * and its dependencies (Ruby and other packages), processes the content
  * present under ./docs-source and outputs a compiled documentation under ./docs.
- *
- * At the moment, we also compile the API documentation using this code.
  */
 'use strict';
 
 const cp = require('child_process');
-const glob = require('glob');
-const fs = require('fs');
-const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
-const path = require('path');
 
 function getCurrentPath() {
 	const cwd = process.cwd();
@@ -28,7 +22,6 @@ function getCurrentPath() {
 }
 
 const currentPath = getCurrentPath();
-const libDocsDir = currentPath + '/docs-sources/includes/mage';
 
 // Base arguments
 let args = [
@@ -55,45 +48,16 @@ args = args.concat([
 // Append additional flags if present
 args = args.concat(process.argv.slice(2));
 
-// Core process. We duplicate the markdown files present across the project, but add an
-// underscore to the basename so that Middleman (used by Slate, our documentation generator)
-// may pick them up and include them if needed.
-rimraf.sync(libDocsDir);
-mkdirp.sync(libDocsDir);
-glob('**/*.md', function (error, files) {
-	if (error) {
-		throw error;
-	}
+const proc = cp.spawn('docker', args, {
+	stdio: [process.stdin, process.stdout, process.stderr]
+});
 
-	files.forEach(function (file) {
-		if (file.indexOf('node_modules') !== -1) {
-			return;
-		}
+proc.on('error', function (error) {
+	console.log('Could not start docker:', error);
+	process.exit(1);
+});
 
-		if (file.indexOf('docs-sources') !== -1) {
-			return;
-		}
-
-		const subpath = path.dirname(file);
-		const filename = path.basename(file);
-		const destination = path.join(libDocsDir, subpath, '_' + filename);
-		const content = fs.readFileSync(file);
-
-		mkdirp.sync(path.dirname(destination));
-		fs.writeFileSync(destination, content);
-	});
-
-	const proc = cp.spawn('docker', args, {
-		stdio: [process.stdin, process.stdout, process.stderr]
-	});
-
-	proc.on('error', function (error) {
-		console.log('Could not start docker:', error);
-		process.exit(1);
-	});
-
-	proc.on('exit', function (code) {
-		rimraf.sync(libDocsDir);
-		return process.exit(code);
-	});
+proc.on('exit', function (code) {
+	rimraf.sync(currentPath + '/docs/api');
+	return process.exit(code);
 });

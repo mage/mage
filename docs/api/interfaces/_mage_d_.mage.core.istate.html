@@ -88,6 +88,7 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_mage_d_.mage.core.istate.html#actorid" class="tsd-kind-icon">actor<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_mage_d_.mage.core.istate.html#archivist" class="tsd-kind-icon">archivist</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_mage_d_.mage.core.istate.html#session" class="tsd-kind-icon">session</a></li>
 							</ul>
@@ -95,10 +96,10 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_mage_d_.mage.core.istate.html#broadcast" class="tsd-kind-icon">broadcast</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter"><a href="_mage_d_.mage.core.istate.html#broadcast" class="tsd-kind-icon">broadcast</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_mage_d_.mage.core.istate.html#canaccess" class="tsd-kind-icon">can<wbr>Access</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_mage_d_.mage.core.istate.html#cleartimeout" class="tsd-kind-icon">clear<wbr>Timeout</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_mage_d_.mage.core.istate.html#emit" class="tsd-kind-icon">emit</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter"><a href="_mage_d_.mage.core.istate.html#emit" class="tsd-kind-icon">emit</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_mage_d_.mage.core.istate.html#error" class="tsd-kind-icon">error</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_mage_d_.mage.core.istate.html#registersession" class="tsd-kind-icon">register<wbr>Session</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_mage_d_.mage.core.istate.html#respond" class="tsd-kind-icon">respond</a></li>
@@ -112,12 +113,39 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="actorid" class="tsd-anchor"></a>
+					<h3>actor<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">actor<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2501">mage.d.ts:2501</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Actor ID</p>
+						</div>
+						<p>Depending on how the state object was created, the actor ID
+							may hold different meaning; however, it will in most cases
+							hold the session ID of the user currently executing the user command.
+						This will only apply to users authenticated through the auth module.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string}</p>
+							</dd>
+							<dt>memberof</dt>
+							<dd><p>IState</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="archivist" class="tsd-anchor"></a>
 					<h3>archivist</h3>
 					<div class="tsd-signature tsd-kind-icon">archivist<span class="tsd-signature-symbol">:</span> <a href="../classes/_mage_d_.archivist.html" class="tsd-signature-type">Archivist</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L1389">mage.d.ts:1389</a></li>
+							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2513">mage.d.ts:2513</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -143,7 +171,7 @@
 					<div class="tsd-signature tsd-kind-icon">session<span class="tsd-signature-symbol">:</span> <a href="../classes/_mage_d_.session.html" class="tsd-signature-type">Session</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L1397">mage.d.ts:1397</a></li>
+							<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2521">mage.d.ts:2521</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -163,17 +191,17 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
 					<a name="broadcast" class="tsd-anchor"></a>
 					<h3>broadcast</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">broadcast<span class="tsd-signature-symbol">(</span>eventName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">broadcast&lt;T&gt;<span class="tsd-signature-symbol">(</span>eventName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L1459">mage.d.ts:1459</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2583">mage.d.ts:2583</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -186,13 +214,19 @@
 									</dd>
 								</dl>
 							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>eventName: <span class="tsd-signature-type">string</span></h5>
+									<h5>eventName: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>data: <span class="tsd-signature-type">any</span></h5>
+									<h5>data: <span class="tsd-signature-type">T</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -211,7 +245,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L1486">mage.d.ts:1486</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2610">mage.d.ts:2610</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -244,7 +278,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L1511">mage.d.ts:1511</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2635">mage.d.ts:2635</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -262,17 +296,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
 					<a name="emit" class="tsd-anchor"></a>
 					<h3>emit</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">emit<span class="tsd-signature-symbol">(</span>actorId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, eventName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">emit&lt;T&gt;<span class="tsd-signature-symbol">(</span>actorId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, eventName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L1449">mage.d.ts:1449</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2573">mage.d.ts:2573</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -287,16 +321,22 @@
 									</dd>
 								</dl>
 							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>actorId: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
-									<h5>eventName: <span class="tsd-signature-type">string</span></h5>
+									<h5>eventName: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>data: <span class="tsd-signature-type">any</span></h5>
+									<h5>data: <span class="tsd-signature-type">T</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -315,7 +355,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L1435">mage.d.ts:1435</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2559">mage.d.ts:2559</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -363,7 +403,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L1468">mage.d.ts:1468</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2592">mage.d.ts:2592</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -398,7 +438,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L1414">mage.d.ts:1414</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2538">mage.d.ts:2538</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -439,7 +479,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L1501">mage.d.ts:1501</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2625">mage.d.ts:2625</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -478,7 +518,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/db1fd5d/mage.d.ts#L1476">mage.d.ts:1476</a></li>
+									<li>Defined in <a href="https://github.com/stelcheck/mage/blob/21be034/mage.d.ts#L2600">mage.d.ts:2600</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -508,7 +548,16 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_mage_d_.mage.core.ilogger.html" class="tsd-kind-icon">ILogger</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_mage_d_.mage.core.imodule.html" class="tsd-kind-icon">IModule</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_mage_d_.mage.core.iservice.html" class="tsd-kind-icon">IService</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_mage_d_.mage.core.iservicenode.html" class="tsd-kind-icon">IService<wbr>Node</a>
 					</li>
 				</ul>
 				<ul class="current">
@@ -516,12 +565,15 @@
 						<a href="_mage_d_.mage.core.istate.html" class="tsd-kind-icon">IState</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_mage_d_.mage.core.istate.html#actorid" class="tsd-kind-icon">actor<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_mage_d_.mage.core.istate.html#archivist" class="tsd-kind-icon">archivist</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_mage_d_.mage.core.istate.html#session" class="tsd-kind-icon">session</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
 								<a href="_mage_d_.mage.core.istate.html#broadcast" class="tsd-kind-icon">broadcast</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
@@ -530,7 +582,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="_mage_d_.mage.core.istate.html#cleartimeout" class="tsd-kind-icon">clear<wbr>Timeout</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
 								<a href="_mage_d_.mage.core.istate.html#emit" class="tsd-kind-icon">emit</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
