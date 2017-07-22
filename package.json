@@ -34,7 +34,7 @@
     "report": "run-p report:complexity report:coverage",
     "docs:build": "run-s docs:build:userguide docs:build:api",
     "docs:build:userguide": "node ./scripts/compile-docs",
-    "docs:build:api": "./node_modules/.bin/typedoc --hideGenerator --out docs/api --includeDeclarations --name mage --excludeExternals --readme none",
+    "docs:build:api": "./node_modules/.bin/typedoc --hideGenerator --out docs/api --includeDeclarations --name mage --excludeExternals --readme none --sourcefile-url-prefix 'https://github.com/mage/mage/tree/master/'",
     "clean:deps": "node ./scripts/rmrf.js node_modules",
     "clean:report": "node ./scripts/rmrf.js coverage-report complexity-report",
     "clean:docs": "node ./scripts/rmrf.js docs",
@@ -114,6 +114,7 @@
     "rimraf": "2.6.1",
     "sqlite3": "3.1.8",
     "typedoc": "0.7.0",
+    "typedoc-plugin-sourcefile-url": "1.0.3",
     "typescript": "2.3.2",
     "yamljs": "0.2.10",
     "zmq": "2.15.3"

@@ -6,6 +6,7 @@
 'use strict';
 
 const cp = require('child_process');
+const fs = require('fs');
 const rimraf = require('rimraf');
 
 function getCurrentPath() {
@@ -59,5 +60,6 @@ proc.on('error', function (error) {
 
 proc.on('exit', function (code) {
 	rimraf.sync(currentPath + '/docs/api');
+	fs.closeSync(fs.openSync(currentPath + '/docs/.nojekyll', 'w'));
 	return process.exit(code);
 });
