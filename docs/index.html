@@ -389,7 +389,7 @@ of MAGE. To do so, you can use the <code class="prettyprint">master</code> branc
 <p>Before you jump into the API documentation, you will most likely want
 to read through this document so to get familiar with the basics of MAGE.</p>
 
-<p><a href="./api/index.html">API documentation</a></p>
+<p><a href="./api/">API documentation</a></p>
 
           <h1 id="client-sdks">Client SDKs</h1>
 
@@ -710,7 +710,7 @@ the actions will not be executed; the two <code class="prettyprint">mage.players
 would only store information if the call succeded.</p>
 
 <p>For more information about the API you use to access your data store, please read the
-<a href="./api.html#archivist">Archivist</a> API documentation.</p>
+<a href="./api/classes/_mage_d_.archivist.html">Archivist</a> API documentation.</p>
 
 <h2 id="transactional-event-emission">Transactional event emission</h2>
 
@@ -743,7 +743,7 @@ were to return an error, the event emitted by <code class="prettyprint">state.em
 player referenced by <code class="prettyprint">playerId</code>.</p>
 
 <p>For more information on the State API and how events are emitted, please read the
-<a href="./api.html#archivist">State</a> API documentation.</p>
+<a href="./api/interfaces/_mage_d_.mage.core.istate.html">State</a> API documentation.</p>
 
           <h1 id="actors-sessions">Actors &amp; Sessions</h1>
 
@@ -1672,7 +1672,7 @@ you may want to send an event after a certain amount of time, or once something 
 in the database. To do so, you will need to create your own State of that. You will also need
 to make sure to manually close that state.</p>
 
-<p>For more information, please read the <a href="./api.html#states">State API documentation</a>.</p>
+<p>For more information, please read the <a href="./api/interfaces/_mage_d_.mage.core.istate.html">State API documentation</a>.</p>
 
 <h2 id="broadcasting-events">Broadcasting events</h2>
 
@@ -1833,8 +1833,102 @@ context is now appended to the terminal output.</p>
 </tr>
 </tbody></table>
 
-<p>Please see the <a href="./api.html#configuration67">Logging configuration</a>
-section of the API documentation for more details.</p>
+<h3 id="terminal">Terminal</h3>
+<pre class="highlight yaml tab-yaml"><code><span class="na">logging</span><span class="pi">:</span>
+    <span class="na">server</span><span class="pi">:</span>
+        <span class="na">terminal</span><span class="pi">:</span>
+            <span class="na">channels</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">&gt;=info"</span><span class="pi">]</span>
+            <span class="na">config</span><span class="pi">:</span>
+                <span class="na">jsonIndent</span><span class="pi">:</span> <span class="s">2</span>
+                <span class="na">jsonOutput</span><span class="pi">:</span> <span class="s">false</span>
+                <span class="na">theme</span><span class="pi">:</span> <span class="s">default</span>
+</code></pre>
+<p>The terminal log backend can be configured for pretty-logging, which makes reading
+log entries in your console more visually comfortable.</p>
+
+<p>The following themes are available:</p>
+
+<ul>
+<li>default</li>
+<li>dark</li>
+<li>light</li>
+</ul>
+
+<p>The terminal log backend may also be configured for piping logs to an external
+process. For instance, you may be deploying your MAGE in PaaS or IaaS which
+simply forwards and parses stdout/stderr output.</p>
+
+<p>In such case, you can turn the <code class="prettyprint">jsonOutput</code> configuration entry to <code class="prettyprint">true</code>;
+each log line outputed will then be outputed as a JSON object.</p>
+
+<h3 id="file">File</h3>
+<pre class="highlight yaml tab-yaml"><code><span class="na">logging</span><span class="pi">:</span>
+    <span class="na">server</span><span class="pi">:</span>
+        <span class="na">file</span><span class="pi">:</span>
+            <span class="na">channels</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">&gt;=debug"</span><span class="pi">]</span>
+            <span class="na">config</span><span class="pi">:</span>
+                <span class="na">path</span><span class="pi">:</span> <span class="s2">"</span><span class="s">./logs"</span>
+                <span class="na">jsonIndent</span><span class="pi">:</span> <span class="s">2</span>
+                <span class="na">mode</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0600"</span>    <span class="c1"># make sure this is a string!</span>
+                <span class="na">fileNames</span><span class="pi">:</span>
+                    <span class="s2">"</span><span class="s">app.log"</span><span class="pi">:</span> <span class="s2">"</span><span class="s">all"</span>    <span class="c1"># this is configured by default and you may override it</span>
+                    <span class="s2">"</span><span class="s">error.log"</span><span class="pi">:</span> <span class="s2">"</span><span class="s">&gt;=warning"</span>
+</code></pre>
+<p>The file log backend allows you to output logs to a set of file of your choice. Simply
+specify a log directory where you want your log files to go, and a set of filenames to log to.
+You can control which log level will go in which file by setting the log level range
+as a value, or specify <code class="prettyprint">all</code> if you wish to write all logs to a single file.</p>
+
+<h3 id="syslog">Syslog</h3>
+<pre class="highlight yaml tab-yaml"><code><span class="na">logging</span><span class="pi">:</span>
+    <span class="na">server</span><span class="pi">:</span>
+        <span class="na">syslog</span><span class="pi">:</span>
+            <span class="na">channels</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">&gt;=debug"</span><span class="pi">]</span>
+            <span class="na">config</span><span class="pi">:</span>
+                <span class="na">host</span><span class="pi">:</span> <span class="s">localhost</span>          <span class="c1"># host to connect to (IP or hostname)</span>
+                <span class="na">port</span><span class="pi">:</span> <span class="s">514</span>                <span class="c1"># UDP port to connect to</span>
+                <span class="na">appName</span><span class="pi">:</span> <span class="s">myGame</span>
+                <span class="na">facility</span><span class="pi">:</span> <span class="s">1</span>              <span class="c1"># see syslog documentation</span>
+                <span class="na">format</span><span class="pi">:</span>
+                    <span class="na">multiLine</span><span class="pi">:</span> <span class="s">true</span>      <span class="c1"># allow newline characters</span>
+                    <span class="na">indent</span><span class="pi">:</span> <span class="s">2</span>            <span class="c1"># indentation when serializing data in multiLine mode</span>
+</code></pre>
+<p>The syslog log backend allows you to forward your logs to a remote
+syslog server using the UDP protocol.</p>
+
+<p>MAGE does not currently support forwarding to syslog TCP servers; because
+of this, it also does not support using TLS.</p>
+
+<p>Since only UDP is supported, it also means that some logs may not arrive to
+destination.</p>
+
+<h3 id="graylog">Graylog</h3>
+<pre class="highlight yaml tab-yaml"><code><span class="na">logging</span><span class="pi">:</span>
+    <span class="na">server</span><span class="pi">:</span>
+        <span class="na">graylog</span><span class="pi">:</span>
+            <span class="na">channels</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">&gt;=info"</span><span class="pi">]</span>
+            <span class="na">config</span><span class="pi">:</span>
+                <span class="na">servers</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="pi">{</span> <span class="nv">host</span><span class="pi">:</span> <span class="s2">"</span><span class="s">192.168.100.85"</span><span class="pi">,</span> <span class="nv">port</span><span class="pi">:</span> <span class="nv">12201</span> <span class="pi">}</span>
+                <span class="na">facility</span><span class="pi">:</span> <span class="s">Application identifier</span>
+                <span class="na">format</span><span class="pi">:</span>
+                    <span class="na">multiLine</span><span class="pi">:</span> <span class="s">true</span>      <span class="c1"># allow newline characters</span>
+                    <span class="na">embedDetails</span><span class="pi">:</span> <span class="s">false</span>  <span class="c1"># embed log details into the message</span>
+                    <span class="na">embedData</span><span class="pi">:</span> <span class="s">false</span>     <span class="c1"># embed data into the message</span>
+</code></pre>
+<p>The syslog log backend allows you to forward your logs to a remote
+graylog2 server, or to any other services capable to consuming
+the <a href="http://docs.graylog.org/en/2.2/pages/gelf.html">GELF protocol</a>.</p>
+
+<p>Such services include:</p>
+
+<ul>
+<li><a href="https://www.elastic.co/guide/en/logstash/5.4/plugins-inputs-gelf.html">Logstash</a></li>
+<li><a href="https://github.com/MerlinDMC/fluent-plugin-input-gelf">Fluentd</a></li>
+</ul>
+
+<p>You may choose to embed details and data into the message, instead of having them
+as separate attributes. If so, respectively turn <code class="prettyprint">embedDetails</code> and <code class="prettyprint">embedData</code> to <code class="prettyprint">true</code>.</p>
 
           <h1 id="http-server">HTTP Server</h1>
 
@@ -2142,7 +2236,7 @@ access them.</p>
 <p>Sampler values are defined on-the-fly; therefore, you must be careful when
 choosing a sampler key for your metrics, so to avoid overlaps.</p>
 
-<p>See <a href="./api.html#api69">the sampler API documentation</a> for more documentation.</p>
+<p>See <a href="./api/interfaces/_mage_d_.imagecore.html#sampler">the sampler API documentation</a> for more documentation.</p>
 
           <h1 id="production">Production</h1>
 

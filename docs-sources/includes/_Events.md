@@ -54,7 +54,7 @@ you may want to send an event after a certain amount of time, or once something 
 in the database. To do so, you will need to create your own State of that. You will also need
 to make sure to manually close that state.
 
-For more information, please read the [State API documentation](./api.html#states).
+For more information, please read the [State API documentation](./api/interfaces/_mage_d_.mage.core.istate.html).
 
 ## Broadcasting events
 
