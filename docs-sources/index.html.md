@@ -12,6 +12,7 @@ toc_footers:
   - <a href='https://wizcorp.jp/'>Wizcorp website</a>
 
 includes:
+  - Introduction
   - Requirements
   - Installation
   - API

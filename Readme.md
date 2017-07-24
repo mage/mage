@@ -9,13 +9,24 @@
 [![Build Status: Windows](https://img.shields.io/appveyor/ci/mage/mage/master.svg?style=flat-square&label=ci%20windows)](https://ci.appveyor.com/project/mage/mage/branch/master)
 [![Coveralls branch](https://img.shields.io/coveralls/mage/mage/master.svg?style=flat-square)](https://coveralls.io/github/mage/mage)
 
-What is MAGE?
--------------
-
 MAGE is a Game Server Framework for Node.js. It allows game developers to quickly create
 highly interactive games that are performant and scalable.
 
-MAGE comes with multiple server modules; we also officially support many client-side SDKs:
+Features
+---------
+
+  - Supports both JavaScript and TypeScript
+  - Easily create transactional API endpoints
+  - Supports multiple storage backends
+  - Built-in distributed mode
+  - Rich ecosystem of SDKs, modules and tools
+
+See [our user documentation](https://mage.github.io/mage/#introduction) for more details.
+
+Client SDKs
+------------
+
+We officially support the following client-side SDKs:
 
 | Name             | Language             | Location                                           |
 | ---------------- | -------------------- | -------------------------------------------------- |
@@ -30,7 +41,7 @@ Install
 ```bash
 # Replace my-gameserver with how you wish to name your game
 export NODE_ENV=development
-npm install mage --bootstrap --prefix my-gameserver
+npm install mage --create --prefix my-gameserver
 cd my-gameserver
 npm run develop
 ```
@@ -42,12 +53,21 @@ Then follow the indications on screen as they appear.
 ```powershell
 # Replace my-gameserver with how you wish to name your game
 set-item env:NODE_ENV=development
-npm install mage --bootstrap --prefix my-gameserver
+npm install mage --create --prefix my-gameserver
 cd my-gameserver
 npm run develop
 ```
 
 Then follow the indications on screen as they appear.
+
+### TypeScript
+
+Optionally, you may also create a TypeScript project. Simply
+add the `--typescript` flag to the previous `npm` command.
+
+```shell
+npm install mage --create --prefix my-gameserver --typescript
+```
 
 See Also
 ---------
