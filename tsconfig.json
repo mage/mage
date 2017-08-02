@@ -11,6 +11,6 @@
     "noEmit": true
   },
   "files": [
-    "mage.d.ts"
+    "mage.ts"
   ]
 }

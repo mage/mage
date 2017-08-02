@@ -8,7 +8,7 @@
     "mail": "info@wizcorp.jp",
     "url": "http://github.com/mage/mage/issues"
   },
-  "types": "./mage.d.ts",
+  "types": "./mage.ts",
   "engines": {
     "node": "^4 || ^6 || ^7 || ^8",
     "typescript": "^2.2"
@@ -34,7 +34,7 @@
     "report": "run-p report:complexity report:coverage",
     "docs:build": "run-s docs:build:userguide docs:build:api",
     "docs:build:userguide": "node ./scripts/compile-docs",
-    "docs:build:api": "./node_modules/.bin/typedoc --hideGenerator --out docs/api --includeDeclarations --name mage --excludeExternals --readme none --sourcefile-url-prefix 'https://github.com/mage/mage/tree/master/'",
+    "docs:build:api": "./node_modules/.bin/typedoc --hideGenerator --out docs/api --includeDeclarations --excludeExternals --theme minimal --mode file --readme ./docs-sources/api/Readme.md --sourcefile-url-prefix 'https://github.com/mage/mage/tree/master/'",
     "clean:deps": "node ./scripts/rmrf.js node_modules",
     "clean:report": "node ./scripts/rmrf.js coverage-report complexity-report",
     "clean:docs": "node ./scripts/rmrf.js docs",

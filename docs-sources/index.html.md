@@ -31,8 +31,8 @@ includes:
 search: true
 ---
 
-Here you will find both the basic documentation and API
-reference for MAGE. If you are looking for API documentation,
+Here you will find both the basic documentation for MAGE.
+If you are looking for API documentation,
 please have a look at the [API reference](./api/).
 
 ## Questions and issues
