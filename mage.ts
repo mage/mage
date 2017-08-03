@@ -2370,7 +2370,7 @@ declare namespace mage {
              *
              * @memberOf State
              */
-            emit<T>(actorId: string | string[], eventName: string | number, data: T): void;
+            emit<T>(actorId: string | string[], eventName: string | number, data: T, configuration: mage.core.IStateEmitConfig): void;
 
             /**
              * Broadcast an event to all connected users
@@ -2380,7 +2380,42 @@ declare namespace mage {
              *
              * @memberOf State
              */
-            broadcast<T>(eventName: string | number, data: T): void;
+            broadcast<T>(eventName: string | number, data: T, configuration: mage.core.IStateEmitConfig): void;
+
+            /**
+             * Distribute both events and archivist operations
+             * currently stacked on this state object.
+             *
+             * @memberOf State
+             */
+            distribute(callback: (error?: Error) => void): void;
+
+            /**
+             * Distribute all events currently stacked on
+             * this state object.
+             *
+             * If you wish to also distribute archivist mutations stacked
+             * on this state, please have a look at the `distribute` method
+             * instead.
+             *
+             * @memberOf State
+             */
+            distributeEvents(callback: (error?: Error) => void): void;
+
+            /**
+             * Close this state object
+             *
+             * **Note**: You should never really have to use this method, it is
+             * only documented for informational purposes.
+             *
+             * This will trigger the same thing as `distribute`, but will
+             * return the response value set on the state and the
+             * events to be returned directly to the actor this state refers
+             * to.
+             *
+             * @memberOf State
+             */
+            close(callback: (error: Error | null, data: { response: any, events: any }) => void): void;
 
             /**
              * Register a session on the user
@@ -2433,6 +2468,30 @@ declare namespace mage {
              * @memberOf State
              */
             clearTimeout(): void;
+        }
+
+        /**
+         * State emit/broadcast optional configuration
+         */
+        export interface IStateEmitConfig {
+
+            /**
+             * Set if the data to emit has already been stringified
+             *
+             * In some cases, you might want to emit data that has already been
+             * serialized to a JSON string; to do so, set this option to true.
+             */
+            isJson?: boolean;
+
+            /**
+             * Always emit, even on error
+             *
+             * By default, events will only be emitted if the related call
+             * is successful; however, you might want to make sure an event
+             * will always be emitted, even on error. Set this configuration
+             * entry to `true` to make sure the event will always be emitted.
+             */
+            alwaysEmit?: boolean;
         }
     }
 }
