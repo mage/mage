@@ -108,4 +108,4 @@ access them.
 Sampler values are defined on-the-fly; therefore, you must be careful when
 choosing a sampler key for your metrics, so to avoid overlaps.
 
-See [the sampler API documentation](./api.html#api69) for more documentation.
+See [the sampler API documentation](./api/interfaces/_mage_d_.imagecore.html#sampler) for more documentation.

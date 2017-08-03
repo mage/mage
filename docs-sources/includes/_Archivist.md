@@ -25,8 +25,9 @@ archivist:
 ```
 
 <aside class="warning">
-Not all vaults support all operations! Please refer to the
-[Vault API documentation](./api.html#file-vault) for more details.
+Not all vaults support every operations! Below you will find
+a short configuration description for each available vault backends
+alongside a list of supported operations for that backend.
 </aside>
 
 As mentioned, vaults are used by archivist to store data. Currently, the following backend
@@ -47,6 +48,254 @@ targets are supported:
 
 Vaults can have different configuration for different environments, as long as the Archivist
 API set used in your project is provided by the different vault backends you wish to use.
+
+### File vault backend
+
+The file vault can be used to store data directly in your project. A ommon
+case for the use of the file vault backend is static data storage.
+
+```yaml
+type: file
+config:
+    path: ./filevault
+    disableExpiration: true  # optional (default: false)
+```
+
+operation | supported | implementation
+----------|:---------:|---------------
+list      | ✔         | `fs.readdir(config.path);`
+get       | ✔         | `fs.readFile('myfile.filevault' and 'myfile.json');`
+add       | ✔         | `fs.writeFile('myfile.filevault' and 'myfile.json');`
+set       | ✔         | `fs.writeFile('myfile.filevault' and 'myfile.json');`
+touch     | ✔         | `fs.readFile('myfile.filevault'); fs.writeFile('myfile.filevault');`
+del       | ✔         | `fs.readFile('myfile.filevault'); fs.unlink('myfile.filevault' and 'myfile.json');`
+
+### Memory
+
+```yaml
+type: memory
+```
+
+The memory vault backend can be used to keep data in-memory
+for the duration of the execution of your MAGE instance. Data
+will not be persisted to disk.
+
+operation | supported | implementation
+----------|:---------:|---------------
+list      | ✔         | `for (var trueName in cache) { }`
+get       | ✔         | `deserialize(cache[trueName(fullIndex, topic)])`
+add       | ✔         | `cache[trueName(fullIndex, topic)] = serialize(data)`
+set       | ✔         | `cache[trueName(fullIndex, topic)] = serialize(data)`
+touch     | ✔         | `setTimeout()`
+del       | ✔         | `delete cache[trueName(fullIndex, topic)]`
+
+### Client
+
+This vault is used to send updates to the player, so that their data is
+always synchronized in real time.
+
+This vault is always created when an archivist is instantiated by a
+`State` object, using a name identical to the type: `client`.
+
+This vault type requires no configuration.
+
+### Supported operations
+
+operation | supported | implementation
+----------|:---------:|---------------
+list      |           |
+get       |           |
+add       | ✔         | `state.emitToActors('archivist:set')`
+set       | ✔         | `state.emitToActors('archivist:set' or 'archivist:applyDiff')`
+touch     | ✔         | `state.emitToActors('archivist:touch')`
+del       | ✔         | `state.emitToActors('archivist:del')`
+
+### Couchbase
+
+```yaml
+type: couchbase
+config:
+    options:
+        # List of hosts in the cluster
+        hosts: [ "localhost:8091" ]
+
+        # optional
+        user: Administrator
+        password: "password"
+
+        # optional
+        bucket: default
+
+        # optional, useful if you share a bucket with other applications
+        prefix: "bob/"
+```
+
+`user` and `password` are optional, however, you will need to configure
+configure them if you with to create the underlying bucket
+through `archivist:create`, or to create views and query indexes
+through `archivist:migrate`.
+
+operation | supported | implementation
+----------|:---------:|---------------
+list      |           |
+get       | ✔         | `couchbase.get()`
+add       | ✔         | `couchbase.add()`
+set       | ✔         | `couchbase.set()`
+touch     | ✔         | `couchbase.touch()`
+del       | ✔         | `couchbase.remove()`
+
+### MySQL
+
+```yaml
+		mysql:
+			type: mysql
+			config:
+				options:
+					host: "myhost"
+					user: "myuser"
+					password: "mypassword"
+					database: "mydb"
+```
+
+The available connection options are documented in the [node-mysql readme](https://github.com/felixge/node-mysql#connection-options).
+For pool options please look at [Pool options](https://github.com/felixge/node-mysql#pool-options).
+
+operation | supported | implementation
+----------|:---------:|---------------
+list      | ✔         | `SELECT FROM table WHERE partialIndex`
+get       | ✔         | `SELECT FROM table WHERE fullIndex`
+add       | ✔         | `INSERT INTO table SET ?`
+set       | ✔         | `INSERT INTO table SET ? ON DUPLICATE KEY UPDATE ?`
+touch     |           |
+del       | ✔         | `DELETE FROM table WHERE fullIndex`
+
+### Elasticsearch
+
+```yaml
+elasticsearch:
+    type: elasticsearch
+    config:
+        # this is the default index used for storage, you can override this in your code if necessary
+        index: testgame
+
+        # here is your server configuration
+        server:
+            hostname: '192.168.2.176'
+            port: 9200
+            secure: false
+```
+
+operation | supported | implementation
+----------|:---------:|---------------
+list      |           |
+get       | ✔         | `elasticsearch.get`
+add       | ✔         | `elasticsearch.index` with op_type set to `create`
+set       | ✔         | `elasticsearch.index`
+touch     |           |
+del       | ✔         | `elasticsearch.del`
+
+### DynamoDB
+
+```yaml
+dynamodb:
+    type: "dynamodb"
+    config:
+        accessKeyId: "The access ID provided by Amazon"
+        secretAccessKey: "The secret ID provided by Amazon"
+        region: "A valid region. Refer to the Amazon doc or ask your sysadmin. Asia is ap-northeast-1"
+```
+
+operation | supported | implementation
+----------|:---------:|---------------
+list      |           |
+get       | ✔         | `DynamoDB.getItem`
+add       | ✔         | `DynamoDB.putItem` with `Expect.exists = false` set to the index keys
+set       | ✔         | `DynamoDB.putItem`
+touch     |           |
+del       | ✔         | `DynamoDB.deleteItem`
+
+### Manta
+
+```yaml
+type: manta
+config:
+    # url is optional
+    url: "https://us-east.manta.joyent.com"
+    user: bob
+    sign:
+        keyId: "a3:81:a2:2c:8f:c0:18:43:8a:1e:cd:12:40:fa:65:2a"
+
+        # key may be replaced with "keyPath" (path to a private key file),
+        # or omitted to fallback to "~/.ssh/id_rsa"
+        key: |
+          -----BEGIN RSA PRIVATE KEY-----
+          ..etc..
+          -----END RSA PRIVATE KEY-----
+```
+
+`keyId` is the fingerprint of your public key, which can be retrieved by running:
+
+`ssh-keygen -l -f $HOME/.ssh/id_rsa.pub | awk '{print $2}'`
+
+operation | supported | implementation
+----------|:---------:|---------------
+list      | ✔         | `manta.ls()`
+get       | ✔         | `manta.get()`
+add       |           |
+set       | ✔         | `manta.put()`
+touch     |           |
+del       | ✔         | `manta.unlink()`
+
+### Redis
+
+```yaml
+type: redis
+config:
+  port: 6379
+  host: "127.0.0.1"
+  options: {}
+  prefix: "key/prefix/"
+```
+
+The `options` object is described in the [node-redis readme](https://npmjs.org/package/redis).
+Both `options` and `prefix` are optional. The option `return_buffers` is turned on by default by the
+Archivist, because the default serialization will prepend values with meta data (in order to
+preserve mediaType awareness).
+
+operation | supported | implementation
+----------|:---------:|---------------
+list      |           |
+get       | ✔         | `redis.get()`
+add       | ✔         | `redis.set('NX')`
+set       | ✔         | `redis.set()`
+touch     | ✔         | `redis.expire()`
+del       | ✔         | `redis.del()`
+
+### Memcached
+
+```yaml
+type: memcached
+config:
+    servers:
+        - "1.2.3.4:11211"
+        - "1.2.3.5:11411"
+    options:
+        foo: bar
+    prefix: "prefix for all your keys"
+```
+
+The usage of the `servers` and `options` properties are described in the
+[node-memcached readme](https://npmjs.org/package/memcached). Both `options` and `prefix` are
+optional.
+
+operation | supported | implementation
+----------|:---------:|---------------
+list      |           |
+get       | ✔         | `memcached.get()`
+add       | ✔         | `memcached.add()`
+set       | ✔         | `memcached.set()`
+touch     | ✔         | `memcached.touch()`
+del       | ✔         | `memcached.del()`
 
 ## Topics
 

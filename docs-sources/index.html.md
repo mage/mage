@@ -6,7 +6,7 @@ language_tabs:
   - powershell
 
 toc_footers:
-  - <a href='./api.html'>API Documentation</a>
+  - <a href='./api/index.html'>API Documentation</a>
   - <a href='https://github.com/mage/mage'>GitHub</a>
   - <a href='https://wizcorp.jp/mage'>MAGE website</a>
   - <a href='https://wizcorp.jp/'>Wizcorp website</a>
@@ -24,15 +24,17 @@ includes:
   - Archivist
   - Events
   - Logging
+  - HTTP
+  - Clustering
   - Metrics
   - Production
 
 search: true
 ---
 
-Here you will find both the basic documentation and API
-reference for MAGE. If you are looking for API documentation,
-please have a look at the [API reference](./api.html).
+Here you will find both the basic documentation for MAGE.
+If you are looking for API documentation,
+please have a look at the [API reference](./api/).
 
 ## Questions and issues
 

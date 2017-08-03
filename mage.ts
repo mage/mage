@@ -2,6 +2,173 @@
 
 declare type VaultOperation = 'add' | 'set' | 'del' | 'touch';
 
+import * as commander from 'commander'
+
+declare class VaultValue {
+    /**
+     * The topic of origin
+     *
+     * @type {string}
+     * @memberOf VaultValue
+     */
+    topic: string;
+
+    /**
+     * The index by which this value can be accessed
+     *
+     * @type {string[]}
+     * @memberOf VaultValue
+     */
+    index: string[];
+
+    /**
+     * Expiration timeout (unix timestamp, in seconds)
+     *
+     * If undefined, this value will never expire.
+     *
+     * @type {(number | undefined)}
+     * @memberOf VaultValue
+     */
+    expirationTime?: number;
+
+    /**
+     * Archivist media type
+     *
+     * @type {ArchivistMediaType}
+     * @memberOf VaultValue
+     */
+    mediaType: mage.archivist.ArchivistMediaType;
+
+    /**
+     * Is the value going to be deleted from our vault backends?
+     *
+     * @type {boolean}
+     * @memberof VaultValue
+     */
+    didExist: boolean;
+
+    /**
+     * Will the value be created in our vault backends?
+     *
+     * @type {boolean}
+     * @memberof VaultValue
+     */
+    willExist: boolean;
+
+    /**
+     * The data stored in this entry
+     *
+     * @type {*}
+     * @memberOf VaultValue
+     */
+    data: any;
+
+    /**
+     * Delete the currently scheduled operation for this vault value
+     */
+    resetOperation(): void;
+
+    /**
+     * Check if an operation has been scheduled on this vault value
+     *
+     * @returns {boolean}
+     *
+     * @memberof VaultValue
+     */
+    hasOperation(): boolean;
+
+    /**
+     * Return the operation scheduled for execution on this vault value
+     *
+     * @param {string} vault
+     * @returns {(VaultOperation | null)}
+     *
+     * @memberof VaultValue
+     */
+    getOperationForVault(vault: string): VaultOperation | null;
+
+    /**
+     * Register a read miss
+     *
+     * You should not have to call this manually in most cases.
+     *
+     * @param {string} vault
+     *
+     * @memberof VaultValue
+     */
+    registerReadMiss(vault: string): void;
+
+    /**
+     * Schedule a value add to the different vault backends
+     *
+     * @param {string} mediaType
+     * @param {*} data
+     * @param {string} encoding
+     *
+     * @memberof VaultValue
+     */
+    add(mediaType: string, data: any, encoding: string): void;
+
+    /**
+     * Schedule a data set on the different vault backends
+     *
+     * @param {string} mediaType
+     * @param {*} data
+     * @param {string} encoding
+     *
+     * @memberof VaultValue
+     */
+    set(mediaType: string, data: any, encoding: string): void;
+
+    /**
+     * Schedule the set of the expiration time for the vault value (on supported vault backends)
+     *
+     * @param {number} expirationTime
+     *
+     * @memberof VaultValue
+     */
+    touch(expirationTime: number): void;
+
+    /**
+     * Mark the vault value for deletion in the different vault backends
+     *
+     * @memberof VaultValue
+     */
+    del(): void;
+
+    /**
+     * Retrieve the data diff for this vault value.
+     *
+     * This will only works on values with a mediaType supporting diffs (so currently, only tomes)
+     *
+     * @returns {(object[]|null)}
+     *
+     * @memberof VaultValue
+     */
+    getDiff(): object[]|null;
+
+    /**
+     * Apply a diff to the vault value.
+     *
+     * This will only works on values with a mediaType supporting diffs (so currently, only tomes)
+     *
+     * @param {*} diff
+     *
+     * @memberof VaultValue
+     */
+    applyDiff(diff: any): void;
+}
+
+/**
+ * Abstracted data store access interface
+ *
+ * In general, you will be accessing an archivist instance
+ * through a state object:
+ *
+ * ```javascript
+ * state.archivist.set('player', { userId: userId }, { name: 'someone' });
+ * ```
+ */
 declare class Archivist {
     /**
      * Check whether a given exists in any of our vaults
@@ -175,7 +342,7 @@ declare type LoginCallback = (error: Error|null, session: Session) => void;
 
 declare type RegisterCallback = (error: Error|null, session: Session) => void;
 
-declare interface Log extends Function {
+declare interface ILog extends Function {
     /**
      * String(s) to log
      */
@@ -330,74 +497,74 @@ declare class Logger {
     /**
      * Low-level debug information (I/O details, etc). Reserved to MAGE internals
      *
-     * @type {Log}
+     * @type {ILog}
      * @memberOf Logger
      */
-    verbose: Log;
+    verbose: ILog;
 
     /**
      * Game server debugging information
      *
-     * @type {Log}
+     * @type {ILog}
      * @memberOf Logger
      */
-    debug: Log;
+    debug: ILog;
 
     /**
      * User command request information
      *
-     * @type {Log}
+     * @type {ILog}
      * @memberOf Logger
      */
-    info: Log;
+    info: ILog;
 
     /**
      * 	Services state change notification (example: third-party services and databases)
      *
-     * @type {Log}
+     * @type {ILog}
      * @memberOf Logger
      */
-    notice: Log;
+    notice: ILog;
 
     /**
      * An unusual situation occurred, which requires analysis
      *
-     * @type {Log}
+     * @type {ILog}
      * @memberOf Logger
      */
-    warning: Log;
+    warning: ILog;
 
     /**
      * A user request caused an error. The user should still be able to continue using the services
      *
-     * @type {Log}
+     * @type {ILog}
      * @memberOf Logger
      */
-    error: Log;
+    error: ILog;
 
     /**
      * A user is now stuck in a broken state which the system cannot naturally repair
      *
-     * @type {Log}
+     * @type {ILog}
      * @memberOf Logger
      */
-    critical: Log;
+    critical: ILog;
 
     /**
      * Internal services (data store API calls failed, etc) or external services are failing
      *
-     * @type {Log}
+     * @type {ILog}
      * @memberOf Logger
      */
-    alert: Log;
+    alert: ILog;
 
     /**
      * The app cannot boot or stopped unexpectedly
      *
-     * @type {Log}
+     * @type {ILog}
      * @memberOf Logger
      */
-    emergency: Log;
+    emergency: ILog;
 }
 
 /**
@@ -827,6 +994,437 @@ declare type TimeConfig = {
  */
 type ConfigurationLabel = string|string[];
 
+declare interface IMageCore {
+    /**
+     * State class
+     *
+     * The state library exposes a constructor that constructs objects which form an interface
+     * between an actor, a session and the archivist. Virtually any command that involves reading
+     * and modification of data should be managed by a state object.
+     *
+     * When you’re done using the state class, always make sure to clean it up by calling close() on it.
+     * MAGE’s module and command center systems that bridge the communication between client
+     * and server use the State object for API responses and server-sent events.
+     *
+     * @type {{ new(): mage.core.IState }}
+     */
+    State: { new(): mage.core.IState };
+
+
+    /**
+     * Archivist core module
+     *
+     * This module can be used to access things such as topic
+     * configuration and vault backends.
+     */
+    archivist: {
+        /**
+         * Retrieve an object containing all the
+         * existing vault backend instances
+         *
+         * @returns {{ [vaultName: string]: any }}
+         */
+        getPersistentVaults(): { [vaultName: string]: any }
+
+        /**
+         * Used to confirm the abilities of the topic on this configured system
+         *
+         * Not all vaults can implement the full spectrum of internals required
+         * by the higher level APIs; this method allows developers to verify
+         * whether a given vault backend support the functionalities it needs.
+         *
+         * @param {string}   topic           The topic to test.
+         * @param {string[]} [index]         The index signature this topic should conform to.
+         * @param {string[]} [operations]    The operations that every vault associated with this topic must
+         *                                   support. Values: 'list', 'get', 'add', 'set', 'touch', 'del'
+         * @param {boolean} [indexIsPartial] True if the given index signature is allowed to be incomplete.
+         */
+        assertTopicAbilities(topicName: string, index?: string[], requiredOperations?: string[], isIndexPartial?: boolean): any
+
+        /**
+         * Close all vaults instances
+         *
+         * @returns {*}
+         */
+        closeVaults(): any
+
+        /**
+         * Check if a topic is defined
+         *
+         * @param {string} topicName
+         * @returns {boolean}
+         */
+        topicExists(topicName: string): boolean
+
+        /**
+         * Retrieve a map of all existing topics
+         *
+         * @returns {{ [topicName: string]: mage.archivist.ITopic }}
+         */
+        getTopics(): { [topicName: string]: mage.archivist.ITopic }
+
+        /**
+         *
+         *
+         * @param {string} topicName
+         * @returns {*}
+         */
+        getTopicApi(topicName: string, vaultName: string): mage.archivist.ITopicApi | null
+
+        /**
+         * Migrate all current vaults to a given version
+         *
+         * This will look at the list of available migration scripts
+         * and execute them if needed.
+         *
+         * @returns {*}
+         */
+        migrateToVersion(targetVersion: string, callback: (error: Error | null) => void): any
+    }
+
+    /**
+     * Configuration core module
+     */
+    config: {
+        /**
+         * Apply a default configuration from a given configuration file
+         * to a configuration sub-path.
+         *
+         * This will always be applied prior to loading user-land configuration
+         * files.
+         *
+         * Example:
+         *
+         * ```javascript
+         * var moduleName = 'myModule';
+         * var configAccessPath = 'modules.' + moduleName
+         * var defaultConfigFilePath = path.join(process.cwd(), 'lib/modules', moduleName, 'config.yaml')
+         * mage.core.config.setTopLevelDefault(configAccessPath, defaultConfigFilePath);
+         * ```
+         *
+         * @param {string} name
+         * @param {string} sourcePath
+         */
+        setTopLevelDefault(moduleName: string, sourcePath: string): void;
+
+        /**
+         * Get the current configuration value for a label
+         *
+         * @param {ConfigurationLabel} label Configuration label to search for
+         * @param {*} [defaultValue] Value to use if not defined in the configuration
+         * @returns {*}
+         */
+        get(label: ConfigurationLabel, defaultValue?: any): any;
+
+        /**
+         * Find which configuration file a current configuration value comes from.
+         *
+         * @param {ConfigurationLabel} label Configuration label to search for
+         * @returns {string} The configuration file the value originates from
+         */
+        getSource(label: ConfigurationLabel): string;
+    }
+
+    /**
+     * HTTP Server
+     *
+     * This API can be used to add your own custom routes if needed, as well
+     * as to serve files. This can be useful during the development of an HTML5
+     * game.
+     */
+    httpServer: {
+        /**
+         * Register a route (a string or a regular expression) on the HTTP server
+         *
+         * Incoming requests will be expected to be handled by the handler function you pass.
+         * Based on the type you specify, your handler function will receive different arguments.
+         *
+         * #### "simple": handler(req, res, path, query, urlInfo)
+         *
+         *  * req: the IncomingMessage object.
+         *  * res: the ServerResponse object.
+         *  * path: the path part of the URL.
+         *  * query: the parsed query string.
+         *  * urlInfo: all information that came out of `url.parse()`.
+         *
+         * #### "callback": handler(req, path, query, callback)
+         *
+         *  * req: the IncomingMessage object.
+         *  * path: the path part of the URL.
+         *  * query: the parsed query string.
+         *  * callback: call this when you've constructed your HTTP response.
+         *
+         * The callback accepts the following arguments in order:
+         *
+         *  * httpCode: the HTTP status code you want to return.
+         *  * out: a string or buffer that you want to send to the client.
+         *  * headers: an object with headers.
+         *
+         * #### "websocket": handler(client, urlInfo)
+         *
+         *  * client: a WebSocket client connection object. See the [`ws` documentation](https://npmjs.org/package/ws).
+         *  * urlInfo: all information that came out of `url.parse()`.
+         *
+         * #### "proxy": endpoint handler(req, urlInfo)
+         *
+         *  * req: the IncomingMessage object.
+         *  * urlInfo: all information that came out of `url.parse()`.
+         *
+         * Your handler function *must* return an endpoint object to connect to.
+         * For syntax, please read the [`net.createConnection()`](https://nodejs.org/docs/latest/api/net.html#net_net_createconnection)
+         * documentation.
+         */
+        addRoute(pathMatch: string | RegExp, handlerFunction: (...args: any[]) => any, type: 'simple' | 'callback' | 'websocket' | 'proxy'):  void;
+
+        /**
+         * Removes the handler function registered on the given route.
+         */
+        delRoute(pathMatch: string | RegExp): void;
+
+        /**
+         * Registers a route to lead directly to a folder on disk
+         *
+         * If you want to be notified when a request finishes, you may pass
+         * an `onFinish` function. It may receive an error as its first argument.
+         * If you decide to pass this function, logging the
+         * error will be your responsibility.
+         *
+         * Example:
+         *
+         * ```javascript
+         * mage.core.httpServer.serveFolder('/source', './lib');
+         * ```
+         *
+         * If you provide a `defaultFile` file name argument, serving up a
+         * folder by its name will serve up a default file if it
+         * exists.
+         *
+         * Example:
+         *
+         * ```javascript
+         * mage.core.httpServer.serveFolder('/source', './lib', 'index.html');
+         * ```
+         */
+        serveFolder(route: string | RegExp, folderPath:string, defaultFile?: string, onFinish?: (error?: Error) => void): void;
+
+        /**
+         * Registers a route to lead directly to a file on disk
+         *
+         * If you want to be notified when a request finishes, you may pass
+         * an `onFinish` function. It may receive an error as its first argument.
+         *
+         * If you decide to pass this function, logging the error will be your responsibility.
+         */
+        serveFile(route: string | RegExp, filePath:string, onFinish?: (error?: Error) => void): void;
+
+        /**
+         * Registers a route "/favicon.ico" and serves the given buffer as content
+         *
+         * The mime type defaults to `image/x-icon` and may be overridden.
+         */
+        setFavicon(buffer: Buffer, mimetype?: string)
+    }
+
+    /**
+     * The core logger is the logger instance used internally
+     * by MAGE to log different events; for your application,
+     * you should most likely use `mage.logger` instead
+     */
+    logger: Logger;
+
+    /**
+     * Message Server
+     *
+     * The message server is used for state propagation across
+     * multiple MAGE servers in a cluster; it can also be used directly
+     * by MAGE developer to transfer data across servers.
+     *
+     * @memberof Mage
+     */
+    msgServer: {
+        /**
+         * Message Server
+         */
+        mmrp: {
+            Envelope: typeof MmrpEnvelope;
+            MmrpNode: typeof MmrpNode;
+        }
+
+        /**
+         * Check whether the Message Server is enabled
+         *
+         * See https://mage.github.io/mage/api.html#subsystems
+         * for mor details on how to enable message server.
+         *
+         * @returns {boolean}
+         */
+        isEnabled(): boolean;
+
+        /**
+         * Retrieve the underlying MMRP Node instance
+         * used by this Message Server instance.
+         *
+         * @returns {MmrpNode}
+         */
+        getMmrpNode(): MmrpNode;
+
+        /**
+         * Retrieve the unique cluster identifier
+         *
+         * @returns {string}
+         */
+        getClusterId(): string;
+
+        /**
+         * Retreive the configuration used by this Message
+         * Server instance
+         *
+         * @returns {*}
+         */
+        getPublicConfig(): any;
+
+        /**
+         * Get the URL to use to connect to this Message
+         * Stream's instance
+         *
+         * @returns {string}
+         */
+        getMsgStreamUrl(): string;
+
+        /**
+         * Send a message to a remote Message Server instance
+         *
+         * @param {string} address
+         * @param {string} clusterId
+         * @param {MmrpEnvelope} message
+         */
+        send(address: string, clusterId: string, message: MmrpEnvelope): void;
+
+        /**
+         * Broadcast a message to all connected Message Server instance
+         *
+         * @param {MmrpEnvelope} message
+         */
+        broadcast(message: MmrpEnvelope): void;
+
+        /**
+         * Send a confirmation message
+         *
+         * @param {string} address
+         * @param {string} clusterId
+         * @param {string[]} msgIds
+         */
+        confirm(address: string, clusterId: string, msgIds: string[]): void;
+
+        /**
+         * Mark a given address as connected
+         *
+         * @param {string} address
+         * @param {string} clusterId
+         * @param {('never' | 'always' | 'ondelivery')} [disconnects]
+         */
+        connect(address: string, clusterId: string, disconnects?: 'never' | 'always' | 'ondelivery'): void;
+
+        /**
+         * Mark a given address as disconnected
+         *
+         * @param {string} address
+         * @param {string} clusterId
+         */
+        disconnect(address: string, clusterId: string): void;
+
+        /**
+         * Close the network connection for this Message Server
+         */
+        close(): void;
+    }
+
+    /**
+     * Sampler core module
+     *
+     * Used for keeping tracks of local server metrics. This is useful
+     * for when you wish to expose some information about your server
+     * in production (for Zabbix, Nagios, Grafana, etc).
+     *
+     * See https://mage.github.io/mage/#metrics for more details.
+     */
+    sampler: {
+        /**
+         * Set the value of a given metric
+         *
+         * @param {string[]} path
+         * @param {string} id
+         * @param {number} value
+         */
+        set(path: string[], id: string, value: number): void;
+
+        /**
+         * Increment a given metric
+         *
+         * @param {string[]} path
+         * @param {string} id
+         * @param {number} increment
+         */
+        inc(path: string[], id: string, increment: number): void;
+
+        /**
+         * Keep track of a value
+         *
+         * When accessing the savvy HTTP interface to collect the data point
+         * created by this method, you will have access to:
+         *
+         *   - max
+         *   - min
+         *   - average
+         *   - standard deviation
+         *
+         * See https://www.npmjs.com/package/panopticon#panopticonsamplepath-id-n
+         *
+         * @param {string[]} path
+         * @param {string} id
+         * @param {number} value
+         */
+        sample(path: string[], id: string, value: number): void;
+
+        /**
+         * Keep track of a value over a period of time
+         *
+         * Works similarly to `mage.sampler.sample`, but let the user pass
+         * a time delta value.
+         *
+         * See https://www.npmjs.com/package/panopticon#panopticontimedsamplepath-id-dt
+         *
+         * @param {string[]} path
+         * @param {string} id
+         * @param {number} delta
+         */
+        timedSample(path: string[], id: string, delta: number): void;
+    }
+
+    /**
+     * The Service Discovery library is a library that allows you to announce and discover services
+     * on the local network, through different types of engines.
+     *
+     * To use service discovery, configuration is mandatory;
+     * See https://mage.github.io/mage/#service-discovery to learn how to configure service discovery.
+     *
+     * @memberof Mage
+     */
+    serviceDiscovery: {
+        /**
+         * Create a service instance
+         *
+         * Service instances can be used to announce services as well
+         * as listen for service instance appearing and disappearing.
+         *
+         * @param {string} name
+         * @param {('tcp' | 'udp')} type
+         * @returns {mage.core.IService}
+         */
+        createService(name: string, type: 'tcp' | 'udp'): mage.core.IService
+    }
+}
+
 declare class Mage extends NodeJS.EventEmitter {
     /**
      * Check if a file is considered like a source code file in MAGE
@@ -869,6 +1467,32 @@ declare class Mage extends NodeJS.EventEmitter {
      * @memberof Mage
      */
     version: string;
+
+    /**
+     * Contains information from MAGE’s `package.json` file:
+     *
+     *   - name: “mage”
+     *   - version: The version of MAGE.
+     *   - path: The path to MAGE on disk.
+     *   - package: The parsed contents of MAGE’s package.json file.
+     *
+     * @type {any}
+     * @memberof Mage
+     */
+    magePackage: any;
+
+    /**
+     * Contains information from your project's `package.json` file:
+     *
+     *   - name: “mage”
+     *   - version: The version of MAGE.
+     *   - path: The path to MAGE on disk.
+     *   - package: The parsed contents of MAGE’s package.json file.
+     *
+     * @type {any}
+     * @memberof Mage
+     */
+    rootPackage: any;
 
     /**
      * Requiring MAGE's dependencies into games
@@ -1103,332 +1727,53 @@ declare class Mage extends NodeJS.EventEmitter {
     }
 
     /**
+     * Command-line interface API
+     *
+     * The cli property is a library that lets you extend and boot up the command-line
+     * argument parser.
+     *
+     * @type {MageCore}
+     * @memberOf Mage
+     */
+    cli: {
+        /**
+         * Parse the process arguments obtained via process.argv
+         *
+         * @returns {void}
+         */
+        run(): void
+
+        /**
+         * Commander object which allows you to extend the provided CLI
+         *
+         * ```javascript
+         * var cli = require('mage').cli;
+         * cli.program.option('--clown', 'Enables clown mode');
+         * cli.run();
+         * ```
+         *
+         * With the previous code, you should obtain the following:
+         *
+         * ```shell
+         * $ ./game --verbose --help
+         *
+         *   Usage: game [options] [command]
+         * ...
+         *   Options:
+         * ...
+         *   --clown                Enables clown mode
+         * ```
+         */
+        program: commander.CommanderStatic
+    }
+
+    /**
      * Core modules
      *
      * @type {MageCore}
      * @memberOf Mage
      */
-    core: {
-        /**
-         * State class
-         *
-         * @type {{ new(): mage.core.IState }}
-         */
-        State: { new(): mage.core.IState };
-
-
-        /**
-         * Archivist core module
-         *
-         * This module can be used to access things such as topic
-         * configuration and vault backends.
-         */
-        archivist: {
-            /**
-             * Retrieve an object containing all the
-             * existing vault backend instances
-             *
-             * @returns {{ [vaultName: string]: any }}
-             */
-            getPersistentVaults(): { [vaultName: string]: any }
-
-            /**
-             * Used to confirm the abilities of the topic on this configured system
-             *
-             * Not all vaults can implement the full spectrum of internals required
-             * by the higher level APIs; this method allows developers to verify
-             * whether a given vault backend support the functionalities it needs.
-             *
-             * @param {string}   topic           The topic to test.
-             * @param {string[]} [index]         The index signature this topic should conform to.
-             * @param {string[]} [operations]    The operations that every vault associated with this topic must
-             *                                   support. Values: 'list', 'get', 'add', 'set', 'touch', 'del'
-             * @param {boolean} [indexIsPartial] True if the given index signature is allowed to be incomplete.
-             */
-            assertTopicAbilities(topicName: string, index?: string[], requiredOperations?: string[], isIndexPartial?: boolean): any
-
-            /**
-             * Close all vaults instances
-             *
-             * @returns {*}
-             */
-            closeVaults(): any
-
-            /**
-             * Check if a topic is defined
-             *
-             * @param {string} topicName
-             * @returns {boolean}
-             */
-            topicExists(topicName: string): boolean
-
-            /**
-             * Retrieve a map of all existing topics
-             *
-             * @returns {{ [topicName: string]: mage.archivist.ITopic }}
-             */
-            getTopics(): { [topicName: string]: mage.archivist.ITopic }
-
-            /**
-             *
-             *
-             * @param {string} topicName
-             * @returns {*}
-             */
-            getTopicApi(topicName: string, vaultName: string): mage.archivist.ITopicApi | null
-
-            /**
-             * Migrate all current vaults to a given version
-             *
-             * This will look at the list of available migration scripts
-             * and execute them if needed.
-             *
-             * @returns {*}
-             */
-            migrateToVersion(targetVersion: string, callback: (error: Error | null) => void): any
-        }
-
-        /**
-         * Configuration core module
-         */
-        config: {
-            /**
-             * Apply a default configuration from a given configuration file
-             * to a configuration sub-path.
-             *
-             * This will always be applied prior to loading user-land configuration
-             * files.
-             *
-             * Example:
-             *
-             * ```javascript
-             * var moduleName = 'myModule';
-             * var configAccessPath = 'modules.' + moduleName
-             * var defaultConfigFilePath = path.join(process.cwd(), 'lib/modules', moduleName, 'config.yaml')
-             * mage.core.config.setTopLevelDefault(configAccessPath, defaultConfigFilePath);
-             * ```
-             *
-             * @param {string} name
-             * @param {string} sourcePath
-             */
-            setTopLevelDefault(moduleName: string, sourcePath: string): void;
-
-            /**
-             * Get the current configuration value for a label
-             *
-             * @param {ConfigurationLabel} label Configuration label to search for
-             * @param {*} [defaultValue] Value to use if not defined in the configuration
-             * @returns {*}
-             */
-            get(label: ConfigurationLabel, defaultValue?: any): any;
-
-            /**
-             * Find which configuration file a current configuration value comes from.
-             *
-             * @param {ConfigurationLabel} label Configuration label to search for
-             * @returns {string} The configuration file the value originates from
-             */
-            getSource(label: ConfigurationLabel): string;
-        }
-
-        /**
-         * The core logger is the logger instance used internally
-         * by MAGE to log different events; for your application,
-         * you should most likely use `mage.logger` instead
-         */
-        logger: Logger;
-
-        /**
-         * Message Server
-         *
-         * The message server is used for state propagation across
-         * multiple MAGE servers in a cluster; it can also be used directly
-         * by MAGE developer to transfer data across servers.
-         *
-         * @memberof Mage
-         */
-        msgServer: {
-            /**
-             * Message Server
-             */
-            mmrp: {
-                Envelope: typeof MmrpEnvelope;
-                MmrpNode: typeof MmrpNode;
-            }
-
-            /**
-             * Check whether the Message Server is enabled
-             *
-             * See https://mage.github.io/mage/api.html#subsystems
-             * for mor details on how to enable message server.
-             *
-             * @returns {boolean}
-             */
-            isEnabled(): boolean;
-
-            /**
-             * Retrieve the underlying MMRP Node instance
-             * used by this Message Server instance.
-             *
-             * @returns {MmrpNode}
-             */
-            getMmrpNode(): MmrpNode;
-
-            /**
-             * Retrieve the unique cluster identifier
-             *
-             * @returns {string}
-             */
-            getClusterId(): string;
-
-            /**
-             * Retreive the configuration used by this Message
-             * Server instance
-             *
-             * @returns {*}
-             */
-            getPublicConfig(): any;
-
-            /**
-             * Get the URL to use to connect to this Message
-             * Stream's instance
-             *
-             * @returns {string}
-             */
-            getMsgStreamUrl(): string;
-
-            /**
-             * Send a message to a remote Message Server instance
-             *
-             * @param {string} address
-             * @param {string} clusterId
-             * @param {MmrpEnvelope} message
-             */
-            send(address: string, clusterId: string, message: MmrpEnvelope): void;
-
-            /**
-             * Broadcast a message to all connected Message Server instance
-             *
-             * @param {MmrpEnvelope} message
-             */
-            broadcast(message: MmrpEnvelope): void;
-
-            /**
-             * Send a confirmation message
-             *
-             * @param {string} address
-             * @param {string} clusterId
-             * @param {string[]} msgIds
-             */
-            confirm(address: string, clusterId: string, msgIds: string[]): void;
-
-            /**
-             * Mark a given address as connected
-             *
-             * @param {string} address
-             * @param {string} clusterId
-             * @param {('never' | 'always' | 'ondelivery')} [disconnects]
-             */
-            connect(address: string, clusterId: string, disconnects?: 'never' | 'always' | 'ondelivery'): void;
-
-            /**
-             * Mark a given address as disconnected
-             *
-             * @param {string} address
-             * @param {string} clusterId
-             */
-            disconnect(address: string, clusterId: string): void;
-
-            /**
-             * Close the network connection for this Message Server
-             */
-            close(): void;
-        }
-
-        /**
-         * Sampler core module
-         *
-         * Used for keeping tracks of local server metrics. This is useful
-         * for when you wish to expose some information about your server
-         * in production (for Zabbix, Nagios, Grafana, etc).
-         *
-         * See https://mage.github.io/mage/#metrics for more details.
-         */
-        sampler: {
-            /**
-             * Set the value of a given metric
-             *
-             * @param {string[]} path
-             * @param {string} id
-             * @param {number} value
-             */
-            set(path: string[], id: string, value: number): void;
-
-            /**
-             * Increment a given metric
-             *
-             * @param {string[]} path
-             * @param {string} id
-             * @param {number} increment
-             */
-            inc(path: string[], id: string, increment: number): void;
-
-            /**
-             * Keep track of a value
-             *
-             * When accessing the savvy HTTP interface to collect the data point
-             * created by this method, you will have access to:
-             *
-             *   - max
-             *   - min
-             *   - average
-             *   - standard deviation
-             *
-             * See https://www.npmjs.com/package/panopticon#panopticonsamplepath-id-n
-             *
-             * @param {string[]} path
-             * @param {string} id
-             * @param {number} value
-             */
-            sample(path: string[], id: string, value: number): void;
-
-            /**
-             * Keep track of a value over a period of time
-             *
-             * Works similarly to `mage.sampler.sample`, but let the user pass
-             * a time delta value.
-             *
-             * See https://www.npmjs.com/package/panopticon#panopticontimedsamplepath-id-dt
-             *
-             * @param {string[]} path
-             * @param {string} id
-             * @param {number} delta
-             */
-            timedSample(path: string[], id: string, delta: number): void;
-        }
-
-        /**
-         * The Service Discovery library is a library that allows you to announce and discover services
-         * on the local network, through different types of engines.
-         *
-         * See https://mage.github.io/mage/api.html#service-discovery for more details
-         *
-         * @memberof Mage
-         */
-        serviceDiscovery: {
-            /**
-             * Create a service instance
-             *
-             * Service instances can be used to announce services as well
-             * as listen for service instance appearing and disappearing.
-             *
-             * @param {string} name
-             * @param {('tcp' | 'udp')} type
-             * @returns {mage.core.IService}
-             */
-            createService(name: string, type: 'tcp' | 'udp'): mage.core.IService
-        }
-    };
+    core: IMageCore
 
     /**
      * Logger module
