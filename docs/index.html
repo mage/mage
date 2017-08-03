@@ -1803,6 +1803,63 @@ of other events which might affect them.</p>
 everyone. Keep in mind that broadcasting to all may affect your overall load
 if you have many players connected simultaneously.</p>
 
+          <h1 id="time-manipulation">Time manipulation</h1>
+
+<aside class="warning">
+When running MAGE in a cluster, make sure all the server&rsquo;s clocks
+are synchronised! MAGE is not responsible for maintaining clock
+synchronicity between servers
+</aside>
+
+<blockquote>
+<p>lib/modules/myModule/index.js</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="p">{</span>
+  <span class="nx">time</span><span class="p">,</span>
+  <span class="nx">logger</span>
+<span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mage'</span><span class="p">)</span>
+
+<span class="c1">// Accelerate time by a factor of 5</span>
+<span class="nx">time</span><span class="p">.</span><span class="nx">bend</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">method</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">now</span> <span class="o">=</span> <span class="nx">time</span><span class="p">.</span><span class="nx">sec</span><span class="p">();</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">now</span> <span class="o">&gt;</span> <span class="nx">lastLogin</span> <span class="o">+</span> <span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">24</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">// do daily login bonus</span>
+  <span class="p">}</span>
+
+  <span class="nx">state</span><span class="p">.</span><span class="nx">archivist</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">'someTopic'</span><span class="p">,</span> <span class="p">{</span> <span class="na">userId</span><span class="p">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">actorId</span> <span class="p">},</span> <span class="p">{</span>
+    <span class="na">time</span><span class="p">:</span> <span class="nx">now</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+</code></pre>
+<p>Some types of games are meant to be played over fixed period of time;
+some game features may also be time-sensitive. For instance, you might want
+to give daily bonuses on player log in.</p>
+
+<p>However, during testing, you probably do not want to wait for a whole day to
+see if your player will be awarded a bonus. To deal with this issue, you can
+use the MAGE built-in <code class="prettyprint">mage.time</code> module. This module allows developer
+to slow down or accelerate time from the MAGE process&rsquo; perspective.</p>
+
+<p>This feature is often refered to as <em>time bending</em></p>
+
+<p>Note that this does not affect existing APIs (such as <code class="prettyprint">setTimeout</code>,
+<code class="prettyprint">setInterval</code>, or the <code class="prettyprint">Date</code> class); instead, you will need to use the
+the time module to compute a time value from the server&rsquo;s perspective,
+then use that value as a setTimeout/setInterval/new Date call argument.</p>
+
+<p>For more information on how to use the time library, see the
+<a href="./api/classes/mage.html#time">time module API documentation</a>. You may also
+want to have a look at the following libraries whenever dealing with time
+and time bending:</p>
+
+<ul>
+<li><a href="https://momentjs.com/">Moment.js</a></li>
+<li><a href="https://www.npmjs.com/package/safe-timers">safe-timers</a></li>
+</ul>
+
           <h1 id="logging">Logging</h1>
 
 <p>Logging is an important part of running production-ready game servers. MAGE
