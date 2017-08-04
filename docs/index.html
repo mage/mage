@@ -562,6 +562,32 @@ development mode behavior.</p>
 disables certain behaviors which make development a bit more convenient. If you want more granular
 control over which of these behaviors are turned on or off, you can specify them in an object.</p>
 
+<h2 id="dynamic-configuration">Dynamic configuration</h2>
+
+<blockquote>
+<p>test/index.js</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mage/lib/config'</span><span class="p">);</span>
+<span class="nx">config</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">'some.path.to.config'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="kr">const</span> <span class="nx">mage</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mage'</span><span class="p">);</span>
+
+<span class="c1">// continue with your test code</span>
+</code></pre>
+<p>The moment <code class="prettyprint">mage</code> is required or imported, it will automatically set up
+the configuration management API as well as read configuration files. However,
+in some cases - such as unit testing - you might want to forcibly disable
+certain services, or enforce fixed behaviors.</p>
+
+<p>To do so, you have the option of requiring MAGE&rsquo;s configuration before,
+fix your configuration; once you require MAGE, your dynamic configuration
+will then be applied.</p>
+
+<p>You may dynamically set a new configuration at any time while the MAGE server is
+running; however, keep in mind that most modules only read configuration entries
+at runtime, and therefore dynamically changing the configuration after MAGE has
+been initialized will likely not have any effects.</p>
+
           <h1 id="modules">Modules</h1>
 
 <h2 id="file-structure">File structure</h2>

@@ -54,3 +54,30 @@ developmentMode:
 To run your game in development, MAGE has a `developmentMode` configuration flag. This enables or
 disables certain behaviors which make development a bit more convenient. If you want more granular
 control over which of these behaviors are turned on or off, you can specify them in an object.
+
+## Dynamic configuration
+
+> test/index.js
+
+```javascript
+const config = require('mage/lib/config');
+config.set('some.path.to.config', 1)
+
+const mage = require('mage');
+
+// continue with your test code
+```
+
+The moment `mage` is required or imported, it will automatically set up
+the configuration management API as well as read configuration files. However,
+in some cases - such as unit testing - you might want to forcibly disable
+certain services, or enforce fixed behaviors.
+
+To do so, you have the option of requiring MAGE's configuration before,
+fix your configuration; once you require MAGE, your dynamic configuration
+will then be applied.
+
+You may dynamically set a new configuration at any time while the MAGE server is
+running; however, keep in mind that most modules only read configuration entries
+at runtime, and therefore dynamically changing the configuration after MAGE has
+been initialized will likely not have any effects.
