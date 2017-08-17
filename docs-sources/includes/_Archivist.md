@@ -49,15 +49,6 @@ targets are supported:
 Vaults can have different configuration for different environments, as long as the Archivist
 API set used in your project is provided by the different vault backends you wish to use.
 
-Some vaults also support database/vault creation via the `archivist:create` command as long
-as admin credentials are properly configured, see each vault's configuration on how to use it.
-
-List of `archivist:create` enabled backends:
-
-* `couchbase`
-* `mysql`
-* `file`
-
 ### File vault backend
 
 The file vault can be used to store data directly in your project. A ommon
@@ -80,7 +71,7 @@ touch     | ✔         | `fs.readFile('myfile.filevault'); fs.writeFile('myfile
 del       | ✔         | `fs.readFile('myfile.filevault'); fs.unlink('myfile.filevault' and 'myfile.json');`
 
 `archivist:create` support is done via `mkdirp` and just requires that the user
-running the command to be allowed to create folders in the project's path.
+running the command has enough rights to create folders in the project's path.
 
 ### Memory
 
@@ -525,6 +516,19 @@ to only data which matches the userId.
 We then use the acl function to only allow users and tests access to
 the `get` API, but full access to CMS users and administrators.
 
+## Database Creation
+
+Some vaults also support database/vault creation via the `archivist:create` command as long
+as admin credentials are properly configured, see each vault's configuration on how to use it.
+
+List of `archivist:create` enabled backends:
+
+* `file`
+* `couchbase`
+* `mysql`
+
+It is not recommended to use those features in production.
+
 ## Migrations
 
 MAGE supports database migration scripts similar to [Ruby on Rails 2.1](http://api.rubyonrails.org/classes/ActiveRecord/Migration.html)
@@ -540,22 +544,8 @@ for testing new migrations or reverting to a previous version.
 Migration scripts are single files per vault and per version. These files are JavaScript modules and
 should export two methods: `up` and `down`, to allow migration in two directions. You are strongly
 encouraged to implement a `down` migration path, but if it's really impossible, you may leave out
-the `down` method. Keep in mind that **this will block rollback operations**.
-
-The migration file goes to your game's `lib/archivist/migrations` folder into a subfolder per vault.
-This folder should have the exact same name as your vault does. The migration file you provide
-should be named after the version in `package.json` and have the extension `.js`. Files that do not
-have a `.js` extension will be ignored in the migration process.
-
-Some typical examples:
-
-```
-lib/archivist/migrations/<vaultname>/v0.1.0.js
-lib/archivist/migrations/<vaultname>/v0.1.1.js
-lib/archivist/migrations/<vaultname>/v0.2.0.js
-```
-
-A migration migration file could look like this:
+the `down` method. Keep in mind that **this will block rollback operations**. See the sample on the
+right side for more details.
 
 ```javascript
 exports.up = function (vault, cb) {
@@ -580,6 +570,18 @@ exports.down = function (vault, cb) {
 };
 ```
 
+The migration file goes to your game's `lib/archivist/migrations` folder into a subfolder per vault.
+This folder should have the exact same name as your vault does. The migration file you provide
+should be named after the version in `package.json` and have the extension `.{js,ts}`. Other file
+extensions are ignored.
+
+Some typical examples:
+
+* `lib/archivist/migrations/<vaultname>/v0.1.0.js`
+* `lib/archivist/migrations/<vaultname>/v0.1.1.js`
+* `lib/archivist/migrations/<vaultname>/v0.2.0.js`
+
+
 The callback of the `up` method allows you to pass a report, that will be stored with the migration
 itself inside the version history. In MySQL for example, this is all stored in a `schema_migrations`
 table, which is automatically created.
@@ -587,8 +589,8 @@ table, which is automatically created.
 ### How to execute migrations
 
 Migrations can be executed by calling some specific CLI commands, which are detailed when you run
-`./game --help`. They allow you to create a database, drop a database, and run migrations. This is
-what they look like:
+`npm run help` or `mage --help`. They allow you to create a database, drop a database, and run migrations.
+This is what they look like:
 
 ```
 archivist:create [vaults]     create database environments for all configured vaults
