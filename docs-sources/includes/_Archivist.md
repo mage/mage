@@ -49,6 +49,15 @@ targets are supported:
 Vaults can have different configuration for different environments, as long as the Archivist
 API set used in your project is provided by the different vault backends you wish to use.
 
+Some vaults also support database/vault creation via the `archivist:create` command as long
+as admin credentials are properly configured, see each vault's configuration on how to use it.
+
+List of `archivist:create` enabled backends:
+
+* `couchbase`
+* `mysql`
+* `file`
+
 ### File vault backend
 
 The file vault can be used to store data directly in your project. A ommon
@@ -69,6 +78,9 @@ add       | ✔         | `fs.writeFile('myfile.filevault' and 'myfile.json');`
 set       | ✔         | `fs.writeFile('myfile.filevault' and 'myfile.json');`
 touch     | ✔         | `fs.readFile('myfile.filevault'); fs.writeFile('myfile.filevault');`
 del       | ✔         | `fs.readFile('myfile.filevault'); fs.unlink('myfile.filevault' and 'myfile.json');`
+
+`archivist:create` support is done via `mkdirp` and just requires that the user
+running the command to be allowed to create folders in the project's path.
 
 ### Memory
 
@@ -98,8 +110,6 @@ This vault is always created when an archivist is instantiated by a
 `State` object, using a name identical to the type: `client`.
 
 This vault type requires no configuration.
-
-### Supported operations
 
 operation | supported | implementation
 ----------|:---------:|---------------
@@ -144,6 +154,22 @@ set       | ✔         | `couchbase.set()`
 touch     | ✔         | `couchbase.touch()`
 del       | ✔         | `couchbase.remove()`
 
+`archivist:create` support requires a separate `create` entry in the `config`:
+
+```yaml
+type: couchbase
+config:
+    options:
+        # bucket options
+    create:
+        adminUsername: admin
+        adminPassword: "password"
+        bucketType: couchbase # can be couchbase or memcached
+        romQuotaMB: 100       # how much memory to allocate to the bucket
+```
+
+Views should be managed via migrations.
+
 ### MySQL
 
 ```yaml
@@ -168,6 +194,8 @@ add       | ✔         | `INSERT INTO table SET ?`
 set       | ✔         | `INSERT INTO table SET ? ON DUPLICATE KEY UPDATE ?`
 touch     |           |
 del       | ✔         | `DELETE FROM table WHERE fullIndex`
+
+`archivist:create` support requires that the user is allowed to create databases.
 
 ### Elasticsearch
 
@@ -496,3 +524,74 @@ to only data which matches the userId.
 
 We then use the acl function to only allow users and tests access to
 the `get` API, but full access to CMS users and administrators.
+
+## Migrations
+
+MAGE supports database migration scripts similar to [Ruby on Rails 2.1](http://api.rubyonrails.org/classes/ActiveRecord/Migration.html)
+which are aligned with your `package.json` version and exposed via the `archivist:migrate`
+command.
+
+Running the `archivist:migrate` command will go through each migrations in order up to the current
+`package.json` version and apply them. The command also allows specifying an exact version allowing
+for testing new migrations or reverting to a previous version.
+
+### How to write migration scripts
+
+Migration scripts are single files per vault and per version. These files are JavaScript modules and
+should export two methods: `up` and `down`, to allow migration in two directions. You are strongly
+encouraged to implement a `down` migration path, but if it's really impossible, you may leave out
+the `down` method. Keep in mind that **this will block rollback operations**.
+
+The migration file goes to your game's `lib/archivist/migrations` folder into a subfolder per vault.
+This folder should have the exact same name as your vault does. The migration file you provide
+should be named after the version in `package.json` and have the extension `.js`. Files that do not
+have a `.js` extension will be ignored in the migration process.
+
+Some typical examples:
+
+```
+lib/archivist/migrations/<vaultname>/v0.1.0.js
+lib/archivist/migrations/<vaultname>/v0.1.1.js
+lib/archivist/migrations/<vaultname>/v0.2.0.js
+```
+
+A migration migration file could look like this:
+
+```javascript
+exports.up = function (vault, cb) {
+        var sql =
+                'CREATE TABLE inventory (\n' +
+                '  actorId VARCHAR(255) NOT NULL PRIMARY KEY,\n' +
+                '  value TEXT NOT NULL,\n' +
+                '  mediaType VARCHAR(255) NOT NULL\n' +
+                ') ENGINE=InnoDB';
+
+        vault.pool.query(sql, null, function (error) {
+                if (error) {
+                        return cb(error);
+                }
+
+                return cb(null, { summary: 'Created the inventory table' });
+        });
+};
+
+exports.down = function (vault, cb) {
+        vault.pool.query('DROP TABLE inventory', null, cb);
+};
+```
+
+The callback of the `up` method allows you to pass a report, that will be stored with the migration
+itself inside the version history. In MySQL for example, this is all stored in a `schema_migrations`
+table, which is automatically created.
+
+### How to execute migrations
+
+Migrations can be executed by calling some specific CLI commands, which are detailed when you run
+`./game --help`. They allow you to create a database, drop a database, and run migrations. This is
+what they look like:
+
+```
+archivist:create [vaults]     create database environments for all configured vaults
+archivist:drop [vaults]       destroy database environments for all configured vaults
+archivist:migrate [version]   migrates all vaults to the current version, or to the version requested
+```
