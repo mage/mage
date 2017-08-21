@@ -45,6 +45,7 @@ targets are supported:
 | manta                 | [Joyent Manta](https://apidocs.joyent.com/manta/) interface. |
 | redis                 | [Redis](https://redis.io/) interface.                        |
 | memcached             | [Memcached](https://memcached.org/) interface.               |
+| sqlite3               | [SQLite](https://www.sqlite.org/) interface.                 |
 
 Vaults can have different configuration for different environments, as long as the Archivist
 API set used in your project is provided by the different vault backends you wish to use.
@@ -164,14 +165,13 @@ Views should be managed via migrations.
 ### MySQL
 
 ```yaml
-		mysql:
-			type: mysql
-			config:
-				options:
-					host: "myhost"
-					user: "myuser"
-					password: "mypassword"
-					database: "mydb"
+type: mysql
+config:
+    options:
+        host: "myhost"
+        user: "myuser"
+        password: "mypassword"
+        database: "mydb"
 ```
 
 The available connection options are documented in the [node-mysql readme](https://github.com/felixge/node-mysql#connection-options).
@@ -270,10 +270,10 @@ del       | ✔         | `manta.unlink()`
 ```yaml
 type: redis
 config:
-  port: 6379
-  host: "127.0.0.1"
-  options: {}
-  prefix: "key/prefix/"
+    port: 6379
+    host: "127.0.0.1"
+    options: {}
+    prefix: "key/prefix/"
 ```
 
 The `options` object is described in the [node-redis readme](https://npmjs.org/package/redis).
@@ -315,6 +315,71 @@ add       | ✔         | `memcached.add()`
 set       | ✔         | `memcached.set()`
 touch     | ✔         | `memcached.touch()`
 del       | ✔         | `memcached.del()`
+
+### SQLite3
+
+```yaml
+type: sqlite3
+config:
+    filename: "./sqlitevault/awesomegame.db"
+```
+
+This vault should only be used for development and testing.
+
+Further documentation can be found at [node-sqlite3](https://github.com/mapbox/node-sqlite3).
+To avoid confusion, the npm package name is sqlite3, but the project is called node-sqlite3.
+
+If no filename is provided, an in-memory database will be created at runtime and will be destroyed on close.
+
+If an empty string is provided, an temporary database stored on disk will be createdat runtime and destroyed on close.
+
+operation | supported | implementation
+----------|:---------:|---------------
+list      | ✔         | `SELECT FROM table WHERE partialIndex`
+get       | ✔         | `SELECT FROM table WHERE fullIndex`
+add       | ✔         | `INSERT INTO table () VALUES ()`
+set       | ✔         | `INSERT OR REPLACE INTO table () VALUES ()`
+touch     |           |
+del       | ✔         | `DELETE FROM table WHERE fullIndex`
+
+> Sample query to create a basic "people" topic table store.
+
+```sql
+CREATE TABLE people (
+  personId INT UNSIGNED NOT NULL,
+  value TEXT NOT NULL,
+  mediaType VARCHAR(255) NOT NULL,
+  PRIMARY KEY (personId)
+);
+```
+
+`archivist:create` support requires that the user be allowed to create databases. However, you
+will still need to write a [migration script](#migrations) to create the different tables
+where your topics will be stored.
+
+Queries against your database are done through a combination of the generated keys and serialized
+values. A generated key must yield a table name and a primary key. A serialized value must yield a
+number of column names with their respective values.
+
+For instance, given a topic `people` and index `{ personId: 1 }`, the destination table will need
+to have a `personId` field, but also a `value` field to store data ad a `mediaType` field so that
+MAGE may know how to process the stored value.
+
+> Overriding the serialized
+
+```javascript
+exports.people.vaults.sqlite3.serialize = function (value) {
+	return {
+		value: value.setEncoding(['utf8', 'buffer']).data,
+		mediaType: value.mediaType,
+		lastChanged: parseInt(Date.now() / 1000)
+	};
+};
+```
+
+If you want to change how this information is stored, by adding columns, etc, you can overload the
+serializer method to do so. For example, consider the following example if you want to add a
+timestamp to a `lastChanged INT UNSIGNED NOT NULL` column.
 
 ## Topics
 
@@ -526,6 +591,7 @@ List of `archivist:create` enabled backends:
 * `file`
 * `couchbase`
 * `mysql`
+* `sqlite`
 
 It is not recommended to use those features in production.
 
@@ -592,7 +658,7 @@ Migrations can be executed by calling some specific CLI commands, which are deta
 `npm run help` or `mage --help`. They allow you to create a database, drop a database, and run migrations.
 This is what they look like:
 
-```
+```plaintext
 archivist:create [vaults]     create database environments for all configured vaults
 archivist:drop [vaults]       destroy database environments for all configured vaults
 archivist:migrate [version]   migrates all vaults to the current version, or to the version requested
