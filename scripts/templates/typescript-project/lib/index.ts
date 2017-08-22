@@ -5,7 +5,6 @@ import * as mage from 'mage';
 // https://github.com/mage/mage/tree/master/lib/modules
 mage.useModules([
 	'archivist',
-	'auth',
 	'logger',
 	'session',
 	'time'

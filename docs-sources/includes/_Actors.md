@@ -9,20 +9,62 @@ is assigned a unique session ID.
 As long as a session ID is used and reused by an actor, it will stay active. After a long period
 of non-activity however, the session will expire and the actor will be "logged out" as it were.
 
-## Auth and Session modules
+## Session module
 
 > `lib/index.js`
 
 ```javascript
 mage.useModules([
-  'auth',
   'session'
 ]);
 ```
 
-Freshly bootstrapped MAGE applications already have the auth and the session module activated and
-configured (including a basic Archivist configuration which will store auth-information to disk
-and session-information in memory).
+Freshly bootstrapped MAGE applications already have the session module activated and configured
+(including a basic Archivist configuration which will store session-information in memory).
+
+## Auth module
+
+> `lib/index.js`
+
+```javascript
+mage.useModules([
+  'auth'
+]);
+```
+
+The `auth` module is not enabled by default since it requires a working archivist topic
+to store user data. To enable it make sure you have working vaults then add the following
+to your application:
+
+> lib/archivist/index.js
+
+```javascript
+// a valid topic with ['username'] as an index
+exports.auth = {
+  index: ['username'],
+  vaults: {
+    myDataVault: {}
+  }
+};
+```
+
+> config/default.yaml
+
+```yaml
+module:
+    auth:
+        // this should point to the topic you created
+        topic: auth
+        // configure how user passwords are stored, the values below are the
+        // recommended default, see the module's README.md for more details
+        // about available hash types
+        hash:
+            type: pbkdf2
+            algorithm: sha256
+            iterations: 10000
+```
+
+Once configured you can just add the `auth` module to your `useModules` call.
 
 ## Logging in
 
@@ -31,6 +73,9 @@ and session-information in memory).
 ```javascript
 exports.login = function (state, username, password, callback) {
   mage.auth.login(state, username, password, callback);
+
+  // if you are not use the auth module, auth can be done manually by calling
+  // mage.session.register(state, 'my-actor-id', null, { acl: 'user' });
 };
 ```
 

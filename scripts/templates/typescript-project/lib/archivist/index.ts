@@ -36,10 +36,3 @@ exports.session = <mage.archivist.ITopic> {
     volatileVault: {}
   }
 };
-
-exports.auth = <mage.archivist.ITopic> {
-  index: ['username'],
-  vaults: {
-    userVault: {}
-  }
-};
