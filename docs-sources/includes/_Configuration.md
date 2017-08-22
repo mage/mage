@@ -11,20 +11,31 @@ represents its variable types.
 
 ## Location
 
-The files are located in your game's `config` folder. Here you will find a `default.yaml`
-configuration file, that you can use to collect all configuration that every single environment
-should use (that is, configuration that is not unique to a single developer's environment).
+> config/
 
-MAGE will also read the `NODE_ENV` [environment variable](http://en.wikipedia.org/wiki/Environment_variables).
-It will try to read a configuration file named after its value (which should probably be set to your
-user name). If for example, my user name is `bob`, my `NODE_ENV` value would also be `bob`, and I
-would place all configuration for my environment in `config/bob.yaml` or `config/bob.json`.
+```plaintext
+config
+├── custom.yaml
+├── default.yaml
+├── development.yaml
+└── production.yaml
+```
 
-That personalized configuration file augments `default.yaml` and overwrites any values that were
-already present.
+The files are located in your game's `config` folder.
 
-If you want to load multiple configuration files, you can comma-separate them in your `NODE_ENV`
+Configuration files will be loaded in the following order:
+
+  1. `config/default.yaml`: The base configuration file for your project
+  2. `config/[NODE_ENV].yaml`: Configuration for a specific environment
+  3. `config/custom.yaml`: Configuration for your local setup
+
+If you want to load multiple configuration files, you may comma-separate them in your `NODE_ENV`
 like this: `NODE_ENV=bob,test`. They will be loaded in order, the latter overriding the former.
+
+Custom configuration is generally used during development; in some cases, developers will need
+to specify their own credentials or personalized configuration. Newly created projects will
+include a custom file; however, this file will also be added to your `.gitignore` file to
+avoid any conflicts between each developer's configuration.
 
 ## Development
 
@@ -54,6 +65,26 @@ developmentMode:
 To run your game in development, MAGE has a `developmentMode` configuration flag. This enables or
 disables certain behaviors which make development a bit more convenient. If you want more granular
 control over which of these behaviors are turned on or off, you can specify them in an object.
+
+## Environment-based configuration
+
+```yaml
+server:
+    clientHost:
+      bind: MAGE_APP_BIND:string
+
+    mmrp: MAGE_APP_MMRP:bool
+```
+
+You may also add a `config/environment.yaml` file to your project: this file serves
+as a means to connect environment variables to specific configuration entries. Environment
+variables will supersede any configuration set through configuration files.
+
+In this example, we connect `MAGE_APP_BIND` and `MAGE_APP_MMRP` to our configuration.
+Note you may also optionally specify the type to cast the environment variable into.
+In this case for instance, we set `MAGE_APP_MMRP` as a boolean because we might want to
+disable MMRP it by running `MAGE_APP_MMRP=false npm run mage` or otherwise setting
+the value into the environment.
 
 ## Dynamic configuration
 
