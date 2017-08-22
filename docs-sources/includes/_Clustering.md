@@ -54,6 +54,8 @@ server:
 The single engine can be used during development to locally allow the use of the service
 discovery API. It will only find the local server.
 
+<br><br>
+
 ### Bonjour/MDNS
 
 ```yaml
@@ -76,6 +78,8 @@ configure any additonal services. However, note that certain network (such as th
 provided by AWS) wil not allow broadcasts, and so you will not be able to use this engine
 in such case.
 
+<br><br><br><br>
+
 ### ZooKeeper
 
 ```yaml
@@ -94,6 +98,8 @@ server:
 ```
 
 The zookeeper engine will use ZooKeeper to announce MAGE servers.
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ### Consul
 

@@ -140,6 +140,8 @@ specify a log directory where you want your log files to go, and a set of filena
 You can control which log level will go in which file by setting the log level range
 as a value, or specify `all` if you wish to write all logs to a single file.
 
+<br><br><br><br><br><br><br><br>
+
 ### Syslog
 
 ```yaml
@@ -165,6 +167,8 @@ of this, it also does not support using TLS.
 
 Since only UDP is supported, it also means that some logs may not arrive to
 destination.
+
+<br><br><br><br><br><br><br><br>
 
 ### Graylog
 
