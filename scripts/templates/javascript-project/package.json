@@ -15,10 +15,11 @@
     "restart": "  echo 'Restart the MAGE daemon' &&                  mage restart",
     "reload": "   echo 'Reload the MAGE daemon' &&                   mage reload",
     "status": "   echo 'Check the MAGE daemon status' &&             mage status",
-    "show-config": "      echo 'Show the compiled MAGE configuration' &&                         mage show-config",
-    "archivist-create": " echo 'Create archivist vaults (based on current configuration)' &&     mage archivist-create",
-    "archivist-migrate": "echo 'Migrate archivist vaults (based on current configuration)' &&    mage archivist-migrate",
-    "archivist-drop": "   echo 'Drop the archivist vaults (based on current configuration)' &&   mage archivist-drop",
+    "config:server": "  echo 'Show the compiled MAGE configuration' &&                           mage config:server",
+    "config:client": "  echo 'Show the compiled MAGE configuration used by clients' &&           mage config:client --app game",
+    "archivist:create": " echo 'Create archivist vaults (based on current configuration)' &&     mage archivist:create",
+    "archivist:migrate": "echo 'Migrate archivist vaults (based on current configuration)' &&    mage archivist:migrate",
+    "archivist:drop": "   echo 'Drop the archivist vaults (based on current configuration)' &&   mage archivist:drop",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
