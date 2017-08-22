@@ -130,6 +130,13 @@ config:
 
         # optional, useful if you share a bucket with other applications
         prefix: "bob/"
+
+    # options only used with archivist:create
+    create:
+        adminUsername: admin
+        adminPassword: "password"
+        bucketType: couchbase # can be couchbase or memcached
+        romQuotaMB: 100       # how much memory to allocate to the bucket
 ```
 
 `user` and `password` are optional, however, you will need to configure
@@ -146,21 +153,10 @@ set       | ✔         | `couchbase.set()`
 touch     | ✔         | `couchbase.touch()`
 del       | ✔         | `couchbase.remove()`
 
-`archivist:create` support requires a separate `create` entry in the `config`:
+`archivist:create` support requires a separate `create` entry in the `config`,
+meanwhile views should be created/managed in migration scripts.
 
-```yaml
-type: couchbase
-config:
-    options:
-        # bucket options
-    create:
-        adminUsername: admin
-        adminPassword: "password"
-        bucketType: couchbase # can be couchbase or memcached
-        romQuotaMB: 100       # how much memory to allocate to the bucket
-```
-
-Views should be managed via migrations.
+<br><br><br><br><br>
 
 ### MySQL
 
@@ -187,6 +183,43 @@ touch     |           |
 del       | ✔         | `DELETE FROM table WHERE fullIndex`
 
 `archivist:create` support requires that the user is allowed to create databases.
+
+> Sample query to create a basic "people" topic table store.
+
+```sql
+CREATE TABLE people (
+  personId INT UNSIGNED NOT NULL,
+  value TEXT NOT NULL,
+  mediaType VARCHAR(255) NOT NULL,
+  PRIMARY KEY (personId)
+);
+```
+
+Queries against your database are done through a combination of the generated keys and serialized
+values. A generated key must yield a table name and a primary key. A serialized value must yield a
+number of column names with their respective values.
+
+For instance, given a topic `people` and index `{ personId: 1 }`, the destination table will need
+to have a `personId` field, but also a `value` field to store data ad a `mediaType` field so that
+MAGE may know how to process the stored value.
+
+> Overriding the serializer
+
+```javascript
+exports.people.vaults.mysql.serialize = function (value) {
+	return {
+		value: value.setEncoding(['utf8', 'buffer']).data,
+		mediaType: value.mediaType,
+		lastChanged: parseInt(Date.now() / 1000)
+	};
+};
+```
+
+If you want to change how this information is stored, by adding columns, etc, you can overload the
+serializer method to do so. For example, consider the following example if you want to add a
+timestamp to a `lastChanged INT UNSIGNED NOT NULL` column.
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 ### Elasticsearch
 
@@ -342,44 +375,11 @@ set       | ✔         | `INSERT OR REPLACE INTO table () VALUES ()`
 touch     |           |
 del       | ✔         | `DELETE FROM table WHERE fullIndex`
 
-> Sample query to create a basic "people" topic table store.
-
-```sql
-CREATE TABLE people (
-  personId INT UNSIGNED NOT NULL,
-  value TEXT NOT NULL,
-  mediaType VARCHAR(255) NOT NULL,
-  PRIMARY KEY (personId)
-);
-```
-
 `archivist:create` support requires that the user be allowed to create databases. However, you
 will still need to write a [migration script](#migrations) to create the different tables
 where your topics will be stored.
 
-Queries against your database are done through a combination of the generated keys and serialized
-values. A generated key must yield a table name and a primary key. A serialized value must yield a
-number of column names with their respective values.
-
-For instance, given a topic `people` and index `{ personId: 1 }`, the destination table will need
-to have a `personId` field, but also a `value` field to store data ad a `mediaType` field so that
-MAGE may know how to process the stored value.
-
-> Overriding the serialized
-
-```javascript
-exports.people.vaults.sqlite3.serialize = function (value) {
-	return {
-		value: value.setEncoding(['utf8', 'buffer']).data,
-		mediaType: value.mediaType,
-		lastChanged: parseInt(Date.now() / 1000)
-	};
-};
-```
-
-If you want to change how this information is stored, by adding columns, etc, you can overload the
-serializer method to do so. For example, consider the following example if you want to add a
-timestamp to a `lastChanged INT UNSIGNED NOT NULL` column.
+See [documentation](#mysql) for the `MySQL` vault on how to structure your tables for usage with archivist.
 
 ## Topics
 
