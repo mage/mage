@@ -19,8 +19,11 @@ mage.useModules([
 ]);
 ```
 
-Freshly bootstrapped MAGE applications already have the session module activated and configured
-(including a basic Archivist configuration which will store session-information in memory).
+Freshly bootstrapped MAGE applications already have the session module activated and configured (including a basic Archivist configuration which will store session-information in memory).
+
+For multi-node MAGE clusters, make sure to change the vault used for sessions to be stored
+in a shared memory storage solution such as memcached, redis, etc... Since MAGE will need
+to retrieve sessions to route messages to them properly.
 
 ## Auth module
 
@@ -31,10 +34,6 @@ mage.useModules([
   'auth'
 ]);
 ```
-
-The `auth` module is not enabled by default since it requires a working archivist topic
-to store user data. To enable it make sure you have working vaults then add the following
-to your application:
 
 > lib/archivist/index.js
 
@@ -73,9 +72,6 @@ Once configured you can just add the `auth` module to your `useModules` call.
 ```javascript
 exports.login = function (state, username, password, callback) {
   mage.auth.login(state, username, password, callback);
-
-  // if you are not use the auth module, auth can be done manually by calling
-  // mage.session.register(state, 'my-actor-id', null, { acl: 'user' });
 };
 ```
 
