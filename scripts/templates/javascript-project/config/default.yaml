@@ -76,31 +76,15 @@ archivist:
         # You should take care to name them appropriately given the context of how they will be used.
         volatileVault:
             type: memory
-        userVault:
-            type: file
-            config:
-                path: ./filevault/userVault
 
     # When doing "list" operations, we will attempt each mentioned vault until successful
-    listOrder:
-        - userVault
+    listOrder: []
 
     # When doing "get" operations, we will attempt each mentioned vault until successful
     readOrder:
         - volatileVault
-        - userVault
 
     # When doing "add/set/touch/del" operations, we will write to each mentioned vault in the given order
     writeOrder:
         - client
         - volatileVault
-        - userVault
-
-
-module:
-    auth:
-        topic: auth
-        hash:
-            type: pbkdf2
-            algorithm: sha256
-            iterations: 10000

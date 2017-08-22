@@ -35,10 +35,3 @@ exports.session = {
 		volatileVault: {}
 	}
 };
-
-exports.auth = {
-	index: ['username'],
-	vaults: {
-		userVault: {}
-	}
-};

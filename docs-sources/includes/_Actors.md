@@ -9,20 +9,61 @@ is assigned a unique session ID.
 As long as a session ID is used and reused by an actor, it will stay active. After a long period
 of non-activity however, the session will expire and the actor will be "logged out" as it were.
 
-## Auth and Session modules
+## Session module
 
 > `lib/index.js`
 
 ```javascript
 mage.useModules([
-  'auth',
   'session'
 ]);
 ```
 
-Freshly bootstrapped MAGE applications already have the auth and the session module activated and
-configured (including a basic Archivist configuration which will store auth-information to disk
-and session-information in memory).
+Freshly bootstrapped MAGE applications already have the session module activated and configured (including a basic Archivist configuration which will store session-information in memory).
+
+For multi-node MAGE clusters, make sure to change the vault used for sessions to be stored
+in a shared memory storage solution such as memcached, redis, etc... Since MAGE will need
+to retrieve sessions to route messages to them properly.
+
+## Auth module
+
+> `lib/index.js`
+
+```javascript
+mage.useModules([
+  'auth'
+]);
+```
+
+> lib/archivist/index.js
+
+```javascript
+// a valid topic with ['username'] as an index
+exports.auth = {
+  index: ['username'],
+  vaults: {
+    myDataVault: {}
+  }
+};
+```
+
+> config/default.yaml
+
+```yaml
+module:
+    auth:
+        // this should point to the topic you created
+        topic: auth
+        // configure how user passwords are stored, the values below are the
+        // recommended default, see the module's README.md for more details
+        // about available hash types
+        hash:
+            type: pbkdf2
+            algorithm: sha256
+            iterations: 10000
+```
+
+Once configured you can just add the `auth` module to your `useModules` call.
 
 ## Logging in
 
