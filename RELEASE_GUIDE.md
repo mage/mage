@@ -10,15 +10,43 @@ We apply a semver-ish versioning scheme, using the following logic:
 
 ## How to release
 
-1. Ensure your shell is in the `master` branch
-2. Ensure you are up-to-date: `git pull upstream master` (where "upstream" references https://github.com/mage/mage)
-3. Determine whether this release is a major, minor or patch release
-4. Run: `npm version major`, `npm version minor` or `npm version patch`. This will have:
+In all the `git` shell commands below, `upstream` references the repository at https://github.com/mage/mage.
+
+1. Ensure your shell is in the `master` branch: `git checkout master`
+2. Ensure you are up-to-date: `git pull upstream master`
+3. Continue below
+
+### A) Minor release
+
+If you are making a minor release that is equal to the current state of the `master` branch, you can release the `master`-branch directly.
+
+1. Compare changes with the previous release: `git log master...1.2.3` (replace `1.2.3` by the previous version tag)
+2. Run: `npm version minor`. This will have:
     1. Updated the version in package.json
     2. Regenerated documentation
     3. Committed (git)
     4. Tagged (git)
-5. Run: `git push upstream master --tags` (where "upstream" references https://github.com/mage/mage)
+3. Run: `git push upstream master --tags`
+4. Write up the release notes at the new tag on https://github.com/mage/mage/releases/new
+5. Run: `npm publish`
+
+### B) Patch release
+
+To make a patch-release, we cherry-pick commits from master into a temporary branch that will become our release.
+
+1. Create a temporary release branch: `git checkout -b release 1.2.3` (replace `1.2.3` by the previous version that you base this patch release on)
+2. Compare changes with `master`: `git log master...release --cherry-pick` (this is where we will pick commits from)
+3. Pick all commits you wish to include: `git cherry-pick COMMITHASH` (replace `COMMITHASH`)
+4. Run: `npm version patch`. This will have:
+    1. Updated the version in package.json
+    2. Regenerated documentation
+    3. Committed (git)
+    4. Tagged (git)
+5. Run: `git push upstream 1.2.4` (replace `1.2.4` by the new version tag)
 6. Write up the release notes at the new tag on https://github.com/mage/mage/releases/new
 7. Run: `npm publish`
-8. Spread the news on the relevant communication channels
+8. Remove your temporary release branch: `git checkout master; git branch -d release`
+
+## After publishing the release
+
+Now spread the news on the relevant communication channels.
