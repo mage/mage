@@ -45,7 +45,7 @@ To make a patch-release, we cherry-pick commits from master into a temporary bra
 5. Run: `git push upstream 1.2.4` (replace `1.2.4` by the new version tag)
 6. Write up the release notes at the new tag on https://github.com/mage/mage/releases/new
 7. Run: `npm publish`
-8. Remove your temporary release branch: `git checkout master && git branch -d release`
+8. Remove your temporary release branch: `git checkout master; git branch -d release`
 
 ## After publishing the release
 
