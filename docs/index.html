@@ -1216,6 +1216,13 @@ always synchronized in real time.</p>
 
         <span class="c1"># optional, useful if you share a bucket with other applications</span>
         <span class="na">prefix</span><span class="pi">:</span> <span class="s2">"</span><span class="s">bob/"</span>
+
+    <span class="c1"># options only used with archivist:create</span>
+    <span class="na">create</span><span class="pi">:</span>
+        <span class="na">adminUsername</span><span class="pi">:</span> <span class="s">admin</span>
+        <span class="na">adminPassword</span><span class="pi">:</span> <span class="s2">"</span><span class="s">password"</span>
+        <span class="na">bucketType</span><span class="pi">:</span> <span class="s">couchbase</span> <span class="c1"># can be couchbase or memcached</span>
+        <span class="na">romQuotaMB</span><span class="pi">:</span> <span class="s">100</span>       <span class="c1"># how much memory to allocate to the bucket</span>
 </code></pre>
 <p><code class="prettyprint">user</code> and <code class="prettyprint">password</code> are optional, however, you will need to configure
 configure them if you with to create the underlying bucket
@@ -1261,18 +1268,10 @@ through <code class="prettyprint">archivist:migrate</code>.</p>
 </tr>
 </tbody></table>
 
-<p><code class="prettyprint">archivist:create</code> support requires a separate <code class="prettyprint">create</code> entry in the <code class="prettyprint">config</code>:</p>
-<pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">couchbase</span>
-<span class="na">config</span><span class="pi">:</span>
-    <span class="na">options</span><span class="pi">:</span>
-        <span class="c1"># bucket options</span>
-    <span class="na">create</span><span class="pi">:</span>
-        <span class="na">adminUsername</span><span class="pi">:</span> <span class="s">admin</span>
-        <span class="na">adminPassword</span><span class="pi">:</span> <span class="s2">"</span><span class="s">password"</span>
-        <span class="na">bucketType</span><span class="pi">:</span> <span class="s">couchbase</span> <span class="c1"># can be couchbase or memcached</span>
-        <span class="na">romQuotaMB</span><span class="pi">:</span> <span class="s">100</span>       <span class="c1"># how much memory to allocate to the bucket</span>
-</code></pre>
-<p>Views should be managed via migrations.</p>
+<p><code class="prettyprint">archivist:create</code> support requires a separate <code class="prettyprint">create</code> entry in the <code class="prettyprint">config</code>,
+meanwhile views should be created/managed in migration scripts.</p>
+
+<p><br><br><br><br><br></p>
 
 <h3 id="mysql">MySQL</h3>
 <pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">mysql</span>
@@ -1326,6 +1325,41 @@ For pool options please look at <a href="https://github.com/felixge/node-mysql#p
 </tbody></table>
 
 <p><code class="prettyprint">archivist:create</code> support requires that the user is allowed to create databases.</p>
+
+<blockquote>
+<p>Sample query to create a basic &ldquo;people&rdquo; topic table store.</p>
+</blockquote>
+<pre class="highlight sql tab-sql"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">people</span> <span class="p">(</span>
+  <span class="n">personId</span> <span class="n">INT</span> <span class="n">UNSIGNED</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">value</span> <span class="n">TEXT</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">mediaType</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">personId</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre>
+<p>Queries against your database are done through a combination of the generated keys and serialized
+values. A generated key must yield a table name and a primary key. A serialized value must yield a
+number of column names with their respective values.</p>
+
+<p>For instance, given a topic <code class="prettyprint">people</code> and index <code class="prettyprint">{ personId: 1 }</code>, the destination table will need
+to have a <code class="prettyprint">personId</code> field, but also a <code class="prettyprint">value</code> field to store data ad a <code class="prettyprint">mediaType</code> field so that
+MAGE may know how to process the stored value.</p>
+
+<blockquote>
+<p>Overriding the serializer</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">exports</span><span class="p">.</span><span class="nx">people</span><span class="p">.</span><span class="nx">vaults</span><span class="p">.</span><span class="nx">mysql</span><span class="p">.</span><span class="nx">serialize</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="na">value</span><span class="p">:</span> <span class="nx">value</span><span class="p">.</span><span class="nx">setEncoding</span><span class="p">([</span><span class="s1">'utf8'</span><span class="p">,</span> <span class="s1">'buffer'</span><span class="p">]).</span><span class="nx">data</span><span class="p">,</span>
+        <span class="na">mediaType</span><span class="p">:</span> <span class="nx">value</span><span class="p">.</span><span class="nx">mediaType</span><span class="p">,</span>
+        <span class="na">lastChanged</span><span class="p">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+</code></pre>
+<p>If you want to change how this information is stored, by adding columns, etc, you can overload the
+serializer method to do so. For example, consider the following example if you want to add a
+timestamp to a <code class="prettyprint">lastChanged INT UNSIGNED NOT NULL</code> column.</p>
+
+<p><br><br><br><br><br><br><br><br><br><br><br><br><br><br></p>
 
 <h3 id="elasticsearch">Elasticsearch</h3>
 <pre class="highlight yaml tab-yaml"><code><span class="na">elasticsearch</span><span class="pi">:</span>
@@ -1643,42 +1677,11 @@ To avoid confusion, the npm package name is sqlite3, but the project is called n
 </tr>
 </tbody></table>
 
-<blockquote>
-<p>Sample query to create a basic &ldquo;people&rdquo; topic table store.</p>
-</blockquote>
-<pre class="highlight sql tab-sql"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">people</span> <span class="p">(</span>
-  <span class="n">personId</span> <span class="n">INT</span> <span class="n">UNSIGNED</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
-  <span class="n">value</span> <span class="n">TEXT</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
-  <span class="n">mediaType</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
-  <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">personId</span><span class="p">)</span>
-<span class="p">);</span>
-</code></pre>
 <p><code class="prettyprint">archivist:create</code> support requires that the user be allowed to create databases. However, you
 will still need to write a <a href="#migrations">migration script</a> to create the different tables
 where your topics will be stored.</p>
 
-<p>Queries against your database are done through a combination of the generated keys and serialized
-values. A generated key must yield a table name and a primary key. A serialized value must yield a
-number of column names with their respective values.</p>
-
-<p>For instance, given a topic <code class="prettyprint">people</code> and index <code class="prettyprint">{ personId: 1 }</code>, the destination table will need
-to have a <code class="prettyprint">personId</code> field, but also a <code class="prettyprint">value</code> field to store data ad a <code class="prettyprint">mediaType</code> field so that
-MAGE may know how to process the stored value.</p>
-
-<blockquote>
-<p>Overriding the serialized</p>
-</blockquote>
-<pre class="highlight javascript tab-javascript"><code><span class="nx">exports</span><span class="p">.</span><span class="nx">people</span><span class="p">.</span><span class="nx">vaults</span><span class="p">.</span><span class="nx">sqlite3</span><span class="p">.</span><span class="nx">serialize</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="na">value</span><span class="p">:</span> <span class="nx">value</span><span class="p">.</span><span class="nx">setEncoding</span><span class="p">([</span><span class="s1">'utf8'</span><span class="p">,</span> <span class="s1">'buffer'</span><span class="p">]).</span><span class="nx">data</span><span class="p">,</span>
-        <span class="na">mediaType</span><span class="p">:</span> <span class="nx">value</span><span class="p">.</span><span class="nx">mediaType</span><span class="p">,</span>
-        <span class="na">lastChanged</span><span class="p">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
-    <span class="p">};</span>
-<span class="p">};</span>
-</code></pre>
-<p>If you want to change how this information is stored, by adding columns, etc, you can overload the
-serializer method to do so. For example, consider the following example if you want to add a
-timestamp to a <code class="prettyprint">lastChanged INT UNSIGNED NOT NULL</code> column.</p>
+<p>See <a href="#mysql">documentation</a> for the <code class="prettyprint">MySQL</code> vault on how to structure your tables for usage with archivist.</p>
 
 <h2 id="topics">Topics</h2>
 
@@ -2267,6 +2270,8 @@ specify a log directory where you want your log files to go, and a set of filena
 You can control which log level will go in which file by setting the log level range
 as a value, or specify <code class="prettyprint">all</code> if you wish to write all logs to a single file.</p>
 
+<p><br><br><br><br><br><br><br><br></p>
+
 <h3 id="syslog">Syslog</h3>
 <pre class="highlight yaml tab-yaml"><code><span class="na">logging</span><span class="pi">:</span>
     <span class="na">server</span><span class="pi">:</span>
@@ -2289,6 +2294,8 @@ of this, it also does not support using TLS.</p>
 
 <p>Since only UDP is supported, it also means that some logs may not arrive to
 destination.</p>
+
+<p><br><br><br><br><br><br><br><br></p>
 
 <h3 id="graylog">Graylog</h3>
 <pre class="highlight yaml tab-yaml"><code><span class="na">logging</span><span class="pi">:</span>
@@ -2460,6 +2467,8 @@ to use for that engine.</p>
 <p>The single engine can be used during development to locally allow the use of the service
 discovery API. It will only find the local server.</p>
 
+<p><br><br></p>
+
 <h3 id="bonjour-mdns">Bonjour/MDNS</h3>
 <pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
     <span class="na">serviceDiscovery</span><span class="pi">:</span>
@@ -2479,6 +2488,8 @@ configure any additonal services. However, note that certain network (such as th
 provided by AWS) wil not allow broadcasts, and so you will not be able to use this engine
 in such case.</p>
 
+<p><br><br><br><br></p>
+
 <h3 id="zookeeper">ZooKeeper</h3>
 <pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
     <span class="na">serviceDiscovery</span><span class="pi">:</span>
@@ -2494,6 +2505,8 @@ in such case.</p>
                 <span class="na">sessionTimeout</span><span class="pi">:</span> <span class="s">30000</span>
 </code></pre>
 <p>The zookeeper engine will use ZooKeeper to announce MAGE servers.</p>
+
+<p><br><br><br><br><br><br><br><br><br><br><br><br></p>
 
 <h3 id="consul">Consul</h3>
 <pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
