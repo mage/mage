@@ -598,11 +598,10 @@ It is not recommended to use those features in production.
 ## Migrations
 
 MAGE supports database migration scripts similar to [Ruby on Rails 2.1](http://api.rubyonrails.org/classes/ActiveRecord/Migration.html)
-which are aligned with your `package.json` version and exposed via the `archivist:migrate`
-command.
+exposed via the `archivist:migrate` command.
 
-Running the `archivist:migrate` command will go through each migrations in order up to the current
-`package.json` version and apply them. The command also allows specifying an exact version allowing
+Running the `archivist:migrate` command will go through each migrations in order and apply them.
+The command also allows specifying an exact version allowing
 for testing new migrations or reverting to a previous version.
 
 ### How to write migration scripts
@@ -638,8 +637,7 @@ exports.down = function (vault, cb) {
 
 The migration file goes to your game's `lib/archivist/migrations` folder into a subfolder per vault.
 This folder should have the exact same name as your vault does. The migration file you provide
-should be named after the version in `package.json` and have the extension `.{js,ts}`. Other file
-extensions are ignored.
+should have the extension `.{js,ts}`; other file extensions are ignored.
 
 Some typical examples:
 
