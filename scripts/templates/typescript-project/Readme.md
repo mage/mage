@@ -39,7 +39,7 @@ npm run develop
 
 ## For more information
 
-  * [MAGE Documentation](https://mage.github.io/mage/docs)
+  * [MAGE Documentation](https://mage.github.io/mage)
 
 ## License
 
