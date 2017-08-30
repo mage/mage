@@ -80,11 +80,20 @@ describe('State class', function () {
 
 			assert.equal(state.actorId, null);
 		});
+
 		it('With actorID as the first argument', function () {
 			const actorId = 'kwyjibo';
 			const state = new State(actorId);
 
 			assert.equal(state.actorId, actorId);
+		});
+
+		it('Options are correctly applied', function () {
+			const actorId = 'kwyjibo';
+			const appName = 'appName';
+			const state = new State(actorId, null, { appName });
+
+			assert.equal(state.appName, appName);
 		});
 	});
 
@@ -169,6 +178,14 @@ describe('State class', function () {
 			state.setTimeout(1);
 		});
 
+		it('timeouts can be set at instanciation', function (done) {
+			mod.once('timeOut', () => done());
+
+			new State(null, null, {
+				timeout: 1
+			});
+		});
+
 		it('timeouts can be cleared', function (done) {
 			function throwOnTimeout() {
 				throw new Error('Timeout triggered!');
@@ -242,6 +259,90 @@ describe('State class', function () {
 		});
 	});
 
+	describe('emit', function () {
+		it('Works correctly with an emtpy array of actorIds', function () {
+			const state = new State();
+
+			// Should do nothing; we are returning early, and shouldn't be
+			// looking or processing any of the other arguments
+			state.emit([], 'does.not.matter');
+		});
+
+		it('Undefined event name throws', function () {
+			const state = new State();
+			assert.throws(() => state.emit('test'));
+		});
+
+		it('Undefined data is not part of the serialized message', function () {
+			const state = new State();
+			state.emit('test', 'eventName');
+
+			assert.deepEqual(state.otherEvents.test, [{
+				evt: '["eventName"]',
+				alwaysEmit: undefined
+			}]);
+		});
+
+		it('Setting isJson to true disables serialization', function () {
+			const state = new State();
+			const actualData = 'not really json but oh well';
+			state.emit('test', 'eventName', actualData, { isJson: true });
+
+			assert.deepEqual(state.otherEvents.test, [{
+				evt: `["eventName",${actualData}]`,
+				alwaysEmit: undefined
+			}]);
+		});
+	});
+
+	describe('emitEvents', function () {
+		const originalMsgServer = fakeMage.core.msgServer;
+		const originalSessionModule = fakeMage.session;
+
+		afterEach(() => fakeMage.core.msgServer = originalMsgServer);
+		afterEach(() => fakeMage.session = originalSessionModule);
+
+		it('returns an error if mage.core.msgServer is not set', function (done) {
+			const state = new State();
+
+			fakeMage.core.msgServer = undefined;
+
+			state.emitEvents(null, (error) => {
+				assert(error);
+				assert.equal(error.message, 'Cannot emit events without msgServer set up.');
+				done();
+			});
+		});
+
+		it('Returns an error if the session module is not set', function (done) {
+			const state = new State();
+
+			fakeMage.session = undefined;
+
+			// Make sure one event is in our queue to force session lookup
+			state.emit('does-not-matter', 'test', 'one');
+
+			state.emitEvents(null, (error) => {
+				assert(error);
+				assert.equal(error.message, 'Cannot find actors without the "session" module set up.');
+				done();
+			});
+		});
+
+		it('Addresses not found during lookup are skipped silently', function (done) {
+			const state = new State();
+
+			fakeMage.session = {
+				// Nothing is found by the session module!
+				getActorAddresses: (state, lookup, cb) => cb(null, [])
+			};
+
+			// Make sure one event is in our queue to force session lookup
+			state.emit('does-not-matter', 'test', 'one');
+			state.emitEvents(null, done);
+		});
+	});
+
 	describe('closing (call stack, details)', function () {
 		it('Calling getClosingDetails before setClosing throws', function () {
 			const info = createStateWithSession();
@@ -296,6 +397,25 @@ describe('State class', function () {
 
 		let state;
 		beforeEach(() => state = new State(actorId));
+
+		it('distributeEvents works correctly when no actorId is set', function (done) {
+			state = new State(); // No actor id
+			state.emit('random', 'first', '123');
+
+			state.emitEvents = function (events, callback) {
+				assert.deepEqual(state.myEvents, []);
+				assert.deepEqual(state.otherEvents, {
+					random: [{
+						evt: '["first","123"]',
+						alwaysEmit: undefined
+					}]
+				});
+
+				callback();
+			};
+
+			state.distributeEvents(done);
+		});
 
 		it('distributeEvents reallocates my events to other events, and emits them through msgStream', function (done) {
 			state.emit('random', 'first', '123');
@@ -476,6 +596,36 @@ describe('State class', function () {
 	});
 
 	describe('findActors', function () {
+		const originalSessionModule = fakeMage.session;
+
+		afterEach(() => fakeMage.session = originalSessionModule);
+
+		it('Returns an error if the session module is not set', function (done) {
+			fakeMage.session = undefined;
+			const state = new State();
+			state.findActors([], (error) => {
+				assert(error);
+				assert.equal(error.message, 'Cannot find actors without the "session" module set up.');
+				done();
+			});
+		});
+
+		it('Returns an error if mage.session.getActorAddresses returns an error', function (done) {
+			const message = 'whoops I did it again - I played with mage.session module';
+			const error = new Error(message);
+
+			fakeMage.session = {
+				getActorAddresses: (state, lookup, cb) => cb(error)
+			};
+
+			const state = new State();
+			state.findActors([], (error) => {
+				assert(error);
+				assert.equal(error.message, message);
+				done();
+			});
+		});
+
 		it('Should find actors', function (done) {
 			var state = new State('abc');
 			state.findActors(['def', 'foo', 'offline', 'bar'], function (error, found) {
@@ -487,6 +637,76 @@ describe('State class', function () {
 				});
 
 				done();
+			});
+		});
+
+		it('Results are cached', function (done) {
+			const actorIds = ['hello'];
+			const onlineAddresses = [{
+				actorId: 'hello'
+			}];
+
+			let called = false;
+
+			fakeMage.session = {
+				getActorAddresses: (state, lookup, cb) => {
+					if (called && lookup.length > 0) {
+						throw new Error('Result was not cached');
+					}
+
+					called = true;
+
+					cb(null, onlineAddresses);
+				}
+			};
+
+			var state = new State('abc', null, {
+				cacheTimeout: 1000
+			});
+
+			state.findActors(actorIds, function (error, found) {
+				assert.deepEqual(found.online, actorIds);
+
+				state.findActors(actorIds, function (error, found) {
+					assert.deepEqual(found.online, actorIds);
+					done();
+				});
+			});
+		});
+
+		it('Caches expire correctly', function (done) {
+			const actorIds = ['hello'];
+			const onlineAddresses = [{
+				actorId: 'hello'
+			}];
+
+			let called = false;
+
+			fakeMage.session = {
+				getActorAddresses: (state, lookup, cb) => {
+					if (called && lookup.length === 0) {
+						throw new Error('Result was cached');
+					}
+
+					called = true;
+
+					cb(null, onlineAddresses);
+				}
+			};
+
+			var state = new State('abc', null, {
+				cacheTimeout: 10
+			});
+
+			state.findActors(actorIds, function (error, found) {
+				assert.deepEqual(found.online, actorIds);
+
+				setTimeout(function () {
+					state.findActors(actorIds, function (error, found) {
+						assert.deepEqual(found.online, actorIds);
+						done();
+					});
+				}, 20);
 			});
 		});
 	});

@@ -846,7 +846,7 @@ declare interface IMageCore {
      *
      * @type {{ new(): mage.core.IState }}
      */
-    State: { new(): mage.core.IState };
+    State: { new(actorId?: string, session?: Session, options?: mage.core.IStateOptions): mage.core.IState };
 
 
     /**
@@ -2286,6 +2286,43 @@ declare namespace mage {
             getIp(version: 4 | 6, networks?: string[]): string | null;
         }
 
+        /**
+         * Options you can pass when you manually create a state object
+         */
+        export interface IStateOptions {
+            /**
+             * The name of the application this state was created in
+             */
+            appName?: string;
+
+            /**
+             * A description of what this state is being used for
+             */
+            description?: string;
+
+            /**
+             * Timeout, in milliseconds
+             *
+             * Upon timeout, the state will close automatically.
+             */
+            timeout?: number
+
+            /**
+             * Actor lookup cache timeout
+             *
+             * By default, the lookup cache will be set
+             * to 500 milliseconds.
+             */
+            cacheTimeout?: number
+
+            /**
+             * State metadata
+             *
+             * This data can be used to carry data around through the execution path.
+             */
+            data?: Object
+        }
+
         export interface IState {
             /**
              * Actor ID
@@ -2319,6 +2356,13 @@ declare namespace mage {
              * @memberOf State
              */
             session: Session | null;
+
+            /**
+             * State metadata
+             *
+             * This data can be used to carry data around through the execution path.
+             */
+            data?: Object
 
             /**
              * Reply to the user
@@ -2359,6 +2403,14 @@ declare namespace mage {
             error(code: string | number, error: Error, callback: Function): void;
 
             /**
+             * Parse a list of actorIds, and verify who is online
+             */
+            findActors(actorIds: string[], callback: (error: Error | null, actors: {
+                online: string[],
+                offline: string[]
+            }) => void);
+
+            /**
              * Send an event to the user
              *
              * Note that the event will be blackholed if an user with a given actorId
@@ -2370,7 +2422,7 @@ declare namespace mage {
              *
              * @memberOf State
              */
-            emit<T>(actorId: string | string[], eventName: string | number, data: T, configuration: mage.core.IStateEmitConfig): void;
+            emit<T>(actorId: string | string[], eventName: string | number, data: T, configuration?: mage.core.IStateEmitConfig): void;
 
             /**
              * Broadcast an event to all connected users
@@ -2380,7 +2432,7 @@ declare namespace mage {
              *
              * @memberOf State
              */
-            broadcast<T>(eventName: string | number, data: T, configuration: mage.core.IStateEmitConfig): void;
+            broadcast<T>(eventName: string | number, data: T, configuration?: mage.core.IStateEmitConfig): void;
 
             /**
              * Distribute both events and archivist operations
