@@ -28,7 +28,7 @@ function createState() {
 				msg: msg
 			});
 		},
-		emitToActors: function (actorIds, event, msg) {
+		emit: function (actorIds, event, msg) {
 			this._emitted.push({
 				actorIds: actorIds,
 				event: event,
