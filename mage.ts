@@ -1872,7 +1872,7 @@ declare namespace mage {
          * instead if you wish to receive back an interatable array.
          */
         interface INamedArchivistQuery {
-           [name: string]: IArchivistIndex
+           [name: string]: IArchivistQuery
         }
 
         /**
