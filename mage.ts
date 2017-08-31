@@ -2417,7 +2417,7 @@ declare namespace mage {
             findActors(actorIds: string[], callback: (error: Error | null, actors: {
                 online: string[],
                 offline: string[]
-            }) => void);
+            }) => void): void;
 
             /**
              * Send an event to the user
