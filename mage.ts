@@ -2119,7 +2119,23 @@ declare namespace mage {
          * @interface IUserCommand
          */
         interface IUserCommand {
+            /**
+             * What user levels are allowed to access
+             * this user command
+             */
             acl?: string[];
+
+            /**
+             * Timeout for the user command
+             *
+             * By default, the user command will be allowed
+             * to run forever.
+             */
+            timeout?: number;
+
+            /**
+             * The code of the user command itself
+             */
             execute<T>(state: IState, ...args: any[]): Promise<T>;
         }
 

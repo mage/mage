@@ -168,41 +168,6 @@ describe('State class', function () {
 		});
 	});
 
-	describe('timeout', function () {
-		let state;
-
-		beforeEach(() => state = new State(null));
-
-		it('timeouts can be set', function (done) {
-			mod.once('timeOut', () => done());
-			state.setTimeout(1);
-		});
-
-		it('timeouts can be set at instanciation', function (done) {
-			mod.once('timeOut', () => done());
-
-			new State(null, null, {
-				timeout: 1
-			});
-		});
-
-		it('timeouts can be cleared', function (done) {
-			function throwOnTimeout() {
-				throw new Error('Timeout triggered!');
-			}
-
-			mod.once('timeOut', throwOnTimeout);
-
-			state.setTimeout(1);
-			state.clearTimeout();
-
-			setTimeout(() => {
-				mod.removeListener('timeout', throwOnTimeout);
-				done();
-			}, 10);
-		});
-	});
-
 	describe('canAccess', function () {
 		function testCanAccess(stateAcl, canAccessAcl) {
 			const info = createStateWithSession(null, stateAcl);
