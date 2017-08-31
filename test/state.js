@@ -272,9 +272,20 @@ describe('State class', function () {
 
 			fakeMage.core.msgServer = undefined;
 
+			state.emit('actor-id', 'eventName', 'data');
 			state.emitEvents(null, (error) => {
 				assert(error);
 				assert.equal(error.message, 'Cannot emit events without msgServer set up.');
+				done();
+			});
+		});
+
+		it('returns no errors if mage.core.msgServer is not set and no events need to be emitted', function (done) {
+			const state = new State();
+
+			fakeMage.core.msgServer = undefined;
+			state.emitEvents(null, (error) => {
+				assert.equal(error, undefined);
 				done();
 			});
 		});
@@ -306,9 +317,37 @@ describe('State class', function () {
 			state.emit('does-not-matter', 'test', 'one');
 			state.emitEvents(null, done);
 		});
+
+		it('Do not call lookupAddresses if we only broadcast (no emits)', function (done) {
+			// This is meant to be an optimization, so to avoid running additional
+			// code on an empty list of actor IDs and messages
+			const state = new State();
+
+			// lookupAddresses would be called if we have emitted events
+			fakeMage.session = {
+				getActorAddresses: () => { throw new Error('lookupAddresses was called'); }
+			};
+
+			// However, broadcast should be called
+			let called = false;
+			fakeMage.core.msgServer = {
+				broadcast: () => called = true
+			};
+
+			// Make sure one event is in our queue to force session lookup
+			state.broadcast('does-not-matter', 'test');
+			state.emitEvents(null, () => {
+				assert.equal(called, true);
+				done();
+			});
+		});
 	});
 
 	describe('closing (call stack, details)', function () {
+		const originalMsgServer = fakeMage.core.msgServer;
+
+		afterEach(() => fakeMage.core.msgServer = originalMsgServer);
+
 		it('Calling getClosingDetails before setClosing throws', function () {
 			const info = createStateWithSession();
 
@@ -354,6 +393,31 @@ describe('State class', function () {
 			state.close();
 
 			assert.throws(() => state.errorCode = 'this will die');
+		});
+
+		it('emitEvents errors on close are logged and then ignored', function (done) {
+			// We simulate a case where the msgServer is not present;
+			// we should still receive our data back, and no errors should be triggered.
+			fakeMage.core.msgServer = null;
+
+			const info = createStateWithSession();
+			const state = info.state;
+
+			// In this error case, we expect `state.getClosingDetails` to be
+			// called, and its result to be passed on to the logger. We
+			// verify this by confirming this method was called.
+
+			let called = false;
+			state.getClosingDetails = () => called = true;
+
+			// Emit some data, to make sure we go far enough into emitEvents
+			// to trigger an error
+			state.emit('test', 'test', 'test');
+
+			state.close(() => {
+				assert.equal(called, true);
+				done();
+			});
 		});
 	});
 
