@@ -3,11 +3,12 @@
 ## Format
 
 The configuration for your game is allowed to exist in either the
-[YAML format](http://en.wikipedia.org/wiki/YAML) with the `.yaml` file extension, or the
-[JSON format](http://en.wikipedia.org/wiki/JSON) with the `.json` file extension.
+[YAML format](http://en.wikipedia.org/wiki/YAML) with the `.yaml` file extension, the
+[JSON format](http://en.wikipedia.org/wiki/JSON) with the `.json` file extension, or the
+[JSON5 format](http://json5.org/) with the `.json5` file extension.
 
-In a nutshell, YAML is the more human readable format, while JSON is more JavaScript-y in how it
-represents its variable types.
+In a nutshell, YAML is the more human readable format, while JSON is more JavaScript-like in how it
+represents its variable types. JSON5 represents a good middle-ground between both previous formats.
 
 ## Location
 
