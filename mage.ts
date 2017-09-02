@@ -1886,6 +1886,7 @@ declare namespace mage {
         interface IArchivistQuery {
             topic: string;
             index: IArchivistIndex;
+            options?: IArchivistGetOptions;
         }
 
         /**
