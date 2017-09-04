@@ -1280,6 +1280,17 @@ declare class Mage extends NodeJS.EventEmitter {
     isCodeFileExtension(ext: string): boolean;
 
     /**
+     * The worker ID of the currently worker process
+     *
+     * Will return false if the process is the master process, or
+     * if MAGE is running in single mode.
+     *
+     * This differs from cluster.worker.id because it will remain consistent
+     * if restarted or reloaded.
+     */
+    workerId?: number;
+
+    /**
      * The current task to execute. Internal value.
      * @memberof Mage
      */
