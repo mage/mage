@@ -158,7 +158,9 @@ declare class Archivist {
     del(topicName: string, index: mage.archivist.IArchivistIndex): void;
 
     /**
+     * Touch a topic
      *
+     * Used to reset the expiration timer.
      *
      * @param {string} topicName
      * @param {ArchivistIndex} index
@@ -169,7 +171,7 @@ declare class Archivist {
     touch(topicName: string, index: mage.archivist.IArchivistIndex, expirationTime?: number): void;
 
     /**
-     *
+     * Commit all current changes to their respective vault backend(s)
      *
      * @param {*} [options]
      * @param {(preDistributionErrors: Error[], distributionErrors: Error[]) => void} callback
@@ -177,6 +179,13 @@ declare class Archivist {
      * @memberOf Archivist
      */
     distribute(callback: mage.archivist.ArchivistDistributeCallback): void;
+
+    /**
+     * Clear all the loaded entries from this archivist instance
+     *
+     * @memberOf Archivist
+     */
+    clearCache(): void;
 }
 
 /**
@@ -2315,14 +2324,6 @@ declare namespace mage {
              * A description of what this state is being used for
              */
             description?: string;
-
-            /**
-             * Actor lookup cache timeout
-             *
-             * By default, the lookup cache will be set
-             * to 500 milliseconds.
-             */
-            cacheTimeout?: number
 
             /**
              * State metadata

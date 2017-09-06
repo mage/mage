@@ -33,7 +33,12 @@ var fakeMage = {
 	},
 	session: {
 		getActorAddresses: function (state, actorIds, cb) {
-			cb(null, actorIds.map(actorToAddress).filter(Boolean));
+			const response = {};
+			for (const actorId of actorIds) {
+				response[actorId] = actorToAddress(actorId);
+			}
+
+			cb(null, response);
 		}
 	},
 	core: {
@@ -666,76 +671,6 @@ describe('State class', function () {
 				});
 
 				done();
-			});
-		});
-
-		it('Results are cached', function (done) {
-			const actorIds = ['hello'];
-			const onlineAddresses = [{
-				actorId: 'hello'
-			}];
-
-			let called = false;
-
-			fakeMage.session = {
-				getActorAddresses: (state, lookup, cb) => {
-					if (called && lookup.length > 0) {
-						throw new Error('Result was not cached');
-					}
-
-					called = true;
-
-					cb(null, onlineAddresses);
-				}
-			};
-
-			var state = new State('abc', null, {
-				cacheTimeout: 1000
-			});
-
-			state.findActors(actorIds, function (error, found) {
-				assert.deepEqual(found.online, actorIds);
-
-				state.findActors(actorIds, function (error, found) {
-					assert.deepEqual(found.online, actorIds);
-					done();
-				});
-			});
-		});
-
-		it('Caches expire correctly', function (done) {
-			const actorIds = ['hello'];
-			const onlineAddresses = [{
-				actorId: 'hello'
-			}];
-
-			let called = false;
-
-			fakeMage.session = {
-				getActorAddresses: (state, lookup, cb) => {
-					if (called && lookup.length === 0) {
-						throw new Error('Result was cached');
-					}
-
-					called = true;
-
-					cb(null, onlineAddresses);
-				}
-			};
-
-			var state = new State('abc', null, {
-				cacheTimeout: 10
-			});
-
-			state.findActors(actorIds, function (error, found) {
-				assert.deepEqual(found.online, actorIds);
-
-				setTimeout(function () {
-					state.findActors(actorIds, function (error, found) {
-						assert.deepEqual(found.online, actorIds);
-						done();
-					});
-				}, 20);
 			});
 		});
 	});
