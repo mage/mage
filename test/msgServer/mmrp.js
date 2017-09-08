@@ -105,10 +105,14 @@ describe('MMRP', function () {
 			// initiate handshakes
 
 			network.clients.forEach(function (client) {
-				client.relayUp(createUri(network.relay.routerPort), network.relay.clusterId);
+				client.relayUp(createUri(network.relay.routerPort), {
+					clusterId: network.relay.clusterId
+				}, true);
 			});
 
-			network.relay.relayUp(createUri(network.relay.routerPort), network.relay.clusterId);
+			network.relay.relayUp(createUri(network.relay.routerPort), {
+				clusterId: network.relay.clusterId
+			}, true);
 		}
 
 		it('instantiates', function () {
@@ -189,7 +193,9 @@ describe('MMRP', function () {
 
 			relays.forEach(function (relay) {
 				relays.forEach(function (peer) {
-					relay.relayUp(createUri(peer.routerPort), peer.clusterId);
+					relay.relayUp(createUri(peer.routerPort), {
+						clusterId: peer.clusterId
+					}, relay.clusterId === peer.clusterId);
 				});
 			});
 		}
@@ -356,12 +362,18 @@ describe('MMRP', function () {
 			network.relays.forEach(function (relay) {
 				network.clients.forEach(function (clientGroup) {
 					clientGroup.forEach(function (client) {
-						client.relayUp(createUri(relay.routerPort), relay.clusterId);
+						client.relayUp(createUri(relay.routerPort), {
+							clusterId: relay.clusterId,
+							timestamp: Date.now()
+						});
 					});
 				});
 
 				network.relays.forEach(function (peer) {
-					peer.relayUp(createUri(relay.routerPort), relay.clusterId);
+					peer.relayUp(createUri(relay.routerPort), {
+						clusterId: relay.clusterId,
+						timestamp: Date.now()
+					}, peer.clusterId === relay.clusterId);
 				});
 			});
 		}
@@ -434,8 +446,11 @@ describe('MMRP', function () {
 					});
 				}
 
-				network.relays[1].close();
-				network.relays[0].relayDown(createUri(network.relays[1].routerPort));
+				var relay = network.relays[1];
+				relay.close();
+				network.relays[0].relayDown(createUri(relay.routerPort), {
+					clusterId: relay.clusterId
+				});
 
 				sendLoop();
 			});
