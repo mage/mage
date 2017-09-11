@@ -25,6 +25,11 @@ archivist:
 ```
 
 <aside class="warning">
+Never configure multiple vaults to connect to the same vault backend storage!
+This would break how [migration scripts](#migrations) work.
+</aside>
+
+<aside class="warning">
 Not all vaults support every operations! Below you will find
 a short configuration description for each available vault backends
 alongside a list of supported operations for that backend.
