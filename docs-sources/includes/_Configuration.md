@@ -2,7 +2,7 @@
 
 ## Format
 
-The configuration for your game is allowed to exist in either the
+The configuration for your game is allowed to exist in the
 [YAML format](http://en.wikipedia.org/wiki/YAML) with the `.yaml` file extension, the
 [JSON format](http://en.wikipedia.org/wiki/JSON) with the `.json` file extension, or the
 [JSON5 format](http://json5.org/) with the `.json5` file extension.
