@@ -531,6 +531,20 @@ describe('State class', function () {
 				done();
 			});
 		});
+
+		it('Error code is returned on close', function (done) {
+			const error = new Error('Whoops');
+			state.error(error);
+			state.close((_, response) => {
+				assert.deepEqual(response, {
+					response: undefined,
+					errorCode: `"${error.message}"`,
+					myEvents: undefined
+				});
+
+				done();
+			});
+		});
 	});
 
 	describe('respond', function () {
@@ -547,6 +561,19 @@ describe('State class', function () {
 
 			state.respond(data, true);
 			assert.equal(state.response, data);
+		});
+
+		it('Response data is returned on close', function (done) {
+			state.respond({ hello: 'world' });
+			state.close((error, response) => {
+				assert.deepEqual(response, {
+					response: '{"hello":"world"}',
+					errorCode: undefined,
+					myEvents: undefined
+				});
+
+				done();
+			});
 		});
 	});
 
