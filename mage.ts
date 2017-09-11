@@ -202,9 +202,20 @@ declare class Archivist {
     /**
      * Clear all the loaded entries from this archivist instance
      *
+     * Note that this will not clear mutated entries; please use
+     * `reset()` if you wish to clear all data instead.
+     *
      * @memberOf Archivist
      */
     clearCache(): void;
+
+    /**
+     * Reset the instance; remove all operations that are
+     * currently scheduled on the instance
+     *
+     * @memberOf Archivist
+     */
+    reset(): void;
 }
 
 /**
