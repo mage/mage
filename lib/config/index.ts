@@ -15,6 +15,7 @@ declare type ConfigurationLabel = string|string[];
  * ```javascript
  * const config = require('mage/lib/config');
  * config.set('some.path.to.config', 1)
+ * config.set(['some', 'other', 'path'], 1)
  * const mage = require('mage');
  *
  * // continue with your test code
@@ -64,10 +65,10 @@ declare class Config {
     /**
      * Programatically set a configuration entry
      *
-     * @param key dot-separated configuration path (example: 'server.hosts')
+     * @param label Configuration label to set
      * @param value
      */
-    set(key: string, value: any): void;
+    set(label: ConfigurationLabel, value: any): void;
 }
 
 declare var config: Config;
