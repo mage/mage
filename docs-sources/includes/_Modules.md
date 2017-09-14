@@ -308,3 +308,68 @@ instead of relying on MAGE to serialize the return data. This can be useful when
 will serve certain pieces of data which will not change frequently. When you wish to do so, simply make
 sure that `exports.serialize` is set to `false`, and to manually return a stringified version of your
 data.
+
+## Error management
+
+> lib/modules/players/usercommands/register.js
+
+```javascript
+'use strict';
+
+const {
+  players,
+  MageError
+} = require('mage');
+
+class NoHomersError extends MageError {
+  constructor(data) {
+		super(data);
+
+    // Code to return to the client (default: server)
+    this.code = 'server';
+
+    // Log level to use to log this error (default: error)
+    this.level = 'warning';
+
+    // Details to log alongside the message (default: undefined)
+    this.details = data.details;
+
+    // Error type - traditionally the class name
+ 		this.type = 'NoHomersError';
+ 	}
+}
+
+module.exports = {
+  acl: ['*'],
+  async execute(state, username, password) {
+    if (username.length > 10) {
+      // Using MageError directly
+      throw new MageError({
+        code: 'username_length_exceeded',
+        level: 'warning',
+        message: 'Username is more than 10 character',
+        details: {
+          received: username
+        }
+      })
+    }
+
+    if (username === 'homer') {
+      // Using a custom error class inheriting MageError
+      throw new NoHomersError({
+        message: 'We already have one Homer anyway '
+      })
+    }
+
+    return await players.register(state, username, password);
+  }
+};
+```
+
+When using `async/await`, you will want to customise the behavior of your errors
+in regards to how they will be logged, what data will be logged, what message will be
+returned to the user, and so on.
+
+To do so, MAGE provides the `MageError` error class, which can be used as-is or
+extended as needed. This error class will allow you to control precisely what you will
+log in case of error, and what should be returned to the user.
