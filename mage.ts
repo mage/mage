@@ -4,6 +4,7 @@ declare type VaultOperation = 'add' | 'set' | 'del' | 'touch';
 
 import * as commander from 'commander';
 import * as config from './lib/config';
+import * as MageError from './lib/mage/MageError';
 
 /**
  * Abstracted data store access interface
@@ -1265,6 +1266,8 @@ declare interface IMageCore {
 }
 
 declare class Mage extends NodeJS.EventEmitter {
+    MageError: typeof MageError;
+
     /**
      * Check if a file is considered like a source code file in MAGE
      *
