@@ -538,7 +538,7 @@ stored in your topics:
      all the indexes matching a given partial index
   2. You can use [archivist.mget](https://mage.github.io/mage/api/classes/archivist.html#mget) to fetch
      multiple indexes at once
-  3. You can use [archivist.scan](https://mage.github.io/mage/api/classes/archivist.html#list), which combines
+  3. You can use [archivist.scan](https://mage.github.io/mage/api/classes/archivist.html#scan), which combines
      both operations mentioned above into one
 
 You will generally want to use `scan` for most of your operations, but in some cases, you will find
