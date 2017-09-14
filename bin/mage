@@ -1,20 +1,41 @@
 #!/usr/bin/env node
 
+const prettyjson = require('prettyjson');
+const chalk = require('chalk');
 const path = require('path');
 const cwd = process.cwd();
 
 let app;
 
+function logError(line) {
+	console.error(chalk.red.bold(line));
+}
+
+function logInfo(line) {
+	console.error(chalk.green(line));
+}
+
 try {
 	app = require(cwd);
 } catch (error) {
-	console.error('');
-	console.error('Failed to load MAGE application:');
-	console.error('');
-	console.error(error.stack);
-	console.error('');
-	console.error('Make sure to properly set the value of "main" in your package.json,');
-	console.error('and that your code is valid.');
+	const errorData = Object.assign({
+		stack: error.stack
+	}, error);
+
+	logError('');
+	logError('Failed to load MAGE application');
+
+	if (process.platform === 'win32') {
+		logError('-------------------------------');
+	} else {
+		logError('▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔');
+	}
+
+	console.error(prettyjson.render(errorData, null, 2));
+
+	logError('');
+	logError('Make sure to properly set the value of "main" in your package.json,');
+	logError('and that your code is valid.');
 
 	process.exit(-1);
 }
@@ -27,20 +48,20 @@ if (!app.boot) {
 	const packageJson = require(path.join(cwd, 'package.json'));
 	const main = packageJson.main || `./index.${extension}`;
 
-	console.error('');
-	console.error(`Failed to load MAGE application: mage is not exported by ${main}`);
-	console.error('');
-	console.error('Make sure to require or import MAGE, configure it, and export it back:');
-	console.error('');
+	logError('');
+	logError(`Failed to load MAGE application: mage is not exported by ${main}`);
+	logError('');
+	logError('Make sure to require or import MAGE, configure it, and export it back:');
+	logError('');
 
 	if (isTypeScript) {
-		console.error('  import * as mage from \'mage\';');
-		console.error('  export = mage;');
+		logInfo('  import * as mage from \'mage\';');
+		logInfo('  export = mage;');
 	} else {
-		console.error('  var mage = module.exports = require(\'mage\');');
+		logInfo('  var mage = module.exports = require(\'mage\');');
 	}
 
-	console.error('');
+	logError('');
 	process.exit(-1);
 }
 
