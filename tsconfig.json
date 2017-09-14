@@ -9,8 +9,5 @@
     "types": [],
     "isolatedModules": true,
     "noEmit": true
-  },
-  "files": [
-    "mage.ts"
-  ]
+  }
 }

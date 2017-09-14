@@ -2,7 +2,8 @@
 
 declare type VaultOperation = 'add' | 'set' | 'del' | 'touch';
 
-import * as commander from 'commander'
+import * as commander from 'commander';
+import * as config from './lib/config';
 
 /**
  * Abstracted data store access interface
@@ -831,14 +832,6 @@ declare type TimeConfig = {
     startAt: number;
 }
 
-/**
- * Configuration labels can take one of the following formats:
- *
- *   - 'a.b.c'
- *   - ['a', 'b', 'c']
- */
-type ConfigurationLabel = string|string[];
-
 declare interface IMageCore {
     /**
      * State class
@@ -930,45 +923,7 @@ declare interface IMageCore {
     /**
      * Configuration core module
      */
-    config: {
-        /**
-         * Apply a default configuration from a given configuration file
-         * to a configuration sub-path.
-         *
-         * This will always be applied prior to loading user-land configuration
-         * files.
-         *
-         * Example:
-         *
-         * ```javascript
-         * var moduleName = 'myModule';
-         * var configAccessPath = 'modules.' + moduleName
-         * var defaultConfigFilePath = path.join(process.cwd(), 'lib/modules', moduleName, 'config.yaml')
-         * mage.core.config.setTopLevelDefault(configAccessPath, defaultConfigFilePath);
-         * ```
-         *
-         * @param {string} name
-         * @param {string} sourcePath
-         */
-        setTopLevelDefault(moduleName: string, sourcePath: string): void;
-
-        /**
-         * Get the current configuration value for a label
-         *
-         * @param {ConfigurationLabel} label Configuration label to search for
-         * @param {*} [defaultValue] Value to use if not defined in the configuration
-         * @returns {*}
-         */
-        get(label: ConfigurationLabel, defaultValue?: any): any;
-
-        /**
-         * Find which configuration file a current configuration value comes from.
-         *
-         * @param {ConfigurationLabel} label Configuration label to search for
-         * @returns {string} The configuration file the value originates from
-         */
-        getSource(label: ConfigurationLabel): string;
-    }
+    config: typeof config,
 
     /**
      * HTTP Server
