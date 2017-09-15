@@ -668,3 +668,23 @@ archivist:create [vaults]     create database environments for all configured va
 archivist:drop [vaults]       destroy database environments for all configured vaults
 archivist:migrate [version]   migrates all vaults to the current version, or to the version requested
 ```
+
+## Maximum data size (warning and errors)
+
+```yaml
+archivist:
+  size:
+    # Default set to 1Mb (1024 kilobytes); set to false to disable
+    warning: 256
+
+    # Disabled by default
+    error: 512
+```
+
+MAGE will keep track of all data that is written into vaults, and automatically log a warning
+when the data size reaches a certain threshold. Optionally, you can also configure MAGE to throw
+an error should the data reach a certain size.
+
+You may configure this behavior by configuring `archivist.size.warning` and `archivist.size.error`
+in your configuration files. By default, MAGE will never throw an error no matter how big your
+data gets, but will log a warning should your data be bigger than 1 megabyte.
