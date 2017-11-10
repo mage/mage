@@ -14,10 +14,10 @@ operation | supported | implementation
 ----------|:---------:|---------------
 list      |           |
 get       |           |
-add       | ✔         | `state.emitToActors('archivist:set')`
-set       | ✔         | `state.emitToActors('archivist:set' or 'archivist:applyDiff')`
-touch     | ✔         | `state.emitToActors('archivist:touch')`
-del       | ✔         | `state.emitToActors('archivist:del')`
+add       | ✔         | `state.emit('archivist:set')`
+set       | ✔         | `state.emit('archivist:set' or 'archivist:applyDiff')`
+touch     | ✔         | `state.emit('archivist:touch')`
+del       | ✔         | `state.emit('archivist:del')`
 
 ### Required Topic API
 

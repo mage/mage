@@ -36,7 +36,7 @@ the actions will not be executed; the two `mage.players.register` calls we have 
 would only store information if the call succeded.
 
 For more information about the API you use to access your data store, please read the
-[Archivist](./api/classes/_mage_d_.archivist.html) API documentation.
+[Archivist](./api/classes/archivist.html) API documentation.
 
 ## Transactional event emission
 
@@ -70,4 +70,4 @@ were to return an error, the event emitted by `state.emit` would never be sent t
 player referenced by `playerId`.
 
 For more information on the State API and how events are emitted, please read the
-[State](./api/interfaces/_mage_d_.mage.core.istate.html) API documentation.
+[State](./api/interfaces/mage.core.istate.html) API documentation.

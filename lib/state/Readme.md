@@ -31,14 +31,6 @@ Will register the actorId and session. This is called from the constructor if a 
 
 **Please note: you probably do not want to bind the state object to a session.**
 
-### state.setTimeout(number msec)
-
-If the state object is not closed within the given time, it will automatically close itself.
-
-### state.clearTimeout()
-
-If a timeout has been set, this will remove it.
-
 ### boolean state.canAccess(string accessLevel)
 
 Returns `true` if the registered session is authorised at the given access level. Returns `false` otherwise.

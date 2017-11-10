@@ -2,6 +2,7 @@ var assert = require('assert');
 
 describe('auth', function () {
 	var auth = require('lib/modules/auth');
+	var loggingService = require('lib/loggingService');
 	var libState = require('lib/state/state.js');
 	var State = libState.State;
 
@@ -18,12 +19,7 @@ describe('auth', function () {
 			isDevelopmentMode: function () { return true; }
 		};
 
-		var fakeLogger = {
-			error: function () {},
-			warning: function () {},
-			debug: function () {},
-			verbose: function () {}
-		};
+		var fakeLogger = loggingService.createLogCreator();
 
 		function FakeArchivist(/* state */) {
 			this.distribute = function (cb) { cb(); };

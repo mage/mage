@@ -158,7 +158,9 @@ declare class Archivist {
     del(topicName: string, index: mage.archivist.IArchivistIndex): void;
 
     /**
+     * Touch a topic
      *
+     * Used to reset the expiration timer.
      *
      * @param {string} topicName
      * @param {ArchivistIndex} index
@@ -169,7 +171,7 @@ declare class Archivist {
     touch(topicName: string, index: mage.archivist.IArchivistIndex, expirationTime?: number): void;
 
     /**
-     *
+     * Commit all current changes to their respective vault backend(s)
      *
      * @param {*} [options]
      * @param {(preDistributionErrors: Error[], distributionErrors: Error[]) => void} callback
@@ -177,6 +179,13 @@ declare class Archivist {
      * @memberOf Archivist
      */
     distribute(callback: mage.archivist.ArchivistDistributeCallback): void;
+
+    /**
+     * Clear all the loaded entries from this archivist instance
+     *
+     * @memberOf Archivist
+     */
+    clearCache(): void;
 }
 
 /**
@@ -846,7 +855,7 @@ declare interface IMageCore {
      *
      * @type {{ new(): mage.core.IState }}
      */
-    State: { new(): mage.core.IState };
+    State: { new(actorId?: string, session?: Session, options?: mage.core.IStateOptions): mage.core.IState };
 
 
     /**
@@ -2119,7 +2128,23 @@ declare namespace mage {
          * @interface IUserCommand
          */
         interface IUserCommand {
+            /**
+             * What user levels are allowed to access
+             * this user command
+             */
             acl?: string[];
+
+            /**
+             * Timeout for the user command
+             *
+             * By default, the user command will be allowed
+             * to run forever.
+             */
+            timeout?: number;
+
+            /**
+             * The code of the user command itself
+             */
             execute<T>(state: IState, ...args: any[]): Promise<T>;
         }
 
@@ -2286,6 +2311,28 @@ declare namespace mage {
             getIp(version: 4 | 6, networks?: string[]): string | null;
         }
 
+        /**
+         * Options you can pass when you manually create a state object
+         */
+        export interface IStateOptions {
+            /**
+             * The name of the application this state was created in
+             */
+            appName?: string;
+
+            /**
+             * A description of what this state is being used for
+             */
+            description?: string;
+
+            /**
+             * State metadata
+             *
+             * This data can be used to carry data around through the execution path.
+             */
+            data?: Object
+        }
+
         export interface IState {
             /**
              * Actor ID
@@ -2319,6 +2366,13 @@ declare namespace mage {
              * @memberOf State
              */
             session: Session | null;
+
+            /**
+             * State metadata
+             *
+             * This data can be used to carry data around through the execution path.
+             */
+            data?: Object
 
             /**
              * Reply to the user
@@ -2359,6 +2413,14 @@ declare namespace mage {
             error(code: string | number, error: Error, callback: Function): void;
 
             /**
+             * Parse a list of actorIds, and verify who is online
+             */
+            findActors(actorIds: string[], callback: (error: Error | null, actors: {
+                online: string[],
+                offline: string[]
+            }) => void): void;
+
+            /**
              * Send an event to the user
              *
              * Note that the event will be blackholed if an user with a given actorId
@@ -2370,7 +2432,7 @@ declare namespace mage {
              *
              * @memberOf State
              */
-            emit<T>(actorId: string | string[], eventName: string | number, data: T): void;
+            emit<T>(actorId: string | string[], eventName: string | number, data: T, configuration?: mage.core.IStateEmitConfig): void;
 
             /**
              * Broadcast an event to all connected users
@@ -2380,7 +2442,42 @@ declare namespace mage {
              *
              * @memberOf State
              */
-            broadcast<T>(eventName: string | number, data: T): void;
+            broadcast<T>(eventName: string | number, data: T, configuration?: mage.core.IStateEmitConfig): void;
+
+            /**
+             * Distribute both events and archivist operations
+             * currently stacked on this state object.
+             *
+             * @memberOf State
+             */
+            distribute(callback: (error?: Error) => void): void;
+
+            /**
+             * Distribute all events currently stacked on
+             * this state object.
+             *
+             * If you wish to also distribute archivist mutations stacked
+             * on this state, please have a look at the `distribute` method
+             * instead.
+             *
+             * @memberOf State
+             */
+            distributeEvents(callback: (error?: Error) => void): void;
+
+            /**
+             * Close this state object
+             *
+             * **Note**: You should never really have to use this method, it is
+             * only documented for informational purposes.
+             *
+             * This will trigger the same thing as `distribute`, but will
+             * return the response value set on the state and the
+             * events to be returned directly to the actor this state refers
+             * to.
+             *
+             * @memberOf State
+             */
+            close(callback: (error: Error | null, data: { response: any, events: any }) => void): void;
 
             /**
              * Register a session on the user
@@ -2433,6 +2530,30 @@ declare namespace mage {
              * @memberOf State
              */
             clearTimeout(): void;
+        }
+
+        /**
+         * State emit/broadcast optional configuration
+         */
+        export interface IStateEmitConfig {
+
+            /**
+             * Set if the data to emit has already been stringified
+             *
+             * In some cases, you might want to emit data that has already been
+             * serialized to a JSON string; to do so, set this option to true.
+             */
+            isJson?: boolean;
+
+            /**
+             * Always emit, even on error
+             *
+             * By default, events will only be emitted if the related call
+             * is successful; however, you might want to make sure an event
+             * will always be emitted, even on error. Set this configuration
+             * entry to `true` to make sure the event will always be emitted.
+             */
+            alwaysEmit?: boolean;
         }
     }
 }
