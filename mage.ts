@@ -90,7 +90,7 @@ declare class Archivist {
     mgetValues(queries: mage.archivist.IArchivistQuery[], callback: mage.archivist.ArchivistMGetCallback<mage.archivist.IVaultValue>): void;
 
     /**
-     * Scan the backend vault for matching indexes, and return them
+     * Search the backend vault for matching indexes, and return them
      *
      * In this case, the index can be partial; for instance, `{ userId: 1 }`, would match
      * all the following indexes:
@@ -101,9 +101,7 @@ declare class Archivist {
      * ```
      *
      * Note that this API returns the list of matching *indexes*, not the data they hold;
-     * to fetch the data, you will want to call `mget` using the returned list of indexes.
-     *
-     * See https://mage.github.io/mage/#key-based-filtering for more details.
+     * please see `scan()` if you wish to retrieve the data instead.
      *
      * @param {string} topicName
      * @param {ArchivistIndex} partialIndex
@@ -114,6 +112,27 @@ declare class Archivist {
      */
     list(topicName: string, partialIndex: mage.archivist.IArchivistIndex, options: mage.archivist.IArchivistListOptions | undefined, callback: mage.archivist.ArchivistListCallback): void;
     list(topicName: string, partialIndex: mage.archivist.IArchivistIndex, callback: mage.archivist.ArchivistListCallback): void;
+
+    /**
+     * Scan the backend vault for entries matching a given partial index.
+     *
+     * In this case, the index can be partial; for instance, `{ userId: 1 }`, would match
+     * all the following indexes:
+     *
+     * ```json
+     * { userId: 1, somethingElse: 'hi'}
+     * { userId: 1, somethingElse: 'hello'}
+     * ```
+     *
+     * @param {string} topicName
+     * @param {ArchivistIndex} partialIndex
+     * @param {ArchivistScanOptions} [options]
+     * @param {Function} callback
+     *
+     * @memberOf Archivist
+     */
+    scan<T>(topicName: string, partialIndex: mage.archivist.IArchivistIndex, options: mage.archivist.ArchivistScanOptions | undefined, callback: mage.archivist.ArchivistMGetCallback<T>): void;
+    scan<T>(topicName: string, partialIndex: mage.archivist.IArchivistIndex, callback: mage.archivist.ArchivistMGetCallback<T>): void;
 
     /**
      * Add a new topic value by index.
@@ -1813,6 +1832,11 @@ declare namespace mage {
         }
 
         /**
+         * Scans can set options for both listing and getting.
+         */
+        type ArchivistScanOptions = IArchivistGetOptions & IArchivistListOptions;
+
+        /**
          * Key-value map of index field names and their expected value.
          */
         interface IArchivistIndex { [id: string] : string; }
@@ -1826,6 +1850,7 @@ declare namespace mage {
         interface IArchivistQuery {
             topic: string;
             index: IArchivistIndex;
+            options?: IArchivistGetOptions;
         }
 
         /**

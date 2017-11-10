@@ -528,27 +528,27 @@ exports.getItemsForUser = function (state, userId, callback) {
   var topic = 'item';
   var partialIndex = { userId: userId };
 
-  state.archivist.list(topic, partialIndex, function (error, indexes) {
-    if (error) {
-      return callback(error);
-    }
-
-    var queries = indexes.map(function (index) {
-      return { topic: topic, index: index };
-    });
-
-    state.archivist.mget(queries, callback);
-  });
+  state.archivist.scan(topic, partialIndex, callback);
 };
 ```
 
-There are a few ways by which you can split and filter the data
-stored in your topics.
+With certain APIs you can provide only a portion of an index and search for
+all indexes who have the same value for that option. These indexes are referred
+to as *partial indexes*.
 
-In this example, we have an `item` topic with an index of two fields: `userId` and `itemId`.
-When a topic index has more than one field, we can use the `partialKey` on a `state.archivist.list`
-call to filter the list of keys to return. In the sample code here, we use this
-feature to return all items' full keys for a given user.
+There are a few ways by which you can split and filter the data
+stored in your topics:
+
+  1. You can use [archivist.list](https://mage.github.io/mage/api/classes/archivist.html#list) to list
+     all the indexes matching a given partial index
+  2. You can use [archivist.mget](https://mage.github.io/mage/api/classes/archivist.html#mget) to fetch
+     multiple indexes at once
+  3. You can use [archivist.scan](https://mage.github.io/mage/api/classes/archivist.html#scan), which combines
+     both operations mentioned above into one
+
+You will generally want to use `scan` for most of your operations, but in some cases, you will find
+that manually fetching the list of indexes using `list` and applying your own custom filtering before
+calling `mget` will give you a better result.
 
 ## Limiting access
 
