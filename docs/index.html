@@ -511,29 +511,42 @@ functionality your game will be using.</p>
 
 <h2 id="format">Format</h2>
 
-<p>The configuration for your game is allowed to exist in either the
-<a href="http://en.wikipedia.org/wiki/YAML">YAML format</a> with the <code class="prettyprint">.yaml</code> file extension, or the
-<a href="http://en.wikipedia.org/wiki/JSON">JSON format</a> with the <code class="prettyprint">.json</code> file extension.</p>
+<p>The configuration for your game is allowed to exist in the
+<a href="http://en.wikipedia.org/wiki/YAML">YAML format</a> with the <code class="prettyprint">.yaml</code> file extension, the
+<a href="http://en.wikipedia.org/wiki/JSON">JSON format</a> with the <code class="prettyprint">.json</code> file extension, or the
+<a href="http://json5.org/">JSON5 format</a> with the <code class="prettyprint">.json5</code> file extension.</p>
 
-<p>In a nutshell, YAML is the more human readable format, while JSON is more JavaScript-y in how it
-represents its variable types.</p>
+<p>In a nutshell, YAML is the more human readable format, while JSON is more JavaScript-like in how it
+represents its variable types. JSON5 represents a good middle-ground between both previous formats.</p>
 
 <h2 id="location">Location</h2>
 
-<p>The files are located in your game&rsquo;s <code class="prettyprint">config</code> folder. Here you will find a <code class="prettyprint">default.yaml</code>
-configuration file, that you can use to collect all configuration that every single environment
-should use (that is, configuration that is not unique to a single developer&rsquo;s environment).</p>
+<blockquote>
+<p>config/</p>
+</blockquote>
+<pre class="highlight plaintext tab-plaintext"><code>config
+├── custom.yaml
+├── default.yaml
+├── development.yaml
+└── production.yaml
+</code></pre>
+<p>The files are located in your game&rsquo;s <code class="prettyprint">config</code> folder.</p>
 
-<p>MAGE will also read the <code class="prettyprint">NODE_ENV</code> <a href="http://en.wikipedia.org/wiki/Environment_variables">environment variable</a>.
-It will try to read a configuration file named after its value (which should probably be set to your
-user name). If for example, my user name is <code class="prettyprint">bob</code>, my <code class="prettyprint">NODE_ENV</code> value would also be <code class="prettyprint">bob</code>, and I
-would place all configuration for my environment in <code class="prettyprint">config/bob.yaml</code> or <code class="prettyprint">config/bob.json</code>.</p>
+<p>Configuration files will be loaded in the following order:</p>
 
-<p>That personalized configuration file augments <code class="prettyprint">default.yaml</code> and overwrites any values that were
-already present.</p>
+<ol>
+<li><code class="prettyprint">config/default.yaml</code>: The base configuration file for your project</li>
+<li><code class="prettyprint">config/[NODE_ENV].yaml</code>: Configuration for a specific environment</li>
+<li><code class="prettyprint">config/custom.yaml</code>: Configuration for your local setup</li>
+</ol>
 
-<p>If you want to load multiple configuration files, you can comma-separate them in your <code class="prettyprint">NODE_ENV</code>
+<p>If you want to load multiple configuration files, you may comma-separate them in your <code class="prettyprint">NODE_ENV</code>
 like this: <code class="prettyprint">NODE_ENV=bob,test</code>. They will be loaded in order, the latter overriding the former.</p>
+
+<p>Custom configuration is generally used during development; in some cases, developers will need
+to specify their own credentials or personalized configuration. Newly created projects will
+include a custom file; however, this file will also be added to your <code class="prettyprint">.gitignore</code> file to
+avoid any conflicts between each developer&rsquo;s configuration.</p>
 
 <h2 id="development">Development</h2>
 
@@ -561,6 +574,23 @@ development mode behavior.</p>
 <p>To run your game in development, MAGE has a <code class="prettyprint">developmentMode</code> configuration flag. This enables or
 disables certain behaviors which make development a bit more convenient. If you want more granular
 control over which of these behaviors are turned on or off, you can specify them in an object.</p>
+
+<h2 id="environment-based-configuration">Environment-based configuration</h2>
+<pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
+    <span class="na">clientHost</span><span class="pi">:</span>
+      <span class="na">bind</span><span class="pi">:</span> <span class="s">MAGE_APP_BIND:string</span>
+
+    <span class="na">mmrp</span><span class="pi">:</span> <span class="s">MAGE_APP_MMRP:bool</span>
+</code></pre>
+<p>You may also add a <code class="prettyprint">config/environment.yaml</code> file to your project: this file serves
+as a means to connect environment variables to specific configuration entries. Environment
+variables will supersede any configuration set through configuration files.</p>
+
+<p>In this example, we connect <code class="prettyprint">MAGE_APP_BIND</code> and <code class="prettyprint">MAGE_APP_MMRP</code> to our configuration.
+Note you may also optionally specify the type to cast the environment variable into.
+In this case for instance, we set <code class="prettyprint">MAGE_APP_MMRP</code> as a boolean because we might want to
+disable MMRP it by running <code class="prettyprint">MAGE_APP_MMRP=false npm run mage</code> or otherwise setting
+the value into the environment.</p>
 
 <h2 id="dynamic-configuration">Dynamic configuration</h2>
 
@@ -840,7 +870,7 @@ the actions will not be executed; the two <code class="prettyprint">mage.players
 would only store information if the call succeded.</p>
 
 <p>For more information about the API you use to access your data store, please read the
-<a href="./api/classes/_mage_d_.archivist.html">Archivist</a> API documentation.</p>
+<a href="./api/classes/archivist.html">Archivist</a> API documentation.</p>
 
 <h2 id="transactional-event-emission">Transactional event emission</h2>
 
@@ -873,7 +903,7 @@ were to return an error, the event emitted by <code class="prettyprint">state.em
 player referenced by <code class="prettyprint">playerId</code>.</p>
 
 <p>For more information on the State API and how events are emitted, please read the
-<a href="./api/interfaces/_mage_d_.mage.core.istate.html">State</a> API documentation.</p>
+<a href="./api/interfaces/mage.core.istate.html">State</a> API documentation.</p>
 
           <h1 id="actors-sessions">Actors &amp; Sessions</h1>
 
@@ -886,19 +916,57 @@ is assigned a unique session ID.</p>
 <p>As long as a session ID is used and reused by an actor, it will stay active. After a long period
 of non-activity however, the session will expire and the actor will be &ldquo;logged out&rdquo; as it were.</p>
 
-<h2 id="auth-and-session-modules">Auth and Session modules</h2>
+<h2 id="session-module">Session module</h2>
 
 <blockquote>
 <p><code class="prettyprint">lib/index.js</code></p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="nx">mage</span><span class="p">.</span><span class="nx">useModules</span><span class="p">([</span>
-  <span class="s1">'auth'</span><span class="p">,</span>
   <span class="s1">'session'</span>
 <span class="p">]);</span>
 </code></pre>
-<p>Freshly bootstrapped MAGE applications already have the auth and the session module activated and
-configured (including a basic Archivist configuration which will store auth-information to disk
-and session-information in memory).</p>
+<p>Freshly bootstrapped MAGE applications already have the session module activated and configured (including a basic Archivist configuration which will store session-information in memory).</p>
+
+<p>For multi-node MAGE clusters, make sure to change the vault used for sessions to be stored
+in a shared memory storage solution such as memcached, redis, etc&hellip; Since MAGE will need
+to retrieve sessions to route messages to them properly.</p>
+
+<h2 id="auth-module">Auth module</h2>
+
+<blockquote>
+<p><code class="prettyprint">lib/index.js</code></p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">mage</span><span class="p">.</span><span class="nx">useModules</span><span class="p">([</span>
+  <span class="s1">'auth'</span>
+<span class="p">]);</span>
+</code></pre>
+<blockquote>
+<p>lib/archivist/index.js</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="c1">// a valid topic with ['username'] as an index</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">auth</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">index</span><span class="p">:</span> <span class="p">[</span><span class="s1">'username'</span><span class="p">],</span>
+  <span class="na">vaults</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">myDataVault</span><span class="p">:</span> <span class="p">{}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre>
+<blockquote>
+<p>config/default.yaml</p>
+</blockquote>
+<pre class="highlight yaml tab-yaml"><code><span class="na">module</span><span class="pi">:</span>
+    <span class="na">auth</span><span class="pi">:</span>
+        <span class="s">// this should point to the topic you created</span>
+        <span class="s">topic</span><span class="pi">:</span> <span class="s">auth</span>
+        <span class="s">// configure how user passwords are stored, the values below are the</span>
+        <span class="s">// recommended default, see the module's README.md for more details</span>
+        <span class="s">// about available hash types</span>
+        <span class="na">hash</span><span class="pi">:</span>
+            <span class="na">type</span><span class="pi">:</span> <span class="s">pbkdf2</span>
+            <span class="na">algorithm</span><span class="pi">:</span> <span class="s">sha256</span>
+            <span class="na">iterations</span><span class="pi">:</span> <span class="s">10000</span>
+</code></pre>
+<p>Once configured you can just add the <code class="prettyprint">auth</code> module to your <code class="prettyprint">useModules</code> call.</p>
 
 <h2 id="logging-in">Logging in</h2>
 
@@ -979,6 +1047,11 @@ uses Archivist behind the scenes to store credentials for newly created users.</
                 <span class="na">path</span><span class="pi">:</span> <span class="s">./filevault/itemVault</span>
 </code></pre>
 <aside class="warning">
+Never configure multiple vaults to connect to the same vault backend storage!
+This would break how [migration scripts](#migrations) work.
+</aside>
+
+<aside class="warning">
 Not all vaults support every operations! Below you will find
 a short configuration description for each available vault backends
 alongside a list of supported operations for that backend.
@@ -1033,6 +1106,10 @@ targets are supported:</p>
 <td>memcached</td>
 <td><a href="https://memcached.org/">Memcached</a> interface.</td>
 </tr>
+<tr>
+<td>sqlite3</td>
+<td><a href="https://www.sqlite.org/">SQLite</a> interface.</td>
+</tr>
 </tbody></table>
 
 <p>Vaults can have different configuration for different environments, as long as the Archivist
@@ -1085,6 +1162,9 @@ case for the use of the file vault backend is static data storage.</p>
 <td><code class="prettyprint">fs.readFile(&#39;myfile.filevault&#39;); fs.unlink(&#39;myfile.filevault&#39; and &#39;myfile.json&#39;);</code></td>
 </tr>
 </tbody></table>
+
+<p><code class="prettyprint">archivist:create</code> support is done via <code class="prettyprint">mkdirp</code> and just requires that the user
+running the command has enough rights to create folders in the project&rsquo;s path.</p>
 
 <h3 id="memory">Memory</h3>
 <pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">memory</span>
@@ -1142,8 +1222,6 @@ always synchronized in real time.</p>
 
 <p>This vault type requires no configuration.</p>
 
-<h3 id="supported-operations">Supported operations</h3>
-
 <table><thead>
 <tr>
 <th>operation</th>
@@ -1199,6 +1277,13 @@ always synchronized in real time.</p>
 
         <span class="c1"># optional, useful if you share a bucket with other applications</span>
         <span class="na">prefix</span><span class="pi">:</span> <span class="s2">"</span><span class="s">bob/"</span>
+
+    <span class="c1"># options only used with archivist:create</span>
+    <span class="na">create</span><span class="pi">:</span>
+        <span class="na">adminUsername</span><span class="pi">:</span> <span class="s">admin</span>
+        <span class="na">adminPassword</span><span class="pi">:</span> <span class="s2">"</span><span class="s">password"</span>
+        <span class="na">bucketType</span><span class="pi">:</span> <span class="s">couchbase</span> <span class="c1"># can be couchbase or memcached</span>
+        <span class="na">romQuotaMB</span><span class="pi">:</span> <span class="s">100</span>       <span class="c1"># how much memory to allocate to the bucket</span>
 </code></pre>
 <p><code class="prettyprint">user</code> and <code class="prettyprint">password</code> are optional, however, you will need to configure
 configure them if you with to create the underlying bucket
@@ -1244,15 +1329,19 @@ through <code class="prettyprint">archivist:migrate</code>.</p>
 </tr>
 </tbody></table>
 
+<p><code class="prettyprint">archivist:create</code> support requires a separate <code class="prettyprint">create</code> entry in the <code class="prettyprint">config</code>,
+meanwhile views should be created/managed in migration scripts.</p>
+
+<p><br><br><br><br><br></p>
+
 <h3 id="mysql">MySQL</h3>
-<pre class="highlight yaml tab-yaml"><code>        <span class="na">mysql</span><span class="pi">:</span>
-            <span class="na">type</span><span class="pi">:</span> <span class="s">mysql</span>
-            <span class="na">config</span><span class="pi">:</span>
-                <span class="na">options</span><span class="pi">:</span>
-                    <span class="na">host</span><span class="pi">:</span> <span class="s2">"</span><span class="s">myhost"</span>
-                    <span class="na">user</span><span class="pi">:</span> <span class="s2">"</span><span class="s">myuser"</span>
-                    <span class="na">password</span><span class="pi">:</span> <span class="s2">"</span><span class="s">mypassword"</span>
-                    <span class="na">database</span><span class="pi">:</span> <span class="s2">"</span><span class="s">mydb"</span>
+<pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">mysql</span>
+<span class="na">config</span><span class="pi">:</span>
+    <span class="na">options</span><span class="pi">:</span>
+        <span class="na">host</span><span class="pi">:</span> <span class="s2">"</span><span class="s">myhost"</span>
+        <span class="na">user</span><span class="pi">:</span> <span class="s2">"</span><span class="s">myuser"</span>
+        <span class="na">password</span><span class="pi">:</span> <span class="s2">"</span><span class="s">mypassword"</span>
+        <span class="na">database</span><span class="pi">:</span> <span class="s2">"</span><span class="s">mydb"</span>
 </code></pre>
 <p>The available connection options are documented in the <a href="https://github.com/felixge/node-mysql#connection-options">node-mysql readme</a>.
 For pool options please look at <a href="https://github.com/felixge/node-mysql#pool-options">Pool options</a>.</p>
@@ -1295,6 +1384,43 @@ For pool options please look at <a href="https://github.com/felixge/node-mysql#p
 <td><code class="prettyprint">DELETE FROM table WHERE fullIndex</code></td>
 </tr>
 </tbody></table>
+
+<p><code class="prettyprint">archivist:create</code> support requires that the user is allowed to create databases.</p>
+
+<blockquote>
+<p>Sample query to create a basic &ldquo;people&rdquo; topic table store.</p>
+</blockquote>
+<pre class="highlight sql tab-sql"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">people</span> <span class="p">(</span>
+  <span class="n">personId</span> <span class="n">INT</span> <span class="n">UNSIGNED</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">value</span> <span class="n">TEXT</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">mediaType</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">personId</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre>
+<p>Queries against your database are done through a combination of the generated keys and serialized
+values. A generated key must yield a table name and a primary key. A serialized value must yield a
+number of column names with their respective values.</p>
+
+<p>For instance, given a topic <code class="prettyprint">people</code> and index <code class="prettyprint">{ personId: 1 }</code>, the destination table will need
+to have a <code class="prettyprint">personId</code> field, but also a <code class="prettyprint">value</code> field to store data ad a <code class="prettyprint">mediaType</code> field so that
+MAGE may know how to process the stored value.</p>
+
+<blockquote>
+<p>Overriding the serializer</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">exports</span><span class="p">.</span><span class="nx">people</span><span class="p">.</span><span class="nx">vaults</span><span class="p">.</span><span class="nx">mysql</span><span class="p">.</span><span class="nx">serialize</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="na">value</span><span class="p">:</span> <span class="nx">value</span><span class="p">.</span><span class="nx">setEncoding</span><span class="p">([</span><span class="s1">'utf8'</span><span class="p">,</span> <span class="s1">'buffer'</span><span class="p">]).</span><span class="nx">data</span><span class="p">,</span>
+        <span class="na">mediaType</span><span class="p">:</span> <span class="nx">value</span><span class="p">.</span><span class="nx">mediaType</span><span class="p">,</span>
+        <span class="na">lastChanged</span><span class="p">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+</code></pre>
+<p>If you want to change how this information is stored, by adding columns, etc, you can overload the
+serializer method to do so. For example, consider the following example if you want to add a
+timestamp to a <code class="prettyprint">lastChanged INT UNSIGNED NOT NULL</code> column.</p>
+
+<p><br><br><br><br><br><br><br><br><br><br><br><br><br><br></p>
 
 <h3 id="elasticsearch">Elasticsearch</h3>
 <pre class="highlight yaml tab-yaml"><code><span class="na">elasticsearch</span><span class="pi">:</span>
@@ -1457,10 +1583,10 @@ For pool options please look at <a href="https://github.com/felixge/node-mysql#p
 <h3 id="redis">Redis</h3>
 <pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">redis</span>
 <span class="na">config</span><span class="pi">:</span>
-  <span class="na">port</span><span class="pi">:</span> <span class="s">6379</span>
-  <span class="na">host</span><span class="pi">:</span> <span class="s2">"</span><span class="s">127.0.0.1"</span>
-  <span class="na">options</span><span class="pi">:</span> <span class="pi">{}</span>
-  <span class="na">prefix</span><span class="pi">:</span> <span class="s2">"</span><span class="s">key/prefix/"</span>
+    <span class="na">port</span><span class="pi">:</span> <span class="s">6379</span>
+    <span class="na">host</span><span class="pi">:</span> <span class="s2">"</span><span class="s">127.0.0.1"</span>
+    <span class="na">options</span><span class="pi">:</span> <span class="pi">{}</span>
+    <span class="na">prefix</span><span class="pi">:</span> <span class="s2">"</span><span class="s">key/prefix/"</span>
 </code></pre>
 <p>The <code class="prettyprint">options</code> object is described in the <a href="https://npmjs.org/package/redis">node-redis readme</a>.
 Both <code class="prettyprint">options</code> and <code class="prettyprint">prefix</code> are optional. The option <code class="prettyprint">return_buffers</code> is turned on by default by the
@@ -1558,6 +1684,65 @@ optional.</p>
 <td><code class="prettyprint">memcached.del()</code></td>
 </tr>
 </tbody></table>
+
+<h3 id="sqlite3">SQLite3</h3>
+<pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">sqlite3</span>
+<span class="na">config</span><span class="pi">:</span>
+    <span class="na">filename</span><span class="pi">:</span> <span class="s2">"</span><span class="s">./sqlitevault/awesomegame.db"</span>
+</code></pre>
+<p>This vault should only be used for development and testing.</p>
+
+<p>Further documentation can be found at <a href="https://github.com/mapbox/node-sqlite3">node-sqlite3</a>.
+To avoid confusion, the npm package name is sqlite3, but the project is called node-sqlite3.</p>
+
+<p>If no filename is provided, an in-memory database will be created at runtime and will be destroyed on close.</p>
+
+<p>If an empty string is provided, an temporary database stored on disk will be createdat runtime and destroyed on close.</p>
+
+<table><thead>
+<tr>
+<th>operation</th>
+<th style="text-align: center">supported</th>
+<th>implementation</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>list</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">SELECT FROM table WHERE partialIndex</code></td>
+</tr>
+<tr>
+<td>get</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">SELECT FROM table WHERE fullIndex</code></td>
+</tr>
+<tr>
+<td>add</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">INSERT INTO table () VALUES ()</code></td>
+</tr>
+<tr>
+<td>set</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">INSERT OR REPLACE INTO table () VALUES ()</code></td>
+</tr>
+<tr>
+<td>touch</td>
+<td style="text-align: center"></td>
+<td></td>
+</tr>
+<tr>
+<td>del</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">DELETE FROM table WHERE fullIndex</code></td>
+</tr>
+</tbody></table>
+
+<p><code class="prettyprint">archivist:create</code> support requires that the user be allowed to create databases. However, you
+will still need to write a <a href="#migrations">migration script</a> to create the different tables
+where your topics will be stored.</p>
+
+<p>See <a href="#mysql">documentation</a> for the <code class="prettyprint">MySQL</code> vault on how to structure your tables for usage with archivist.</p>
 
 <h2 id="topics">Topics</h2>
 
@@ -1690,26 +1875,28 @@ the following command to retrieve the data we have just created.</p>
   <span class="kd">var</span> <span class="nx">topic</span> <span class="o">=</span> <span class="s1">'item'</span><span class="p">;</span>
   <span class="kd">var</span> <span class="nx">partialIndex</span> <span class="o">=</span> <span class="p">{</span> <span class="na">userId</span><span class="p">:</span> <span class="nx">userId</span> <span class="p">};</span>
 
-  <span class="nx">state</span><span class="p">.</span><span class="nx">archivist</span><span class="p">.</span><span class="nx">list</span><span class="p">(</span><span class="nx">topic</span><span class="p">,</span> <span class="nx">partialIndex</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">indexes</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
-    <span class="p">}</span>
-
-    <span class="kd">var</span> <span class="nx">queries</span> <span class="o">=</span> <span class="nx">indexes</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="p">{</span> <span class="na">topic</span><span class="p">:</span> <span class="nx">topic</span><span class="p">,</span> <span class="na">index</span><span class="p">:</span> <span class="nx">index</span> <span class="p">};</span>
-    <span class="p">});</span>
-
-    <span class="nx">state</span><span class="p">.</span><span class="nx">archivist</span><span class="p">.</span><span class="nx">mget</span><span class="p">(</span><span class="nx">queries</span><span class="p">,</span> <span class="nx">callback</span><span class="p">);</span>
-  <span class="p">});</span>
+  <span class="nx">state</span><span class="p">.</span><span class="nx">archivist</span><span class="p">.</span><span class="nx">scan</span><span class="p">(</span><span class="nx">topic</span><span class="p">,</span> <span class="nx">partialIndex</span><span class="p">,</span> <span class="nx">callback</span><span class="p">);</span>
 <span class="p">};</span>
 </code></pre>
-<p>There are a few ways by which you can split and filter the data
-stored in your topics.</p>
+<p>With certain APIs you can provide only a portion of an index and search for
+all indexes who have the same value for that option. These indexes are referred
+to as <em>partial indexes</em>.</p>
 
-<p>In this example, we have an <code class="prettyprint">item</code> topic with an index of two fields: <code class="prettyprint">userId</code> and <code class="prettyprint">itemId</code>.
-When a topic index has more than one field, we can use the <code class="prettyprint">partialKey</code> on a <code class="prettyprint">state.archivist.list</code>
-call to filter the list of keys to return. In the sample code here, we use this
-feature to return all items&rsquo; full keys for a given user.</p>
+<p>There are a few ways by which you can split and filter the data
+stored in your topics:</p>
+
+<ol>
+<li>You can use <a href="https://mage.github.io/mage/api/classes/archivist.html#list">archivist.list</a> to list
+ all the indexes matching a given partial index</li>
+<li>You can use <a href="https://mage.github.io/mage/api/classes/archivist.html#mget">archivist.mget</a> to fetch
+ multiple indexes at once</li>
+<li>You can use <a href="https://mage.github.io/mage/api/classes/archivist.html#scan">archivist.scan</a>, which combines
+ both operations mentioned above into one</li>
+</ol>
+
+<p>You will generally want to use <code class="prettyprint">scan</code> for most of your operations, but in some cases, you will find
+that manually fetching the list of indexes using <code class="prettyprint">list</code> and applying your own custom filtering before
+calling <code class="prettyprint">mget</code> will give you a better result.</p>
 
 <h2 id="limiting-access">Limiting access</h2>
 
@@ -1748,6 +1935,86 @@ to only data which matches the userId.</p>
 <p>We then use the acl function to only allow users and tests access to
 the <code class="prettyprint">get</code> API, but full access to CMS users and administrators.</p>
 
+<h2 id="database-creation">Database Creation</h2>
+
+<p>Some vaults also support database/vault creation via the <code class="prettyprint">archivist:create</code> command as long
+as admin credentials are properly configured, see each vault&rsquo;s configuration on how to use it.</p>
+
+<p>List of <code class="prettyprint">archivist:create</code> enabled backends:</p>
+
+<ul>
+<li><code class="prettyprint">file</code></li>
+<li><code class="prettyprint">couchbase</code></li>
+<li><code class="prettyprint">mysql</code></li>
+<li><code class="prettyprint">sqlite</code></li>
+</ul>
+
+<p>It is not recommended to use those features in production.</p>
+
+<h2 id="migrations">Migrations</h2>
+
+<p>MAGE supports database migration scripts similar to <a href="http://api.rubyonrails.org/classes/ActiveRecord/Migration.html">Ruby on Rails 2.1</a>
+which are aligned with your <code class="prettyprint">package.json</code> version and exposed via the <code class="prettyprint">archivist:migrate</code>
+command.</p>
+
+<p>Running the <code class="prettyprint">archivist:migrate</code> command will go through each migrations in order up to the current
+<code class="prettyprint">package.json</code> version and apply them. The command also allows specifying an exact version allowing
+for testing new migrations or reverting to a previous version.</p>
+
+<h3 id="how-to-write-migration-scripts">How to write migration scripts</h3>
+
+<p>Migration scripts are single files per vault and per version. These files are JavaScript modules and
+should export two methods: <code class="prettyprint">up</code> and <code class="prettyprint">down</code>, to allow migration in two directions. You are strongly
+encouraged to implement a <code class="prettyprint">down</code> migration path, but if it&rsquo;s really impossible, you may leave out
+the <code class="prettyprint">down</code> method. Keep in mind that <strong>this will block rollback operations</strong>. See the sample on the
+right side for more details.</p>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">exports</span><span class="p">.</span><span class="nx">up</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">vault</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">sql</span> <span class="o">=</span>
+                <span class="s1">'CREATE TABLE inventory (\n'</span> <span class="o">+</span>
+                <span class="s1">'  actorId VARCHAR(255) NOT NULL PRIMARY KEY,\n'</span> <span class="o">+</span>
+                <span class="s1">'  value TEXT NOT NULL,\n'</span> <span class="o">+</span>
+                <span class="s1">'  mediaType VARCHAR(255) NOT NULL\n'</span> <span class="o">+</span>
+                <span class="s1">') ENGINE=InnoDB'</span><span class="p">;</span>
+
+        <span class="nx">vault</span><span class="p">.</span><span class="nx">pool</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="nx">sql</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+                <span class="p">}</span>
+
+                <span class="k">return</span> <span class="nx">cb</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="p">{</span> <span class="na">summary</span><span class="p">:</span> <span class="s1">'Created the inventory table'</span> <span class="p">});</span>
+        <span class="p">});</span>
+<span class="p">};</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">down</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">vault</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">vault</span><span class="p">.</span><span class="nx">pool</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="s1">'DROP TABLE inventory'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre>
+<p>The migration file goes to your game&rsquo;s <code class="prettyprint">lib/archivist/migrations</code> folder into a subfolder per vault.
+This folder should have the exact same name as your vault does. The migration file you provide
+should be named after the version in <code class="prettyprint">package.json</code> and have the extension <code class="prettyprint">.{js,ts}</code>. Other file
+extensions are ignored.</p>
+
+<p>Some typical examples:</p>
+
+<ul>
+<li><code class="prettyprint">lib/archivist/migrations/&lt;vaultname&gt;/v0.1.0.js</code></li>
+<li><code class="prettyprint">lib/archivist/migrations/&lt;vaultname&gt;/v0.1.1.js</code></li>
+<li><code class="prettyprint">lib/archivist/migrations/&lt;vaultname&gt;/v0.2.0.js</code></li>
+</ul>
+
+<p>The callback of the <code class="prettyprint">up</code> method allows you to pass a report, that will be stored with the migration
+itself inside the version history. In MySQL for example, this is all stored in a <code class="prettyprint">schema_migrations</code>
+table, which is automatically created.</p>
+
+<h3 id="how-to-execute-migrations">How to execute migrations</h3>
+
+<p>Migrations can be executed by calling some specific CLI commands, which are detailed when you run
+<code class="prettyprint">npm run help</code> or <code class="prettyprint">mage --help</code>. They allow you to create a database, drop a database, and run migrations.
+This is what they look like:</p>
+<pre class="highlight plaintext tab-plaintext"><code>archivist:create [vaults]     create database environments for all configured vaults
+archivist:drop [vaults]       destroy database environments for all configured vaults
+archivist:migrate [version]   migrates all vaults to the current version, or to the version requested
+</code></pre>
           <h1 id="events">Events</h1>
 
 <p>We have seen in the <a href="#states">States</a> section of this user guide that
@@ -2066,6 +2333,8 @@ specify a log directory where you want your log files to go, and a set of filena
 You can control which log level will go in which file by setting the log level range
 as a value, or specify <code class="prettyprint">all</code> if you wish to write all logs to a single file.</p>
 
+<p><br><br><br><br><br><br><br><br></p>
+
 <h3 id="syslog">Syslog</h3>
 <pre class="highlight yaml tab-yaml"><code><span class="na">logging</span><span class="pi">:</span>
     <span class="na">server</span><span class="pi">:</span>
@@ -2088,6 +2357,8 @@ of this, it also does not support using TLS.</p>
 
 <p>Since only UDP is supported, it also means that some logs may not arrive to
 destination.</p>
+
+<p><br><br><br><br><br><br><br><br></p>
 
 <h3 id="graylog">Graylog</h3>
 <pre class="highlight yaml tab-yaml"><code><span class="na">logging</span><span class="pi">:</span>
@@ -2259,6 +2530,8 @@ to use for that engine.</p>
 <p>The single engine can be used during development to locally allow the use of the service
 discovery API. It will only find the local server.</p>
 
+<p><br><br></p>
+
 <h3 id="bonjour-mdns">Bonjour/MDNS</h3>
 <pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
     <span class="na">serviceDiscovery</span><span class="pi">:</span>
@@ -2278,6 +2551,8 @@ configure any additonal services. However, note that certain network (such as th
 provided by AWS) wil not allow broadcasts, and so you will not be able to use this engine
 in such case.</p>
 
+<p><br><br><br><br></p>
+
 <h3 id="zookeeper">ZooKeeper</h3>
 <pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
     <span class="na">serviceDiscovery</span><span class="pi">:</span>
@@ -2293,6 +2568,8 @@ in such case.</p>
                 <span class="na">sessionTimeout</span><span class="pi">:</span> <span class="s">30000</span>
 </code></pre>
 <p>The zookeeper engine will use ZooKeeper to announce MAGE servers.</p>
+
+<p><br><br><br><br><br><br><br><br><br><br><br><br></p>
 
 <h3 id="consul">Consul</h3>
 <pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>

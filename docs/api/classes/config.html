@@ -1000,6 +1000,7 @@ img { max-width: 100%; }
 				cases where you wish to apply your own custom configuration.</p>
 				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> config = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mage/lib/config'</span>);
 config.set(<span class="hljs-string">'some.path.to.config'</span>, <span class="hljs-number">1</span>)
+config.set([<span class="hljs-string">'some'</span>, <span class="hljs-string">'other'</span>, <span class="hljs-string">'path'</span>], <span class="hljs-number">1</span>)
 <span class="hljs-keyword">const</span> mage = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mage'</span>);
 
 <span class="hljs-comment">// continue with your test code</span>
@@ -1043,7 +1044,7 @@ config.set(<span class="hljs-string">'some.path.to.config'</span>, <span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/mage/mage/tree/master/lib/config/index.ts#L54">lib/config/index.ts:54</a></li>
+								<li>Defined in <a href="https://github.com/mage/mage/tree/master/lib/config/index.ts#L55">lib/config/index.ts:55</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1077,7 +1078,7 @@ config.set(<span class="hljs-string">'some.path.to.config'</span>, <span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/mage/mage/tree/master/lib/config/index.ts#L62">lib/config/index.ts:62</a></li>
+								<li>Defined in <a href="https://github.com/mage/mage/tree/master/lib/config/index.ts#L63">lib/config/index.ts:63</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1103,13 +1104,13 @@ config.set(<span class="hljs-string">'some.path.to.config'</span>, <span class="
 				<a name="set" class="tsd-anchor"></a>
 				<h3>set</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-					<li class="tsd-signature tsd-kind-icon">set<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<li class="tsd-signature tsd-kind-icon">set<span class="tsd-signature-symbol">(</span>label<span class="tsd-signature-symbol">: </span><a href="../globals.html#configurationlabel" class="tsd-signature-type">ConfigurationLabel</a>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/mage/mage/tree/master/lib/config/index.ts#L70">lib/config/index.ts:70</a></li>
+								<li>Defined in <a href="https://github.com/mage/mage/tree/master/lib/config/index.ts#L71">lib/config/index.ts:71</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1120,9 +1121,9 @@ config.set(<span class="hljs-string">'some.path.to.config'</span>, <span class="
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>key: <span class="tsd-signature-type">string</span></h5>
+								<h5>label: <a href="../globals.html#configurationlabel" class="tsd-signature-type">ConfigurationLabel</a></h5>
 								<div class="tsd-comment tsd-typography">
-									<p>dot-separated configuration path (example: &#39;server.hosts&#39;)</p>
+									<p>Configuration label to set</p>
 								</div>
 							</li>
 							<li>
@@ -1145,7 +1146,7 @@ config.set(<span class="hljs-string">'some.path.to.config'</span>, <span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/mage/mage/tree/master/lib/config/index.ts#L45">lib/config/index.ts:45</a></li>
+								<li>Defined in <a href="https://github.com/mage/mage/tree/master/lib/config/index.ts#L46">lib/config/index.ts:46</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">

@@ -923,6 +923,12 @@ img { max-width: 100%; }
 			<a href="mage.core.istate.html" class="tsd-kind-icon">IState</a>
 		</li>
 		<li class=" tsd-kind-interface tsd-parent-kind-module">
+			<a href="mage.core.istateemitconfig.html" class="tsd-kind-icon">IState<wbr>Emit<wbr>Config</a>
+		</li>
+		<li class=" tsd-kind-interface tsd-parent-kind-module">
+			<a href="mage.core.istateoptions.html" class="tsd-kind-icon">IState<wbr>Options</a>
+		</li>
+		<li class=" tsd-kind-interface tsd-parent-kind-module">
 			<a href="mage.core.itask.html" class="tsd-kind-icon">ITask</a>
 		</li>
 		<li class="current tsd-kind-interface tsd-parent-kind-module">
@@ -930,6 +936,9 @@ img { max-width: 100%; }
 			<ul>
 				<li class=" tsd-kind-property tsd-parent-kind-interface">
 					<a href="mage.core.iusercommand.html#acl" class="tsd-kind-icon">acl</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-interface">
+					<a href="mage.core.iusercommand.html#timeout" class="tsd-kind-icon">timeout</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
 					<a href="mage.core.iusercommand.html#execute" class="tsd-kind-icon">execute</a>
@@ -968,6 +977,7 @@ img { max-width: 100%; }
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="mage.core.iusercommand.html#acl" class="tsd-kind-icon">acl</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="mage.core.iusercommand.html#timeout" class="tsd-kind-icon">timeout</a></li>
 						</ul>
 					</section>
 					<section class="tsd-index-section ">
@@ -987,9 +997,32 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">acl<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L2122">mage.ts:2122</a></li>
+						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L2171">mage.ts:2171</a></li>
 					</ul>
 				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>What user levels are allowed to access
+						this user command</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="timeout" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> timeout</h3>
+				<div class="tsd-signature tsd-kind-icon">timeout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L2179">mage.ts:2179</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Timeout for the user command</p>
+					</div>
+					<p>By default, the user command will be allowed
+					to run forever.</p>
+				</div>
 			</section>
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
@@ -1004,9 +1037,14 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L2123">mage.ts:2123</a></li>
+								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L2184">mage.ts:2184</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>The code of the user command itself</p>
+							</div>
+						</div>
 						<h4 class="tsd-type-parameters-title">Type parameters</h4>
 						<ul class="tsd-type-parameters">
 							<li>

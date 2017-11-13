@@ -914,6 +914,9 @@ img { max-width: 100%; }
 					<a href="archivist.html#add" class="tsd-kind-icon">add</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+					<a href="archivist.html#clearcache" class="tsd-kind-icon">clear<wbr>Cache</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
 					<a href="archivist.html#del" class="tsd-kind-icon">del</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
@@ -936,6 +939,12 @@ img { max-width: 100%; }
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
 					<a href="archivist.html#mgetvalues" class="tsd-kind-icon">mget<wbr>Values</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+					<a href="archivist.html#reset" class="tsd-kind-icon">reset</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-not-exported">
+					<a href="archivist.html#scan" class="tsd-kind-icon">scan</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-not-exported">
 					<a href="archivist.html#set" class="tsd-kind-icon">set</a>
@@ -1039,6 +1048,7 @@ img { max-width: 100%; }
 						<h3>Methods</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-not-exported"><a href="archivist.html#add" class="tsd-kind-icon">add</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="archivist.html#clearcache" class="tsd-kind-icon">clear<wbr>Cache</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="archivist.html#del" class="tsd-kind-icon">del</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="archivist.html#distribute" class="tsd-kind-icon">distribute</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="archivist.html#exists" class="tsd-kind-icon">exists</a></li>
@@ -1047,6 +1057,8 @@ img { max-width: 100%; }
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="archivist.html#list" class="tsd-kind-icon">list</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-not-exported"><a href="archivist.html#mget" class="tsd-kind-icon">mget</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="archivist.html#mgetvalues" class="tsd-kind-icon">mget<wbr>Values</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="archivist.html#reset" class="tsd-kind-icon">reset</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-not-exported"><a href="archivist.html#scan" class="tsd-kind-icon">scan</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-not-exported"><a href="archivist.html#set" class="tsd-kind-icon">set</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="archivist.html#touch" class="tsd-kind-icon">touch</a></li>
 						</ul>
@@ -1066,7 +1078,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L134">mage.ts:134</a></li>
+								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L153">mage.ts:153</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1116,6 +1128,35 @@ img { max-width: 100%; }
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+				<a name="clearcache" class="tsd-anchor"></a>
+				<h3>clear<wbr>Cache</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+					<li class="tsd-signature tsd-kind-icon">clear<wbr>Cache<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L210">mage.ts:210</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Clear all the loaded entries from this archivist instance</p>
+							</div>
+							<p>Note that this will not clear mutated entries; please use
+							<code>reset()</code> if you wish to clear all data instead.</p>
+							<dl class="tsd-comment-tags">
+								<dt>memberof</dt>
+								<dd><p>Archivist</p>
+								</dd>
+							</dl>
+						</div>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
 				<a name="del" class="tsd-anchor"></a>
 				<h3>del</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
@@ -1125,7 +1166,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L158">mage.ts:158</a></li>
+								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L177">mage.ts:177</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1163,10 +1204,13 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L179">mage.ts:179</a></li>
+								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L200">mage.ts:200</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Commit all current changes to their respective vault backend(s)</p>
+							</div>
 							<dl class="tsd-comment-tags">
 								<dt>memberof</dt>
 								<dd><p>Archivist</p>
@@ -1382,12 +1426,12 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L115">mage.ts:115</a></li>
+								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L113">mage.ts:113</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Scan the backend vault for matching indexes, and return them</p>
+								<p>Search the backend vault for matching indexes, and return them</p>
 							</div>
 							<p>In this case, the index can be partial; for instance, <code>{ userId: 1 }</code>, would match
 							all the following indexes:</p>
@@ -1395,8 +1439,7 @@ img { max-width: 100%; }
 { userId: 1, somethingElse: &#39;hello&#39;}
 </code></pre>
 							<p>Note that this API returns the list of matching <em>indexes</em>, not the data they hold;
-							to fetch the data, you will want to call <code>mget</code> using the returned list of indexes.</p>
-							<p>See <a href="https://mage.github.io/mage/#key-based-filtering">https://mage.github.io/mage/#key-based-filtering</a> for more details.</p>
+							please see <code>scan()</code> if you wish to retrieve the data instead.</p>
 							<dl class="tsd-comment-tags">
 								<dt>memberof</dt>
 								<dd><p>Archivist</p>
@@ -1425,7 +1468,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L116">mage.ts:116</a></li>
+								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L114">mage.ts:114</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1628,6 +1671,116 @@ img { max-width: 100%; }
 					</li>
 				</ul>
 			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+				<a name="reset" class="tsd-anchor"></a>
+				<h3>reset</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+					<li class="tsd-signature tsd-kind-icon">reset<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L218">mage.ts:218</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Reset the instance; remove all operations that are
+								currently scheduled on the instance</p>
+							</div>
+							<dl class="tsd-comment-tags">
+								<dt>memberof</dt>
+								<dd><p>Archivist</p>
+								</dd>
+							</dl>
+						</div>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-not-exported">
+				<a name="scan" class="tsd-anchor"></a>
+				<h3>scan</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-not-exported">
+					<li class="tsd-signature tsd-kind-icon">scan&lt;T&gt;<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, partialIndex<span class="tsd-signature-symbol">: </span><a href="../interfaces/mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, options<span class="tsd-signature-symbol">: </span><a href="../modules/mage.archivist.html#archivistscanoptions" class="tsd-signature-type">ArchivistScanOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/mage.archivist.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<li class="tsd-signature tsd-kind-icon">scan&lt;T&gt;<span class="tsd-signature-symbol">(</span>topicName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, partialIndex<span class="tsd-signature-symbol">: </span><a href="../interfaces/mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a>, callback<span class="tsd-signature-symbol">: </span><a href="../modules/mage.archivist.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L134">mage.ts:134</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Scan the backend vault for entries matching a given partial index.</p>
+							</div>
+							<p>In this case, the index can be partial; for instance, <code>{ userId: 1 }</code>, would match
+							all the following indexes:</p>
+							<pre><code class="lang-json">{ userId: 1, somethingElse: &#39;hi&#39;}
+{ userId: 1, somethingElse: &#39;hello&#39;}
+</code></pre>
+							<dl class="tsd-comment-tags">
+								<dt>memberof</dt>
+								<dd><p>Archivist</p>
+								</dd>
+							</dl>
+						</div>
+						<h4 class="tsd-type-parameters-title">Type parameters</h4>
+						<ul class="tsd-type-parameters">
+							<li>
+								<h4>T</h4>
+							</li>
+						</ul>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>topicName: <span class="tsd-signature-type">string</span></h5>
+							</li>
+							<li>
+								<h5>partialIndex: <a href="../interfaces/mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a></h5>
+							</li>
+							<li>
+								<h5>options: <a href="../modules/mage.archivist.html#archivistscanoptions" class="tsd-signature-type">ArchivistScanOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
+							</li>
+							<li>
+								<h5>callback: <a href="../modules/mage.archivist.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								<div class="tsd-comment tsd-typography">
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L135">mage.ts:135</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-type-parameters-title">Type parameters</h4>
+						<ul class="tsd-type-parameters">
+							<li>
+								<h4>T</h4>
+							</li>
+						</ul>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>topicName: <span class="tsd-signature-type">string</span></h5>
+							</li>
+							<li>
+								<h5>partialIndex: <a href="../interfaces/mage.archivist.iarchivistindex.html" class="tsd-signature-type">IArchivistIndex</a></h5>
+							</li>
+							<li>
+								<h5>callback: <a href="../modules/mage.archivist.html#archivistmgetcallback" class="tsd-signature-type">ArchivistMGetCallback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-not-exported">
 				<a name="set" class="tsd-anchor"></a>
 				<h3>set</h3>
@@ -1638,7 +1791,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L148">mage.ts:148</a></li>
+								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L167">mage.ts:167</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1694,10 +1847,14 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L169">mage.ts:169</a></li>
+								<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L190">mage.ts:190</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Touch a topic</p>
+							</div>
+							<p>Used to reset the expiration timer.</p>
 							<dl class="tsd-comment-tags">
 								<dt>memberof</dt>
 								<dd><p>Archivist</p>
