@@ -66,6 +66,10 @@ server:
     # the process to shut down.
     shutdownGracePeriod: 15
 
+    # Set the maximum HTTP POST (in KB) data request size for
+    # this server
+    maxRequestSize: 512
+
     # MMRP is the messaging layer between node instances. Turn this on when you want to allow
     # asynchronous message passing to users. See production.yaml for an example.
     mmrp: false
