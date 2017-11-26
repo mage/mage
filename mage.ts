@@ -1395,18 +1395,34 @@ declare class Mage extends NodeJS.EventEmitter {
     getTask(): mage.core.ITask;
 
     /**
+     * Quit MAGE
+     *
+     * This will stop ALL MAGE processes regardless of where it
+     * is called from. To stop only the local process (similarly
+     * to what `process.exit` would do, please see `mage.exit`)
+     *
+     * @param {number} [exitCode] exit code to use
+     * @param {boolean} [hard] If true, exit immediately (exit code will be ignored and set to 1)
+     */
+    quit(exitCode?: number, hard?: boolean) : never;
+
+    /**
      * Shut down MAGE
      *
      * When setting `hard` to true, MAGE will not try to complete current I/O
      * operations and exit immediately; you should avoid using `hard` unless there
      * are no other options available to you.
      *
+     * Note that this will behave similarly to `process.exit`; only the *current*
+     * process will be stopped, not the entire server. To stop the entire server,
+     * see `mage.quit`
+     *
      * @param {number} [exitCode] exit code to use
      * @param {boolean} [hard] If true, exit immediately (exit code will be ignored and set to 1)
      *
      * @memberOf Mage
      */
-    quit(exitCode?: number, hard?: boolean) : never;
+    exit(exitCode?: number, hard?: boolean) : never;
 
     // deprecated
     // fatalError(...args: any[]): never;
