@@ -147,6 +147,87 @@ You may notice that the content we send is in line-separated JSON format, and
 that the first thing we send is an empty array; this array, under normal
 circumstances, would contain credentials and other metadata.
 
+## Login
+
+> lib/modules/players/index.js
+
+```javascript
+var mage = require('mage');
+
+exports.register = function (state, username, password, callback) {
+  var options = {
+    acl: ['user']
+  };
+
+  mage.auth.register(state, username, password, options,  function (error, userId) {
+    if (error) {
+      return callback(error);
+    }
+
+    mage.logger.debug('Logging in as', userId);
+
+    mage.auth.login(state, username, password, callback);
+  });
+};
+```
+
+Now that we can register users, we may want to automatically log in the user by calling
+`mage.auth.login`. While the registration has not been completed in the database, our `state`
+transaction contains the information for the newly registered user, which will allow for
+`login` to complete successfully.
+
+For more information about the `auth` module, please refer to the
+[API documentation](https://mage.github.io/mage/api/classes/mage.html#auth).
+
+## ACLs
+
+> lib/modules/players/usercommands/notAccessibleToNormalUers.js
+
+```javascript
+var mage = require('mage');
+
+// Who can access this API?
+exports.acl = ['special'];
+
+// [...]
+```
+
+As you may have noticed, `mage.auth.register` receives and `acl` option allowing
+to attach to a give user different access rights. User commands can then in return
+list what ACL groups are allowed to acces that user command.
+
+For instance, in the example above, a user registered only with the `user` credential
+would not be allowed to execute this user command. Only if the 'user' or '*' wildcard ACL
+were added to the `exports.acl` array would a normal user be able to execute it.
+
+By standard, `user` is assigned to any registered player, but you may create your own ACL
+groups as you see fit.
+
+## User command timeout
+
+> lib/modules/players/usercommands/register.js
+
+```javascript
+var mage = require('mage');
+
+// Who can access this API?
+exports.acl = ['*'];
+
+exports.timeout = 200
+
+// [...]
+```
+
+By default, user command execution will time out after 15,000 milliseconds; however,
+in some cases, you may want to increase or reduce that value.
+
+To do so, simply set `exports.timeout` to your desired value.
+
+Keep in mind that the execution of your usercommand may not get interrupted;
+we will return an error on the next access to the user command's `state`
+(which will in turn ensure that execution is interrupted), but manual operations
+unrelated to `state` may still complete.
+
 ## Using async/await (Node 7.6+)
 
 <aside class="notice">
@@ -165,7 +246,7 @@ const {
   auth
 } = require('mage');
 
-exports.register = function (state, username, password) {
+exports.register = async function (state, username, password) {
   const options = {
     acl: ['user']
   };
@@ -188,7 +269,7 @@ const {
 module.exports = {
   acl: ['*'],
   async execute(state, username, password) {
-    return await players.register(state, username, password);
+    return players.register(state, username, password);
   }
 };
 ```
