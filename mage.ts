@@ -896,6 +896,14 @@ declare interface IMageCore {
      */
     archivist: {
         /**
+         * Register a vault backend
+         *
+         * Vault backends are generally wrappers around existing
+         * database clients.
+         */
+        registerVaultBackend(type: string, module: mage.archivist.IVaultBackend)
+
+        /**
          * Retrieve an object containing all the
          * existing vault backend instances
          *
@@ -1890,6 +1898,34 @@ declare namespace mage {
          */
         interface IAclTest extends Function {
             (acl: string[], operation: VaultOperation | 'get' | '*', options?: { shard: boolean }): void;
+        }
+
+        /**
+         * Vault backend are backend modules meant to uniformise
+         * how storage clients (like database clients) are exposed
+         * to Archivist.
+         */
+        interface IVaultBackend {
+            defaultTopicApi: IVaultBackendTopicApi
+
+            create(name: string, logger: mage.core.ILogger) : IVaultBackendInstance
+        }
+
+        /**
+         * Backend instances are created by a backend module, and
+         * are used by the backend's topic API.
+         */
+        interface IVaultBackendInstance {
+            setup(config: any, cb: (error?: Error) => void) : void
+            close() : void
+        }
+
+        /**
+         * The list of implemented Topci API's that a
+         * vault backend supports.
+         */
+        interface IVaultBackendTopicApi {
+            // Todo
         }
 
         /**
