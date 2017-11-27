@@ -57,11 +57,6 @@ For more information, please read the [CLI documentation](../cli/Readme.md).
 
 ## Methods
 
-### Module mage.require(moduleName)
-
-Calls Node.js' `require` function from the MAGE context. This can be useful when you want to
-directly require one of MAGE's own dependencies.
-
 ### string mage.getRunState()
 
 Returns the lifecycle phase that MAGE is currently in. This can be any of the following.

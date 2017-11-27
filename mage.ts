@@ -896,6 +896,11 @@ declare interface IMageCore {
      */
     archivist: {
         /**
+         * Register a new media type
+         */
+        registerMediaType<T>(mediaTypeModule: string | mage.archivist.IMediaType<T>): void
+
+        /**
          * Retrieve an object containing all the
          * existing vault backend instances
          *
@@ -1905,6 +1910,68 @@ declare namespace mage {
         interface IArchivistTopicVaultConfiguration {
             shard?<T>(value: IVaultValue): T,
             acl?: (test: IAclTest) => void
+        }
+
+        /**
+         * Encoder function for Media Types
+         */
+        type EncoderDeserializerFunction<T> = <V>(input: V) => T
+
+        /**
+         * Encoder function for Media Types
+         */
+        type EncoderSerializerFunction<T> = <V>(input: T) => V
+
+        /**
+         * Define mediaType
+         */
+        interface IMediaType<T> {
+            /**
+             * Optional data initializer
+             */
+            init?(data: T, value: any): () => any
+
+            /**
+             * Diff getter/setters
+             *
+             * Used to manage diff systems like tomes.
+             */
+            diff?: {
+                get(data: T)
+                set(data: T, diffs: any)
+            }
+
+            /**
+             * Type name.
+             *
+             * Should match MIME type if existing.
+             */
+            mediaType: string
+
+            /**
+             * File extension to use when using this media type
+             */
+            fileExt: string
+
+            /**
+             * Check if a value is encoded in the current media type.
+             */
+            detector(data: any): boolean
+
+            /**
+             * Key-value map of encoders
+             *
+             * Encoders are serializers or deserializers;
+             */
+            encoders: { [name: string]: EncoderDeserializerFunction<T> | EncoderDeserializerFunction<T> }
+
+            /**
+             * Key-value map of converters
+             *
+             * Converters convert data to a given destination
+             * media type.
+             */
+            converters: { [mediaType: string]: <V>(from: V, to: T) => void }
         }
 
         /**
