@@ -42,15 +42,6 @@ with how you manage all your other data.
 Whenever you do want full control over how data gets stored, you have the ability to do so.
 
 
-### Integration with tomes
-
-Integration with [tomes](https://npmjs.org/package/tomes) is built in. This has a number of specific
-advantages.
-
-* No need to tell archivist to store changes, since they are automatically detected.
-* Tomes can be transported transparently to and from the browser.
-
-
 ## Terminology
 
 
@@ -106,19 +97,10 @@ information on how to do this, please read "Writing your own Topic API".
 ### MediaTypes
 
 Each document that is stored, can be stored along with its media type. Think of `image/jpeg`,
-`text/plain`, `application/octet-stream`, `application/json`, but also `application/x-tome`.
+`text/plain`, `application/octet-stream`, `application/json`, etc.
 Media types can be useful in order to recreate a living version of binary- or string-serialized
 data. Archivist comes with built-in knowledge of media types and has the ability to convert between
 them.
-
-If you want to create a fresh new Tome, you must conjure it, as described in the documentation of
-[node-tomes](https://npmjs.org/package/tomes). You may also store other types of data. Tomes are
-simply supported out-of-the-box and you are encouraged to use them. You can access the `Tome` class
-by requiring it from MAGE by calling:
-
-```javascript
-var Tome = mage.require('tomes').Tome;
-```
 
 
 ## Quick start guide
@@ -205,14 +187,14 @@ Where you do this for each topic you want to store in your vaults. The `index` a
 provided if your topic depends on an index. This array is the signature of the indexes you will
 provide when referring to data.
 
-If `mediaType` is provided, this topic's media type will default to the specified value. 
+If `mediaType` is provided, this topic's media type will default to the specified value.
 
 The `readOptions` object may be supplied to overwrite default `options` that are used when reading
 from your archivist. The following defaults are defined, and they can be individually replaced:
 
 ```json
 {
-	"mediaTypes": ["application/x-tome", "application/octet-stream"],
+	"mediaTypes": ["application/json", "application/octet-stream"],
 	"encodings": ["live"],
 	"optional": false
 }
@@ -299,9 +281,9 @@ The following options are available to you:
 
 * `optional`: (boolean, default: false) Indicates whether it's considered an error if data is not
   found in any of the vaults.
-* `mediaTypes`: (array, default: `['application/x-tome', 'application/octet-stream']`) Indicates
+* `mediaTypes`: (array, default: `['application/x-json', 'application/octet-stream']`) Indicates
   that you only accept these media types, in the given order of priority. If data of another media
-  type is read, a conversion attempt will be made (eg: JSON to Tome).
+  type is read, a conversion attempt will be made.
 * `encodings`: (array, default: `['live']`) Indicates that you only accept these encodings, in the
   given order of priority. If data of another encoding is read, a conversion attempt will be made
   (eg: JavaScript object to utf8 JSON).
@@ -391,9 +373,6 @@ time, you can pass an `expirationTime` (unix timestamp).
 
 If a vault allows for diff-logic to occur, and the data passed allows diffs to be read, this will be
 used.
-
-For certain types of data, like Tomes, you do not have to call this function. Whenever you change
-a Tome's contents, it will call `set` automatically for you.
 
 
 ### Deleting data
