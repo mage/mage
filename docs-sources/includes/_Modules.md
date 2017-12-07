@@ -136,7 +136,7 @@ EOF
 
 ```powershell
  Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8080/game/players.register" -Body '[]
-{"username": "username", "password": "password"}'
+{"username": "username", "password": "password"}' | ConvertTo-Json
 ```
 
 For testing most user commands in MAGE, you would normally need to use one
