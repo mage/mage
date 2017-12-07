@@ -35,7 +35,7 @@ curl http://localhost:8080/savvy/sampler/metrics
 ```
 
 ```powershell
- Invoke-RestMethod -Method Get -Uri "http://localhost:8080/savvy/sampler/metrics"
+ Invoke-RestMethod -Method Get -Uri "http://localhost:8080/savvy/sampler/metrics" | ConvertTo-Json
 ```
 
 > Response
@@ -83,7 +83,7 @@ EOF
 
 ```powershell
  Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8080/game/players.countClicks" -Body '[]
-{}'
+{}' | ConvertTo-Json
 ```
 
 > New sampler output

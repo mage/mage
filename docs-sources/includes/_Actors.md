@@ -120,7 +120,7 @@ EOF
 
 ```powershell
  Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8080/game/players.login" -Body '[]
-{"username": "test", "password": "secret"}'
+{"username": "test", "password": "secret"}' | ConvertTo-Json
 ```
 
 If authentication fails, you will receive `[["invalidUsernameOrPassword",null]]`;

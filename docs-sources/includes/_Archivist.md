@@ -502,7 +502,7 @@ EOF
 
 ```powershell
  Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8080/game/players.list" -Body '[]
-{}'
+{}' | ConvertTo-Json
 ```
 
 We can re-use the previous command to create a new user; once we have done so, we can use
