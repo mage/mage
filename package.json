@@ -18,6 +18,7 @@
     "test:outdated": "npm outdated --color always --silent || true",
     "test:security": "retire && npm run test:outdated",
     "test:lint": "eslint --ext .js,.json .",
+    "test:docs": "blcl ./docs -ro",
     "test:code-analysis": "run-s test:lint test:security",
     "test:unit": "mocha ./test/index.js",
     "test:unit:filter": "npm run test:unit -- --grep",
@@ -97,6 +98,7 @@
     "ldapjs": "~0.7.1"
   },
   "devDependencies": {
+    "broken-link-checker-local": "0.1.1",
     "coveralls": "2.13.1",
     "cross-env": "4.0.0",
     "eslint": "3.19.0",
