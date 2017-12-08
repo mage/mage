@@ -87,6 +87,10 @@ server:
     serviceDiscovery:
         engine: zookeeper
         options:
+            # The interface to announce the IP for. By default, all
+            # IP are announced
+            interface: eth0
+
             # List of available ZooKeeper nodes (comma-separated)
             hosts: "192.168.1.12:2181,192.168.3.18:2181"
 
