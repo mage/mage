@@ -25,9 +25,9 @@
     "node": "%MAGE_NODE_VERSION%"
   },
   "dependencies": {
-    "@types/node": "7.0.13",
+    "@types/node": "^8.0.57",
     "mage": "%MAGE_PACKAGE_VERSION%",
-    "ts-node": "3.0.2",
-    "typescript": "2.2.2"
+    "ts-node": "^4.0.1",
+    "typescript": "^2.6.2"
   }
 }
