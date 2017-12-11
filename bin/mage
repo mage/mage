@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 
+// Executed when running npx mage create
+if (process.argv[2] === 'create') {
+	return require('../scripts/create.js');
+}
+
 const prettyjson = require('prettyjson');
 const chalk = require('chalk');
 const path = require('path');
