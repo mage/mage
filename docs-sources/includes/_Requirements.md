@@ -40,7 +40,7 @@ npm install -g npm@latest
 npm completion >> ~/.bashrc
 
 npm run [tab][tab]
-# Will output: archivist-create   archivist-drop     archivist-migrate  develop  [...]
+# Will output: archivist:create   archivist:drop     archivist:migrate  develop  [...]
 ```
 
 ```powershell

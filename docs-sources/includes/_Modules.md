@@ -110,17 +110,17 @@ for yet, but we can see that they are to be used to respond with an error should
 ## Testing your user command
 
 ```shell
-npm run archivist-create
+npm run archivist:create
 npm run develop
 ```
 
 ```powershell
-npm run archivist-create
+npm run archivist:create
 npm run develop
 ```
 
 Before we try to test the code above, we will first need to create a place for the auth module
-to store the data. `archivist-create` will do just that.
+to store the data. `archivist:create` will do just that.
 
 Once this command completes, we'll start our MAGE project in development mode.
 
