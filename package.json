@@ -24,7 +24,6 @@
     "test:unit:filter": "npm run test:unit -- --grep",
     "test:unit-rebuild": "npm rebuild && npm run test:unit",
     "test": "run-s test:lint test:unit test:security",
-    "postinstall": "node ./scripts/install.js",
     "preversion": "npm run docs:build && git add ./docs",
     "report:coveralls": "istanbul cover _mocha --root lib --include-all-sources --report lcovonly --dir coveralls -- ./test/index.js && cat ./coveralls/lcov.info | coveralls && rm -rf ./coveralls",
     "report:coverage": "istanbul cover _mocha --root lib --include-all-sources --report html --dir coverage-report -- ./test/index.js",

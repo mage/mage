@@ -1,29 +1,36 @@
-#!/usr/bin/env node
-
-var npmArgs = JSON.parse(process.env.npm_config_argv).original;
-
-if (npmArgs.indexOf('--create') === -1 && npmArgs.indexOf('--bootstrap') === -1) {
-	process.exit(0);
-}
-
-var language = 'javascript';
-
-if (npmArgs.indexOf('--typescript') !== -1 || npmArgs.indexOf('--ts') !== -1) {
-	language = 'typescript';
-}
-
+var chalk = require('chalk');
 var path = require('path');
 var fs = require('fs');
 var spawn = require('child_process').spawn;
 var mkdirpSync = require('mkdirp').sync;
 var async = require('async');
-var chalk = require('chalk');
 var pretty = require('./lib/pretty.js');
 var ask = require('./lib/readline.js').ask;
 var EOL = require('os').EOL;
 
-var magePath = process.cwd();
-var appPath = path.resolve(magePath, '../..');
+var INSTALL_HELP_URL = 'https://mage.github.io/mage/#installation';
+var args = process.argv.slice(3);
+var projectName = args.shift();
+
+if (!projectName || projectName[0] === '-') {
+	console.error('');
+	console.error(chalk.yellow('Usage:'), chalk.green('npx mage create [project-name] [--ts|--typescript]'));
+	console.error(chalk.magenta('See'), chalk.cyan(INSTALL_HELP_URL), chalk.magenta('for more details.'));
+	console.error('');
+	process.exit(-1);
+}
+
+mkdirpSync(projectName);
+process.chdir(projectName);
+
+var language = 'javascript';
+
+if (args.indexOf('--typescript') !== -1 || args.indexOf('--ts') !== -1) {
+	language = 'typescript';
+}
+
+var magePath = path.resolve(__dirname, '..');
+var appPath = process.cwd();
 
 var magePackagePath = path.join(magePath, 'package.json');
 var appPackagePath = path.join(appPath, 'package.json');
@@ -166,20 +173,9 @@ function bootstrap(cb) {
 			callback();
 		},
 		function (callback) {
-			var packageInfo = require(appPackagePath);
-			var args = Object.keys(packageInfo.dependencies).filter(function (name) {
-				return name !== 'mage';
-			});
-
-			if (args.length === 0) {
-				return callback();
-			}
-
 			pretty.h2('Install additional project dependencies');
 
-			args.unshift('install');
-
-			spawn('npm', args, {
+			spawn('npm', ['install'], {
 				stdio: ['ignore', process.stdout, process.stderr],
 				cwd: appPath
 			}).on('close', callback);
@@ -262,19 +258,17 @@ function bootstrap(cb) {
 			});
 		},
 		function (callback) {
-			// For some reason, when using the --prefix flag, an etc folder is added.
-			// lets remove it
-			// Ref: https://github.com/npm/npm/pull/7249
-			fs.rmdir(path.join(appPath, 'etc'), callback);
-		},
-		function (callback) {
 			var msg = [
-				'All done! You can now start your game in the foreground by running "npm run develop",',
-				'or see startup options by running "npm run help".'
+				'All done! You can now start your game in the foreground by running:',
+				'',
+				chalk.green('  cd ' + projectName),
+				chalk.green('  npm run develop'),
+				'',
+				'For more details, see ' + chalk.green('npm run help') + '.'
 			];
 
 			pretty.chromify(chalk.yellow(msg.join(EOL)), '❖', chalk.magenta.bold);
-			callback();
+			process.nextTick(callback);
 		}
 	], cb);
 }
