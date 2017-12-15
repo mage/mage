@@ -19,8 +19,6 @@ if (MAGE_PACKAGE_VERSION === 'latest') {
 	MAGE_PACKAGE_VERSION = magePackage.version;
 }
 
-console.log(magePackage.version);
-
 function getVar(varName, required) {
 	if (required && !replacements.hasOwnProperty(varName)) {
 		throw new Error('Found unknown template variable: ' + varName);
