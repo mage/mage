@@ -11,6 +11,16 @@ var magePackage = require(pathJoin(magePath, 'package.json'));
 var MAGE_PACKAGE_VERSION = magePackage._from;
 var replacements = {};
 
+if (MAGE_PACKAGE_VERSION.substring(0, 5) === 'mage@') {
+	MAGE_PACKAGE_VERSION = MAGE_PACKAGE_VERSION.substring(5);
+}
+
+if (MAGE_PACKAGE_VERSION === 'latest') {
+	MAGE_PACKAGE_VERSION = magePackage.version;
+}
+
+console.log(magePackage.version);
+
 function getVar(varName, required) {
 	if (required && !replacements.hasOwnProperty(varName)) {
 		throw new Error('Found unknown template variable: ' + varName);
