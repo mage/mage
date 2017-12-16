@@ -228,6 +228,39 @@ we will return an error on the next access to the user command's `state`
 (which will in turn ensure that execution is interrupted), but manual operations
 unrelated to `state` may still complete.
 
+## Request caching
+
+```shell
+curl -X POST http://127.0.0.1:8080/game/players.checkStats?queryId=1 \
+--data-binary @- << EOF
+[{"key":"be20d767-4067-40d6-92dc-c52067b7d21e:lMftdnXxEFbP3ctq","name":"mage.session"}]
+{}
+EOF
+```
+
+```powershell
+ Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8080/game/players.checkStats?queryId=1" -Body '[{"key":"be20d767-4067-40d6-92dc-c52067b7d21e:lMftdnXxEFbP3ctq","name":"mage.session"}]
+{}' | ConvertTo-Json
+```
+
+By default, responses to requests from authenticated users which
+contain a numerical identifier in the will be automatically cached;
+this is so to avoid double-execution when the client disconnects before
+the response could be sent and the client wishes to retry.
+
+This comes handy for most operations (trades, purchases and so on),
+but may be undesirable in some circumstances (when you serve computed
+static data or static data stored in the database).
+
+> lib/modules/players/checkStats.js
+
+```javascript
+exports.cache = false;
+```
+
+To disable this behavior, simply set `cache` to false
+in your user command's definition.
+
 ## Using async/await (Node 7.6+)
 
 <aside class="notice">
