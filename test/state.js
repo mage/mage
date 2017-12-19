@@ -150,16 +150,6 @@ describe('State class', function () {
 			assert.deepEqual(state.acl, []);
 		});
 
-		it('wildcard ACL (*) is pushed automatically onto the state in devMode (if not already present)', function () {
-			isDevelopmentMode = true;
-
-			const acl = ['abc', 'youandme'];
-			const info = createStateWithSession('abc', acl);
-			const state = info.state;
-
-			assert.deepEqual(state.acl, ['*', 'abc', 'youandme']);
-		});
-
 		it('Unregistering the session resets related attributes on the state object', function () {
 			const acl = ['*', 'abc', 'youandme'];
 			const info = createStateWithSession('abc', acl);
