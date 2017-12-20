@@ -2098,17 +2098,6 @@ declare namespace mage {
             registerReadMiss(vault: string): void;
 
             /**
-             * Schedule a value add to the different vault backends
-             *
-             * @param {string} mediaType
-             * @param {*} data
-             * @param {string} encoding
-             *
-             * @memberof VaultValue
-             */
-            add(mediaType: string, data: any, encoding: string): void;
-
-            /**
              * Schedule a data set on the different vault backends
              *
              * @param {string} mediaType
