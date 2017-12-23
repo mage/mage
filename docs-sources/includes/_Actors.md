@@ -125,3 +125,17 @@ EOF
 
 If authentication fails, you will receive `[["invalidUsernameOrPassword",null]]`;
 otherwise, you should get back an event object containing your player's session information.
+
+## Changing the password
+
+You can change the password for a given user after registration. It works the same way as registration, except
+that the user ID needs to exist or you will get a `UserNotFoundError`. Note that this does not invalidate current
+sessions for this account.
+
+>  lib/modules/players/index.js
+
+```javascript
+exports.changePassword = function (state, username, newPassword, callback) {
+  mage.auth.changePassword(state, username, newPassword, callback);
+};
+```
