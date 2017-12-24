@@ -301,6 +301,36 @@ describe('auth', function () {
 		});
 	});
 
+	it('can change an user\'s password, then login', function (done) {
+		auth.getHashConfiguration = function () {
+			return {
+				type: 'hash',
+				algorithm: 'sha1'
+			};
+		};
+
+		var state = new State();
+		var username = 'bob';
+		var password = 'b0b';
+		var newPassword = '4lice';
+		var options = { acl: ['user'] };
+
+		auth.register(state, username, password, options, function (error, userId) {
+			assert.ifError(error);
+			assert(userId);
+
+			auth.changePassword(state, username, newPassword, function (error) {
+				assert.ifError(error);
+
+				auth.login(state, username, newPassword, function (error, session) {
+					assert.ifError(error);
+					assert.equal(session.userId, userId);
+					done();
+				});
+			});
+		});
+	});
+
 	it('cannot login with the wrong username (hash)', function (done) {
 		auth.getHashConfiguration = function () {
 			return {
