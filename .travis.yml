@@ -25,6 +25,8 @@ before_install:
   - if [[ "$TRAVIS_NODE_VERSION" == "4" ]]; then npm install -g npm@3; fi
 
 script:
+  - travis_retry npm run test:lint
+  - travis_retry npm run test:security
   - travis_retry npm run report:coveralls
 
 env:
