@@ -50,4 +50,4 @@ declare class MageError extends Error {
 	constructor(data: IErrorDetails);
 };
 
-export = MageError;
+export default MageError;
