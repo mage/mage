@@ -4,7 +4,7 @@ declare type VaultOperation = 'add' | 'set' | 'del' | 'touch';
 
 import * as commander from 'commander';
 import * as config from './lib/config';
-import * as MageError from './lib/mage/MageError';
+import MageError from './lib/mage/MageError';
 
 /**
  * Abstracted data store access interface
