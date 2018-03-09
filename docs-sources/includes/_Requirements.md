@@ -17,8 +17,8 @@ nvm use 8
 
 ```powershell
 # You will need to provide the specific version to install and use
-Install-NodeVersion v8.9.4
-Set-NodeVersion v8.9.4
+Install-NodeVersion v8.10.0
+Set-NodeVersion v8.10.0
 ```
 
 Node.js (or Node) is essentially JavaScript for servers, and the MAGE platform has been built on it.
