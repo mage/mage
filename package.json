@@ -10,13 +10,13 @@
   },
   "types": "./mage.ts",
   "engines": {
-    "node": "^6 || ^7 || ^8",
+    "node": "^6 || ^7 || ^8 || ^9",
     "typescript": "^2.2"
   },
   "scripts": {
     "dev:setup": "node ./scripts/githooks.js",
     "test:outdated": "npm outdated --color always --silent || true",
-    "test:security": "retire && npm run test:outdated",
+    "test:security": "retire --severity medium",
     "test:lint": "eslint --ext .js,.json .",
     "test:docs": "blcl ./docs -ro",
     "test:code-analysis": "run-s test:lint test:security",
@@ -97,7 +97,7 @@
   },
   "devDependencies": {
     "broken-link-checker-local": "0.1.1",
-    "coveralls": "2.13.1",
+    "coveralls": "3.0.0",
     "cross-env": "4.0.0",
     "eslint": "3.19.0",
     "eslint-plugin-json": "1.2.0",
@@ -111,8 +111,8 @@
     "mysql": "2.5.4",
     "npm-run-all": "4.0.2",
     "power-assert": "1.4.2",
-    "retire": "1.3.1",
-    "sqlite3": "3.1.8",
+    "retire": "1.6.0",
+    "sqlite3": "3.1.13",
     "typedoc": "0.7.0",
     "typedoc-plugin-sourcefile-url": "1.0.3",
     "typescript": "2.3.2",
