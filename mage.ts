@@ -1118,20 +1118,12 @@ declare interface IMageCore {
         getClusterId(): string;
 
         /**
-         * Retreive the configuration used by this Message
+         * Retrieve the configuration used by this Message
          * Server instance
          *
          * @returns {*}
          */
         getPublicConfig(): any;
-
-        /**
-         * Get the URL to use to connect to this Message
-         * Stream's instance
-         *
-         * @returns {string}
-         */
-        getMsgStreamUrl(): string;
 
         /**
          * Send a message to a remote Message Server instance
