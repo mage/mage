@@ -22,6 +22,21 @@ archivist:
             type: file
             config:
                 path: ./filevault/itemVault
+
+    # When doing "list" operations, will attempt each mentioned vault until successful
+    listOrder:
+        - userVault
+        - itemVault
+
+    # When doing "get" operations, will attempt each mentioned vault until successful
+    readOrder:
+        - userVault
+        - itemVault
+
+    # When doing "add/set/touch/del" operations, will write to each mentioned vault in the given order
+    writeOrder:
+        - userVault
+        - itemVault
 ```
 
 <aside class="warning">
@@ -33,6 +48,10 @@ This would break how [migration scripts](#migrations) work.
 Not all vaults support every operations! Below you will find
 a short configuration description for each available vault backends
 alongside a list of supported operations for that backend.
+</aside>
+
+<aside class="warning">
+In order to use a vault, it has to be added in the list, read, and write order.
 </aside>
 
 As mentioned, vaults are used by archivist to store data. Currently, the following backend
