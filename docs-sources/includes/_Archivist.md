@@ -50,10 +50,14 @@ a short configuration description for each available vault backends
 alongside a list of supported operations for that backend.
 </aside>
 
-<aside class="warning">
-In order to use a vault, it has to be added in the list, read, and write order.
-</aside>
 
+### List, read and write order
+
+In `./config/default.yaml`, listOrder, readOrder, and writeOrder properties **have to** be defined to specify the order when reading or writting data.<br>
+For read operations (listOrder, readOrder), mage will attempt the mentioned vaults until one is successful. However, for write operations (writeOrder), mage will write to each mentioned vault, in the given order.
+
+
+### Vaults types
 As mentioned, vaults are used by archivist to store data. Currently, the following backend
 targets are supported:
 
