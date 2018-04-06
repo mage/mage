@@ -9,20 +9,24 @@ uses Archivist behind the scenes to store credentials for newly created users.
 
 ## Vaults
 
+
+<aside class="warning">
+Never configure multiple vaults to connect to the same vault backend storage!
+This would break how [migration scripts](#migrations) work.
+</aside>
+
+<aside class="warning">
+Not all vaults support every operations! Below you will find
+a short configuration description for each available vault backends
+alongside a list of supported operations for that backend.
+</aside>
+
+### List, read and write order
+
 > ./config/default.yaml
 
 ```yaml
 archivist:
-    vaults:
-        userVault:
-            type: file
-            config:
-                path: ./filevault/userVault
-        itemVault:
-            type: file
-            config:
-                path: ./filevault/itemVault
-
     # When doing "list" operations, will attempt each mentioned vault until successful
     listOrder:
         - userVault
@@ -39,25 +43,38 @@ archivist:
         - itemVault
 ```
 
-<aside class="warning">
-Never configure multiple vaults to connect to the same vault backend storage!
-This would break how [migration scripts](#migrations) work.
-</aside>
 
-<aside class="warning">
-Not all vaults support every operations! Below you will find
-a short configuration description for each available vault backends
-alongside a list of supported operations for that backend.
-</aside>
-
-
-### List, read and write order
-
-In `./config/default.yaml`, listOrder, readOrder, and writeOrder properties **have to** be defined to specify the order when reading or writting data.<br>
+listOrder, readOrder, and writeOrder properties **have to** be defined in your configuration file to specify the order when reading or writting data.<br>
 For read operations (listOrder, readOrder), mage will attempt the mentioned vaults until one is successful. However, for write operations (writeOrder), mage will write to each mentioned vault, in the given order.
+
+> The item won't be written before the player because it will follow the order of the writeOrder configuration
+
+```javascript
+state.archivist.set('item', { userId: userId }, playerData);
+state.archivist.set('player', { itemId: itemId }, itemData);
+```
+
+Please note that if you are doing multiple operations in a single state transaction, the order in which the operations will be done correspond to the order provided by your configuration, not the order of the actual calls.
 
 
 ### Vaults types
+
+> ./config/default.yaml
+
+```yaml
+archivist:
+    vaults:
+        userVault:
+            type: file
+            config:
+                path: ./filevault/userVault
+        itemVault:
+            type: file
+            config:
+                path: ./filevault/itemVault
+```
+
+
 As mentioned, vaults are used by archivist to store data. Currently, the following backend
 targets are supported:
 
