@@ -25,13 +25,13 @@ const userData = [
 	}
 ];
 
-archivist.list = function(topic, partialIndex, options, cb) {
+archivist.list = function (topic, partialIndex, options, cb) {
 	return cb(null, userIndexes);
-}
+};
 
-archivist.mget = function(queries, options, cb) {
+archivist.mget = function (queries, options, cb) {
 	return cb(null, userData);
-}
+};
 
 describe('Scan operation', function () {
 	it('return correctly formed data', function (done) {
@@ -40,9 +40,9 @@ describe('Scan operation', function () {
 			assert(data.length === 3, 'Should return an array of 3 elements');
 
 			for (let i = 0; i < data.length; ++i) {
-				assert(data[i].length == 2, 'Should be an array of 2 elements [index, value]');
-				assert(data[i][0].userId == userIndexes[i].userId, 'userId should match');
-				assert(data[i][1].username == userData[i].username, 'username should match');
+				assert(data[i].length === 2, 'Should be an array of 2 elements [index, value]');
+				assert(data[i][0].userId === userIndexes[i].userId, 'userId should match');
+				assert(data[i][1].username === userData[i].username, 'username should match');
 			}
 
 			done();
