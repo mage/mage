@@ -1,5 +1,70 @@
 # Modules
 
+## Built-in modules
+
+> lib/index.js
+
+```javascript
+// Default modules with a fresh mage install
+// (with npx mage create [game name])
+mage.useModules([
+  'archivist',
+  'logger',
+  'session',
+  'time'
+]);
+
+```
+
+
+In the mage library, some modules are already created to provide some facilities such as session and authentication. The full list of available modules can be consulted [here](https://github.com/mage/mage/tree/master/lib/modules).
+
+To see the default modules on a fresh install of mage and how they can be set up, see the example on the right side.
+Note that the `auth` module is **not activated by default**.
+
+### Set up the auth module
+
+To set up the auth module, adding it to `mage.useModules` is not sufficient, a basic configuration is needed.
+The auth module need a topic whose name is **exactly** `auth`, and a configuration has to be added in your server config file.
+See the example on the right side for a basic configuration.
+
+> `lib/index.js`
+
+```javascript
+mage.useModules([
+  'auth'
+]);
+```
+
+> lib/archivist/index.js
+
+```javascript
+// a valid topic with ['username'] as an index
+exports.auth = {
+  index: ['username'],
+  vaults: {
+    myDataVault: {}
+  }
+};
+```
+
+> config/default.yaml
+
+```yaml
+module:
+    auth:
+        // this should point to the topic you created
+        topic: auth
+        // configure how user passwords are stored, the values below are the
+        // recommended default, see the module's README.md for more details
+        // about available hash types
+        hash:
+            type: pbkdf2
+            algorithm: sha256
+            iterations: 10000
+```
+
+
 ## File structure
 
 ```plaintext
