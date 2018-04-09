@@ -53,11 +53,11 @@ exports.auth = {
 ```yaml
 module:
     auth:
-        // this should point to the topic you created
+        # this should point to the topic you created
         topic: auth
-        // configure how user passwords are stored, the values below are the
-        // recommended default, see the module's README.md for more details
-        // about available hash types
+        # configure how user passwords are stored, the values below are the
+        # recommended default, see the module's [client SDKs](#client-sdks) for more details
+        # about available hash types
         hash:
             type: pbkdf2
             algorithm: sha256
