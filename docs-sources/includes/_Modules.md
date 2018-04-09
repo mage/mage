@@ -25,8 +25,15 @@ Note that the `auth` module is **not activated by default**.
 ### Set up the auth module
 
 To set up the auth module, adding it to `mage.useModules` is not sufficient, a basic configuration is needed.
-The auth module need a topic whose name is **exactly** `auth`, and a configuration has to be added in your server config file.
 See the example on the right side for a basic configuration.
+
+Here are the different hash types you can use:
+
+| Type                    | Description                                                   |
+| ---------------------   | ------------------------------------------------------------  |
+| pbkdf2                  | [pbkdf2 algorithm](https://en.wikipedia.org/wiki/PBKDF2)      |
+| hmac                    | [hmac algorithm](https://en.wikipedia.org/wiki/HMAC)          |
+| hash                    | Basic hash                                                    |
 
 > `lib/index.js`
 
@@ -55,15 +62,31 @@ module:
     auth:
         # this should point to the topic you created
         topic: auth
+
         # configure how user passwords are stored, the values below are the
-        # recommended default, see the module's [client SDKs](#client-sdks) for more details
-        # about available hash types
+        # recommended default
         hash:
+            # Please see https://en.wikipedia.org/wiki/PBKDF2 for more information
             type: pbkdf2
             algorithm: sha256
             iterations: 10000
 ```
 
+```yaml
+        hash:
+          # Please see https://en.wikipedia.org/wiki/HMAC for more information
+          type: hmac
+          algorithm: sha256
+          # Hex key of any length
+          key: 89076d50860489076d508604
+```
+
+```yaml
+        hash:
+          # Basic hash
+          type: hash
+          algorithm: sha1
+```
 
 ## File structure
 
