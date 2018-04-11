@@ -85,12 +85,6 @@ targets are supported:
 | client                | Special vault type (client-side archivist support required). |
 | couchbase             | [Couchbase](https://www.couchbase.com/) interface            |
 | mysql                 | [MySQL](https://www.mysql.com/) interface.                   |
-| elasticsearch         | [Elasticsearch](https://www.elastic.co/) interface.          |
-| dynamodb              | [AWS DynamoDB](https://aws.amazon.com/dynamodb/) interface.  |
-| manta                 | [Joyent Manta](https://apidocs.joyent.com/manta/) interface. |
-| redis                 | [Redis](https://redis.io/) interface.                        |
-| memcached             | [Memcached](https://memcached.org/) interface.               |
-| sqlite3               | [SQLite](https://www.sqlite.org/) interface.                 |
 
 Vaults can have different configuration for different environments, as long as the Archivist
 API set used in your project is provided by the different vault backends you wish to use.
@@ -265,166 +259,6 @@ serializer method to do so. For example, consider the following example if you w
 timestamp to a `lastChanged INT UNSIGNED NOT NULL` column.
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
-### Elasticsearch
-
-```yaml
-elasticsearch:
-    type: elasticsearch
-    config:
-        # this is the default index used for storage, you can override this in your code if necessary
-        index: testgame
-
-        # here is your server configuration
-        server:
-            hostname: '192.168.2.176'
-            port: 9200
-            secure: false
-```
-
-operation | supported | implementation
-----------|:---------:|---------------
-list      |           |
-get       | ✔         | `elasticsearch.get`
-add       | ✔         | `elasticsearch.index` with op_type set to `create`
-set       | ✔         | `elasticsearch.index`
-touch     |           |
-del       | ✔         | `elasticsearch.del`
-
-### DynamoDB
-
-```yaml
-dynamodb:
-    type: "dynamodb"
-    config:
-        accessKeyId: "The access ID provided by Amazon"
-        secretAccessKey: "The secret ID provided by Amazon"
-        region: "A valid region. Refer to the Amazon doc or ask your sysadmin. Asia is ap-northeast-1"
-```
-
-operation | supported | implementation
-----------|:---------:|---------------
-list      |           |
-get       | ✔         | `DynamoDB.getItem`
-add       | ✔         | `DynamoDB.putItem` with `Expect.exists = false` set to the index keys
-set       | ✔         | `DynamoDB.putItem`
-touch     |           |
-del       | ✔         | `DynamoDB.deleteItem`
-
-### Manta
-
-```yaml
-type: manta
-config:
-    # url is optional
-    url: "https://us-east.manta.joyent.com"
-    user: bob
-    sign:
-        keyId: "a3:81:a2:2c:8f:c0:18:43:8a:1e:cd:12:40:fa:65:2a"
-
-        # key may be replaced with "keyPath" (path to a private key file),
-        # or omitted to fallback to "~/.ssh/id_rsa"
-        key: |
-          -----BEGIN RSA PRIVATE KEY-----
-          ..etc..
-          -----END RSA PRIVATE KEY-----
-```
-
-`keyId` is the fingerprint of your public key, which can be retrieved by running:
-
-`ssh-keygen -l -f $HOME/.ssh/id_rsa.pub | awk '{print $2}'`
-
-operation | supported | implementation
-----------|:---------:|---------------
-list      | ✔         | `manta.ls()`
-get       | ✔         | `manta.get()`
-add       |           |
-set       | ✔         | `manta.put()`
-touch     |           |
-del       | ✔         | `manta.unlink()`
-
-### Redis
-
-```yaml
-type: redis
-config:
-    port: 6379
-    host: "127.0.0.1"
-    options: {}
-    prefix: "key/prefix/"
-```
-
-The `options` object is described in the [node-redis readme](https://npmjs.org/package/redis).
-Both `options` and `prefix` are optional. The option `return_buffers` is turned on by default by the
-Archivist, because the default serialization will prepend values with meta data (in order to
-preserve mediaType awareness).
-
-operation | supported | implementation
-----------|:---------:|---------------
-list      |           |
-get       | ✔         | `redis.get()`
-add       | ✔         | `redis.set('NX')`
-set       | ✔         | `redis.set()`
-touch     | ✔         | `redis.expire()`
-del       | ✔         | `redis.del()`
-
-### Memcached
-
-```yaml
-type: memcached
-config:
-    servers:
-        - "1.2.3.4:11211"
-        - "1.2.3.5:11411"
-    options:
-        foo: bar
-    prefix: "prefix for all your keys"
-```
-
-The usage of the `servers` and `options` properties are described in the
-[node-memcached readme](https://npmjs.org/package/memcached). Both `options` and `prefix` are
-optional.
-
-operation | supported | implementation
-----------|:---------:|---------------
-list      |           |
-get       | ✔         | `memcached.get()`
-add       | ✔         | `memcached.add()`
-set       | ✔         | `memcached.set()`
-touch     | ✔         | `memcached.touch()`
-del       | ✔         | `memcached.del()`
-
-### SQLite3
-
-```yaml
-type: sqlite3
-config:
-    filename: "./sqlitevault/awesomegame.db"
-```
-
-This vault should only be used for development and testing.
-
-Further documentation can be found at [node-sqlite3](https://github.com/mapbox/node-sqlite3).
-To avoid confusion, the npm package name is sqlite3, but the project is called node-sqlite3.
-
-If no filename is provided, an in-memory database will be created at runtime and will be destroyed on close.
-
-If an empty string is provided, an temporary database stored on disk will be createdat runtime and destroyed on close.
-
-operation | supported | implementation
-----------|:---------:|---------------
-list      | ✔         | `SELECT FROM table WHERE partialIndex`
-get       | ✔         | `SELECT FROM table WHERE fullIndex`
-add       | ✔         | `INSERT INTO table () VALUES ()`
-set       | ✔         | `INSERT OR REPLACE INTO table () VALUES ()`
-touch     |           |
-del       | ✔         | `DELETE FROM table WHERE fullIndex`
-
-`archivist:create` support requires that the user be allowed to create databases. However, you
-will still need to write a [migration script](#migrations) to create the different tables
-where your topics will be stored.
-
-See [documentation](#mysql) for the `MySQL` vault on how to structure your tables for usage with archivist.
 
 ## Topics
 
@@ -636,7 +470,6 @@ List of `archivist:create` enabled backends:
 * `file`
 * `couchbase`
 * `mysql`
-* `sqlite`
 
 It is not recommended to use those features in production.
 
