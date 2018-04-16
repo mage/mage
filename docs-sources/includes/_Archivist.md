@@ -167,9 +167,8 @@ config:
         hosts: [ "localhost:8091" ]
 
         # optional
-        # do not specify this if you don't need it,
-        # otherwise it could fail to init the client
-        user: Administrator
+        # do not specify this if your bucket does not have a password,
+        # otherwise it will fail to open the bucket
         password: "password"
 
         # optional
