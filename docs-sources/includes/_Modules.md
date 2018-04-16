@@ -1,5 +1,93 @@
 # Modules
 
+## Built-in modules
+
+> lib/index.js
+
+```javascript
+// Default modules with a fresh mage install
+// (with npx mage create [game name])
+mage.useModules([
+  'archivist',
+  'logger',
+  'session',
+  'time'
+]);
+
+```
+
+
+In the mage library, some modules are already created to provide some facilities such as session and authentication. The full list of available modules can be consulted [here](https://github.com/mage/mage/tree/master/lib/modules).
+
+To see the default modules on a fresh install of mage and how they can be set up, see the example on the right side.
+Note that the `auth` module is **not activated by default**.
+
+### Set up the auth module
+
+To set up the auth module, adding it to `mage.useModules` is not sufficient, a basic configuration is needed.
+See the example on the right side for a basic configuration.
+
+Here are the different hash types you can use:
+
+| Type                    | Description                                                   |
+| ---------------------   | ------------------------------------------------------------  |
+| pbkdf2                  | [pbkdf2 algorithm](https://en.wikipedia.org/wiki/PBKDF2)      |
+| hmac                    | [hmac algorithm](https://en.wikipedia.org/wiki/HMAC)          |
+| hash                    | Basic hash                                                    |
+
+> `lib/index.js`
+
+```javascript
+mage.useModules([
+  'auth'
+]);
+```
+
+> lib/archivist/index.js
+
+```javascript
+// a valid topic with ['username'] as an index
+exports.auth = {
+  index: ['username'],
+  vaults: {
+    myDataVault: {}
+  }
+};
+```
+
+> config/default.yaml
+
+```yaml
+module:
+    auth:
+        # this should point to the topic you created
+        topic: auth
+
+        # configure how user passwords are stored, the values below are the
+        # recommended default
+        hash:
+            # Please see https://en.wikipedia.org/wiki/PBKDF2 for more information
+            type: pbkdf2
+            algorithm: sha256
+            iterations: 10000
+```
+
+```yaml
+        hash:
+          # Please see https://en.wikipedia.org/wiki/HMAC for more information
+          type: hmac
+          algorithm: sha256
+          # Hex key of any length
+          key: 89076d50860489076d508604
+```
+
+```yaml
+        hash:
+          # Basic hash
+          type: hash
+          algorithm: sha1
+```
+
 ## File structure
 
 ```plaintext
