@@ -167,7 +167,8 @@ config:
         hosts: [ "localhost:8091" ]
 
         # optional
-        user: Administrator
+        # do not specify this if your bucket does not have a password,
+        # otherwise it will fail to open the bucket
         password: "password"
 
         # optional
@@ -175,6 +176,11 @@ config:
 
         # optional, useful if you share a bucket with other applications
         prefix: "bob/"
+
+        # optional, can use any option specified in https://developer.couchbase.com/documentation/server/5.1/sdk/nodejs/client-settings.html#topic_pkk_vhn_qv__d397e189
+        options:
+          # usefull to debug network errors (eg. authentication errors)
+          detailed_errcodes: 1
 
     # options only used with archivist:create
     create:
