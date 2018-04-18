@@ -261,5 +261,102 @@ describe('Matryoshka', () => {
 
 			assert.deepEqual(merged.getRaw(), { b: ['an', 'array'] });
 		});
+
+		describe('null config', function () {
+			const a = {
+				some: {
+					test: null
+				}
+			};
+			const b = {
+				some: {
+					test: {
+						value: 5
+					}
+				}
+			};
+
+			it('overrides null config A with config B from B to A', function () {
+				const mA = new Matryoshka(a);
+				const mB = new Matryoshka(b);
+
+				const mC = Matryoshka.merge(mA, mB);
+
+				assert.deepEqual(mC, mB);
+			});
+
+			it('overrides null config A with config B from A to B', function () {
+				const mA = new Matryoshka(a);
+				const mB = new Matryoshka(b);
+
+				const mC = Matryoshka.merge(mB, mA);
+
+				assert.deepEqual(mC, mB);
+			});
+		});
+
+		describe('false config', function () {
+			const a = {
+				some: false
+			};
+			const b = {
+				some: {
+					test: {
+						value: 5
+					}
+				}
+			};
+
+			it('overrides config B with false from B to A', function () {
+				const mA = new Matryoshka(a);
+				const mB = new Matryoshka(b);
+
+				const mC = Matryoshka.merge(mA, mB);
+
+				assert.deepEqual(mC, mA);
+			});
+
+			it('overrides config B with false from A to B', function () {
+				const mA = new Matryoshka(a);
+				const mB = new Matryoshka(b);
+
+				const mC = Matryoshka.merge(mB, mA);
+
+				assert.deepEqual(mC, mA);
+			});
+		});
+
+		describe('undefined config', function () {
+			const a = {
+				some: {
+					test: undefined
+				}
+			};
+			const b = {
+				some: {
+					test: {
+						value: 5
+					}
+				}
+			};
+
+			it('overrides config B with undefined config A from A to B', function () {
+				const mA = new Matryoshka(a);
+				const mB = new Matryoshka(b);
+
+				const mC = Matryoshka.merge(mB, mA);
+
+				assert.deepEqual(mC, mA);
+			});
+
+			it('does not override config B with undefined config A from B to A', function () {
+				const mA = new Matryoshka(a);
+				const mB = new Matryoshka(b);
+
+				const mC = Matryoshka.merge(mA, mB);
+
+				assert.deepEqual(mC, mB);
+			});
+		});
 	});
 });

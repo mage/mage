@@ -112,6 +112,7 @@
     "npm-run-all": "4.0.2",
     "power-assert": "1.4.2",
     "retire": "1.6.0",
+    "sinon": "4.5.0",
     "sqlite3": "4.0.0",
     "typedoc": "0.7.0",
     "typedoc-plugin-sourcefile-url": "1.0.3",

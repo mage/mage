@@ -14,3 +14,4 @@ require('./processMessenger');
 require('./msgServer');
 require('./httpServer');
 require('./modules');
+require('./loggingService');
