@@ -27,43 +27,8 @@ to retrieve sessions to route messages to them properly.
 
 ## Auth module
 
-> `lib/index.js`
-
-```javascript
-mage.useModules([
-  'auth'
-]);
-```
-
-> lib/archivist/index.js
-
-```javascript
-// a valid topic with ['username'] as an index
-exports.auth = {
-  index: ['username'],
-  vaults: {
-    myDataVault: {}
-  }
-};
-```
-
-> config/default.yaml
-
-```yaml
-module:
-    auth:
-        // this should point to the topic you created
-        topic: auth
-        // configure how user passwords are stored, the values below are the
-        // recommended default, see the module's README.md for more details
-        // about available hash types
-        hash:
-            type: pbkdf2
-            algorithm: sha256
-            iterations: 10000
-```
-
 Once configured you can just add the `auth` module to your `useModules` call.
+Please see [built-in modules](##built-in-modules) part to see how to set up the auth module.
 
 ## Logging in
 
