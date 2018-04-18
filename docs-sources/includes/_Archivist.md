@@ -159,6 +159,14 @@ del       | ✔         | `state.emitToActors('archivist:del')`
 
 ### Couchbase
 
+<aside class="warning">
+Please note that the authentication is different for Couchbase Server >= 5.0 and Couchbase Server < 5.0.
+The configuration for each is explained in the example on the right side.
+</aside>
+<aside class="info">
+We recommend you to use Couchbase Server >= 5.0 which is more secured that Couchbase Server < 5.0.
+</aside>
+
 ```yaml
 type: couchbase
 config:
@@ -166,10 +174,14 @@ config:
         # List of hosts in the cluster
         hosts: [ "localhost:8091" ]
 
-        # optional
-        # do not specify this if your bucket does not have a password,
-        # otherwise it will fail to open the bucket
+        # Only for Couchbase Server >= 5.0
+        # User credentials
+        username: Administrator
         password: "password"
+
+        # Only for Couchbase Server < 5.0
+        # Bucket password (optional)
+        password: "toto"
 
         # optional
         bucket: default
@@ -187,11 +199,14 @@ config:
         adminUsername: admin
         adminPassword: "password"
         bucketType: couchbase # can be couchbase or memcached
-        romQuotaMB: 100       # how much memory to allocate to the bucket
+        ramQuotaMB: 100       # how much memory to allocate to the bucket
 ```
 
-`user` and `password` are optional, however, you will need to configure
-configure them if you with to create the underlying bucket
+For **Couchbase Server >= 5.0**, `options.user` and `options.password` have to be set to a user who has access to the `options.bucket`.
+
+For **Couchbase Server < 5.0**, however, you just need to configure `options.password` which correspond to the bucket password and is **optional**.
+
+`create.adminUsername` and `create.password` need to be configured only if you wish to create the underlying bucket
 through `archivist:create`, or to create views and query indexes
 through `archivist:migrate`.
 
