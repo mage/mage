@@ -108,10 +108,8 @@ describe('setup', () => {
 		});
 
 		it('adds default terminal logger with presence of file logger in user config', (done) => {
-			const loggingServicePath = path.dirname(require.resolve('lib/loggingService'));
-
+			config.set('logging', defaultConfig);
 			config.set('logging', userConfig);
-			config.setTopLevelDefault('logging', path.join(loggingServicePath, '../loggingService/config.yaml'));
 
 			loggingService.setup((err) => {
 				assert.strictEqual(err, undefined, 'loggingService.setup should not return an error');
@@ -137,13 +135,12 @@ describe('setup', () => {
 		});
 
 		it('does not add terminal logger if userConfig set terminal to false', (done) => {
-			const loggingServicePath = path.dirname(require.resolve('lib/loggingService'));
 			const userConfig2 = deepCopy(userConfig);
 
 			userConfig2.server.terminal = false;
 
+			config.set('logging', defaultConfig);
 			config.set('logging', userConfig2);
-			config.setTopLevelDefault('logging', path.join(loggingServicePath, '../loggingService/config.yaml'));
 
 			loggingService.setup((err) => {
 				assert.strictEqual(err, undefined, 'loggingService.setup should not return an error');

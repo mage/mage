@@ -307,16 +307,16 @@ describe('Matryoshka', () => {
 				}
 			};
 
-			it('overrides config B with false from B to A', function () {
+			it('does not override config B with false config A from B to A', function () {
 				const mA = new Matryoshka(a);
 				const mB = new Matryoshka(b);
 
 				const mC = Matryoshka.merge(mA, mB);
 
-				assert.deepEqual(mC, mA);
+				assert.deepEqual(mC, mB);
 			});
 
-			it('overrides config B with false from A to B', function () {
+			it('overrides config B with false config A from A to B', function () {
 				const mA = new Matryoshka(a);
 				const mB = new Matryoshka(b);
 
