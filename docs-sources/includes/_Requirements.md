@@ -4,6 +4,10 @@
 
 <aside class="warning">
 MAGE only supports node from version 8.x
+We recommend using the most recent Active LTS version, but we always try to support the Current Release as well.
+
+You can see what the LTS and Current versions are in the Node.js
+<a href="https://github.com/nodejs/Release#release-schedule">release schedule</a>.
 </aside>
 
 ```shell
