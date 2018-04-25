@@ -297,8 +297,28 @@ exports.player = {
 Topics are essentially Archivist datatypes; they define which vault(s)
 to use for storage, the key structure for accessing data, and so on.
 
-In this example, we simply specify a new topic, called items, in which we will be
-identifying by itemId.
+In this example, we simply specify a new topic, called player, in which we will be
+identifying by userId.
+
+### Add an expiration time
+
+In your topic config, you can specify a `ttl` to make your data expires after a certain amount of time.
+
+`ttl` should be a string matching one of the following formats:
+
+- days: "[num]d"
+- hours: "[num]h"
+- minutes: "[num]m"
+- seconds: "[num]s"
+
+> Add an expiration time
+
+```javascript
+exports.player = {
+  // ...
+  ttl: '1m' // Expire the data after 1 minute
+};
+```
 
 ## Store & retrieve topics
 
