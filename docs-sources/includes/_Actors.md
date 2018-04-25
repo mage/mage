@@ -27,43 +27,8 @@ to retrieve sessions to route messages to them properly.
 
 ## Auth module
 
-> `lib/index.js`
-
-```javascript
-mage.useModules([
-  'auth'
-]);
-```
-
-> lib/archivist/index.js
-
-```javascript
-// a valid topic with ['username'] as an index
-exports.auth = {
-  index: ['username'],
-  vaults: {
-    myDataVault: {}
-  }
-};
-```
-
-> config/default.yaml
-
-```yaml
-module:
-    auth:
-        // this should point to the topic you created
-        topic: auth
-        // configure how user passwords are stored, the values below are the
-        // recommended default, see the module's README.md for more details
-        // about available hash types
-        hash:
-            type: pbkdf2
-            algorithm: sha256
-            iterations: 10000
-```
-
 Once configured you can just add the `auth` module to your `useModules` call.
+Please see [built-in modules](##built-in-modules) part to see how to set up the auth module.
 
 ## Logging in
 
@@ -125,3 +90,17 @@ EOF
 
 If authentication fails, you will receive `[["invalidUsernameOrPassword",null]]`;
 otherwise, you should get back an event object containing your player's session information.
+
+## Changing the password
+
+You can change the password for a given user after registration. It works the same way as registration, except
+that the user ID needs to exist or you will get a `UserNotFoundError`. Note that this does not invalidate current
+sessions for this account.
+
+>  lib/modules/players/index.js
+
+```javascript
+exports.changePassword = function (state, username, newPassword, callback) {
+  mage.auth.changePassword(state, username, newPassword, callback);
+};
+```

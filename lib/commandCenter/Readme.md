@@ -16,7 +16,3 @@ If you want to use the command directly, you have to use the `msgServer` module.
 var mage = require('mage');
 mage.msgServer.sendCommand('gifting.gift', parameters, callback);
 ```
-
-## User commands
-
-A complete example is available in the walkthrough: [Writing modules](../../docs/walkthrough/Modules.md).

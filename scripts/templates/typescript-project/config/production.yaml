@@ -28,7 +28,11 @@ logging:
 
     server:
         # You should add logging services such as Graylog or Syslog here
-
+        terminal:
+            channels: ">=notice"
+            config:
+                # Themes enable colors
+                theme: default
 
 # The server and its place in the network
 

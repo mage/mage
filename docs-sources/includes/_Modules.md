@@ -1,5 +1,93 @@
 # Modules
 
+## Built-in modules
+
+> lib/index.js
+
+```javascript
+// Default modules with a fresh mage install
+// (with npx mage create [game name])
+mage.useModules([
+  'archivist',
+  'logger',
+  'session',
+  'time'
+]);
+
+```
+
+
+In the mage library, some modules are already created to provide some facilities such as session and authentication. The full list of available modules can be consulted [here](https://github.com/mage/mage/tree/master/lib/modules).
+
+To see the default modules on a fresh install of mage and how they can be set up, see the example on the right side.
+Note that the `auth` module is **not activated by default**.
+
+### Set up the auth module
+
+To set up the auth module, adding it to `mage.useModules` is not sufficient, a basic configuration is needed.
+See the example on the right side for a basic configuration.
+
+Here are the different hash types you can use:
+
+| Type                    | Description                                                   |
+| ---------------------   | ------------------------------------------------------------  |
+| pbkdf2                  | [pbkdf2 algorithm](https://en.wikipedia.org/wiki/PBKDF2)      |
+| hmac                    | [hmac algorithm](https://en.wikipedia.org/wiki/HMAC)          |
+| hash                    | Basic hash                                                    |
+
+> `lib/index.js`
+
+```javascript
+mage.useModules([
+  'auth'
+]);
+```
+
+> lib/archivist/index.js
+
+```javascript
+// a valid topic with ['username'] as an index
+exports.auth = {
+  index: ['username'],
+  vaults: {
+    myDataVault: {}
+  }
+};
+```
+
+> config/default.yaml
+
+```yaml
+module:
+    auth:
+        # this should point to the topic you created
+        topic: auth
+
+        # configure how user passwords are stored, the values below are the
+        # recommended default
+        hash:
+            # Please see https://en.wikipedia.org/wiki/PBKDF2 for more information
+            type: pbkdf2
+            algorithm: sha256
+            iterations: 10000
+```
+
+```yaml
+        hash:
+          # Please see https://en.wikipedia.org/wiki/HMAC for more information
+          type: hmac
+          algorithm: sha256
+          # Hex key of any length
+          key: 89076d50860489076d508604
+```
+
+```yaml
+        hash:
+          # Basic hash
+          type: hash
+          algorithm: sha1
+```
+
 ## File structure
 
 ```plaintext
@@ -228,6 +316,39 @@ we will return an error on the next access to the user command's `state`
 (which will in turn ensure that execution is interrupted), but manual operations
 unrelated to `state` may still complete.
 
+## Request caching
+
+```shell
+curl -X POST http://127.0.0.1:8080/game/players.checkStats?queryId=1 \
+--data-binary @- << EOF
+[{"key":"be20d767-4067-40d6-92dc-c52067b7d21e:lMftdnXxEFbP3ctq","name":"mage.session"}]
+{}
+EOF
+```
+
+```powershell
+ Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8080/game/players.checkStats?queryId=1" -Body '[{"key":"be20d767-4067-40d6-92dc-c52067b7d21e:lMftdnXxEFbP3ctq","name":"mage.session"}]
+{}' | ConvertTo-Json
+```
+
+By default, responses to requests from authenticated users which
+contain a numerical identifier in the will be automatically cached;
+this is so to avoid double-execution when the client disconnects before
+the response could be sent and the client wishes to retry.
+
+This comes handy for most operations (trades, purchases and so on),
+but may be undesirable in some circumstances (when you serve computed
+static data or static data stored in the database).
+
+> lib/modules/players/checkStats.js
+
+```javascript
+exports.cache = false;
+```
+
+To disable this behavior, simply set `cache` to false
+in your user command's definition.
+
 ## Using async/await (Node 7.6+)
 
 <aside class="notice">
@@ -308,3 +429,68 @@ instead of relying on MAGE to serialize the return data. This can be useful when
 will serve certain pieces of data which will not change frequently. When you wish to do so, simply make
 sure that `exports.serialize` is set to `false`, and to manually return a stringified version of your
 data.
+
+## Error management
+
+> lib/modules/players/usercommands/register.js
+
+```javascript
+'use strict';
+
+const {
+  players,
+  MageError
+} = require('mage');
+
+class NoHomersError extends MageError {
+  constructor(data) {
+		super(data);
+
+    // Code to return to the client (default: server)
+    this.code = 'server';
+
+    // Log level to use to log this error (default: error)
+    this.level = 'warning';
+
+    // Details to log alongside the message (default: undefined)
+    this.details = data.details;
+
+    // Error type - traditionally the class name
+ 		this.type = 'NoHomersError';
+ 	}
+}
+
+module.exports = {
+  acl: ['*'],
+  async execute(state, username, password) {
+    if (username.length > 10) {
+      // Using MageError directly
+      throw new MageError({
+        code: 'username_length_exceeded',
+        level: 'warning',
+        message: 'Username is more than 10 character',
+        details: {
+          received: username
+        }
+      })
+    }
+
+    if (username === 'homer') {
+      // Using a custom error class inheriting MageError
+      throw new NoHomersError({
+        message: 'We already have one Homer anyway '
+      })
+    }
+
+    return await players.register(state, username, password);
+  }
+};
+```
+
+When using `async/await`, you will want to customise the behavior of your errors
+in regards to how they will be logged, what data will be logged, what message will be
+returned to the user, and so on.
+
+To do so, MAGE provides the `MageError` error class, which can be used as-is or
+extended as needed. This error class will allow you to control precisely what you will
+log in case of error, and what should be returned to the user.

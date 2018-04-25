@@ -1,0 +1,19 @@
+# Logging in the browser
+html5:
+    # Log to the browser console
+    console:
+        channels: ">=debug"
+
+    # Send log messages back to the server (usually errors and up)
+    server:
+        channels:
+            - ">=error"
+
+# Logging on the server
+server:
+    # Log to the terminal (hurts performance, not recommended in production)
+    terminal:
+        channels: ">=debug"
+        config:
+            # Themes enable colors
+            theme: default

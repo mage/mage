@@ -4,6 +4,7 @@ declare type VaultOperation = 'add' | 'set' | 'del' | 'touch';
 
 import * as commander from 'commander';
 import * as config from './lib/config';
+import MageError from './lib/mage/MageError';
 
 /**
  * Abstracted data store access interface
@@ -226,6 +227,8 @@ declare type AuthenticateCallback = (error: Error|null, userId: string|number, a
 declare type LoginCallback = (error: Error|null, session: Session) => void;
 
 declare type RegisterCallback = (error: Error|null, session: Session) => void;
+
+declare type ChangePasswordCallback = (error: Error|null) => void;
 
 declare interface ILog extends Function {
     /**
@@ -1115,20 +1118,12 @@ declare interface IMageCore {
         getClusterId(): string;
 
         /**
-         * Retreive the configuration used by this Message
+         * Retrieve the configuration used by this Message
          * Server instance
          *
          * @returns {*}
          */
         getPublicConfig(): any;
-
-        /**
-         * Get the URL to use to connect to this Message
-         * Stream's instance
-         *
-         * @returns {string}
-         */
-        getMsgStreamUrl(): string;
 
         /**
          * Send a message to a remote Message Server instance
@@ -1265,6 +1260,8 @@ declare interface IMageCore {
 }
 
 declare class Mage extends NodeJS.EventEmitter {
+    MageError: typeof MageError;
+
     /**
      * Check if a file is considered like a source code file in MAGE
      *
@@ -1590,6 +1587,11 @@ declare class Mage extends NodeJS.EventEmitter {
          * Register a new user
          */
         register(state: mage.core.IState, username: string, password: string, options: mage.auth.IAuthOptions, callback: RegisterCallback): void;
+
+        /**
+         * Change a user's password.
+         */
+        changePassword(state: mage.core.IState, username: string, newPassword: string, callback: ChangePasswordCallback): void;
     }
 
     /**
@@ -2093,17 +2095,6 @@ declare namespace mage {
              * @memberof VaultValue
              */
             registerReadMiss(vault: string): void;
-
-            /**
-             * Schedule a value add to the different vault backends
-             *
-             * @param {string} mediaType
-             * @param {*} data
-             * @param {string} encoding
-             *
-             * @memberof VaultValue
-             */
-            add(mediaType: string, data: any, encoding: string): void;
 
             /**
              * Schedule a data set on the different vault backends
