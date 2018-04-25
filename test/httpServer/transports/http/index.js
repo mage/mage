@@ -385,6 +385,40 @@ describe('http', function () {
 		});
 	});
 
+	describe('Limits', () => {
+		before(() => {
+			httpServer.addRoute('post-route', (req, res) => {
+				res.end('good');
+			}, 'simple');
+		});
+
+		describe('Entity too large', () => {
+			const sendBuffer = (bufferSize, cb) => {
+				const headers = {};
+				const data = Buffer.alloc(bufferSize, 'a');
+
+				req('POST', '/post-route', headers, data, cb);
+			};
+
+			it('returns an error for entity too large', (done) => {
+				sendBuffer(512 * 1024 + 1, (error, result, res) => {
+					assert(!error, 'it should not return an error');
+					assert(res.statusCode === 413, 'res.statusCode should equal to 413');
+					assert(!result, 'result should be empty');
+					done();
+				});
+			});
+
+			it('does not return an error', (done) => {
+				sendBuffer(512 * 1024, (error, result, res) => {
+					assert(!error, 'it should not return an error');
+					assert(res.statusCode === 200, 'res.statusCode should equal to 200');
+					assert(result === 'good', 'result should equal to "good"');
+					done();
+				});
+			});
+		});
+	});
 
 	describe('check.txt', function () {
 		before(function () {
