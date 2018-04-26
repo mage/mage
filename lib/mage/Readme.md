@@ -76,7 +76,11 @@ only argument.
 
 ### mage.quit(number exitCode)
 
-Shuts down MAGE and exits the process with the given exit code, or 0 if none has been passed.
+Shuts down MAGE and all its processes.
+
+### mage.exit(number exitCode)
+
+Shuts down MAGE and exits the current process with the given exit code, or 0 if none has been passed.
 
 > Please note that if you run this in a worker process, it only shuts down the worker, not the
 > entire project.

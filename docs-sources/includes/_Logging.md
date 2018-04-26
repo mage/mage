@@ -91,6 +91,21 @@ The following logging backends are provided:
 
 ### Terminal
 
+<aside class="warning">
+By default, the logger will log to the terminal. To disable this behaviour, set terminal to false in your config.
+</aside>
+
+> Disable terminal logging
+
+```yaml
+logging:
+    server:
+        terminal: false
+```
+
+
+> Terminal config example
+
 ```yaml
 logging:
     server:
@@ -121,6 +136,8 @@ each log line outputed will then be outputed as a JSON object.
 
 ### File
 
+> File config example
+
 ```yaml
 logging:
     server:
@@ -143,6 +160,8 @@ as a value, or specify `all` if you wish to write all logs to a single file.
 <br><br><br><br><br><br><br><br>
 
 ### Syslog
+
+> Syslog config example
 
 ```yaml
 logging:
@@ -171,6 +190,8 @@ destination.
 <br><br><br><br><br><br><br><br>
 
 ### Graylog
+
+> Graylog config example
 
 ```yaml
 logging:

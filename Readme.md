@@ -41,9 +41,8 @@ Install
 ```bash
 # Replace my-gameserver with how you wish to name your game
 export NODE_ENV=development
-npm install mage --create --prefix my-gameserver
+npx mage create my-gameserver
 cd my-gameserver
-npm run develop
 ```
 
 Then follow the indications on screen as they appear.
@@ -53,9 +52,8 @@ Then follow the indications on screen as they appear.
 ```powershell
 # Replace my-gameserver with how you wish to name your game
 set-item env:NODE_ENV=development
-npm install mage --create --prefix my-gameserver
+npx mage create my-gameserver
 cd my-gameserver
-npm run develop
 ```
 
 Then follow the indications on screen as they appear.
@@ -66,7 +64,7 @@ Optionally, you may also create a TypeScript project. Simply
 add the `--typescript` flag to the previous `npm` command.
 
 ```shell
-npm install mage --create --prefix my-gameserver --typescript
+npx mage create my-gameserver --typescript
 ```
 
 See Also

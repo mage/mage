@@ -27,12 +27,14 @@ whenever you start up the game.
 > Replace my-gameserver with how you wish to name your game
 
 ```shell
-npm install mage --create --prefix my-gameserver
+# Note: use npx, not npm!
+npx mage create my-gameserver
 cd my-gameserver
 ```
 
 ```powershell
-npm install mage --create --prefix my-gameserver
+# Note: use npx, not npm!
+npx mage create my-gameserver
 cd my-gameserver
 ```
 
@@ -55,12 +57,13 @@ the end of the line.
 ### As a TypeScript project
 
 ```shell
-npm install mage --create --typescript --prefix my-gameserver
+# Note: use npx, not npm!
+npx mage create my-gameserver --typescript
 cd my-gameserver
 ```
 
 ```powershell
-npm install mage --create --typescript --prefix my-gameserver
+npx mage create my-gameserver --typescript
 cd my-gameserver
 ```
 

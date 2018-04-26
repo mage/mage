@@ -57,6 +57,15 @@ server:
     # if you want to be more precise.
     cluster: 1
 
+    # Shutdown the current worker process when an uncaught exception is
+    # caught, and let MAGE restart the process. You will normally
+    # want to set this to `false` for unit testing purposes
+    shutdownOnError: true
+
+    # Number of seconds to wait for all connections to close before forcing
+    # the process to shut down.
+    shutdownGracePeriod: 15
+
     # MMRP is the messaging layer between node instances. Turn this on when you want to allow
     # asynchronous message passing to users. See production.yaml for an example.
     mmrp: false

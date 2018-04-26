@@ -72,10 +72,10 @@ describe('File Vault', function () {
 			testFileData = createSimpleData();
 		});
 
-		it('can create with "add"', function (done) {
+		it('can create with "set"', function (done) {
 			createVault(function (fileVault) {
-				fileVault.add(testFilePath, testFileData, function (error) {
-					assert.ifError(error, 'FileVault#add returned an error');
+				fileVault.set(testFilePath, testFileData, function (error) {
+					assert.ifError(error, 'FileVault#set returned an error');
 
 					assert.deepEqual(
 						testFileData.content,
@@ -84,25 +84,6 @@ describe('File Vault', function () {
 					);
 
 					done();
-				});
-			});
-		});
-
-		it('cannot "add" a file twice', function (done) {
-			createVault(function (fileVault) {
-				fileVault.add(testFilePath, testFileData, function (error) {
-					assert.ifError(error, 'The first call to FileVault#add returned an error');
-
-					// This is a valid failure, so hide expected error logging
-					logger.alert = devNull;
-					fileVault.add(testFilePath, testFileData, function (error) {
-						// Re-enable error logging after test completed
-						logger.alert = console.error;
-
-						assert.ok(error, 'The second call to FileVault#add did not return an error');
-
-						done();
-					});
 				});
 			});
 		});

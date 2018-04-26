@@ -373,7 +373,7 @@ serious Node project. Here are some resources which might help you make your fir
 npm completion &gt;&gt; ~/.bashrc
 
 npm run <span class="o">[</span>tab][tab]
-<span class="c"># Will output: archivist-create   archivist-drop     archivist-migrate  develop  [...]</span>
+<span class="c"># Will output: archivist:create   archivist:drop     archivist:migrate  develop  [...]</span>
 </code></pre><pre class="highlight powershell tab-powershell"><code>npm install -g npm@latest
 </code></pre>
 <p>NPM will ship by default with your Node.js installation. However,
@@ -411,9 +411,11 @@ whenever you start up the game.</p>
 <blockquote>
 <p>Replace my-gameserver with how you wish to name your game</p>
 </blockquote>
-<pre class="highlight shell tab-shell"><code>npm install mage --create --prefix my-gameserver
+<pre class="highlight shell tab-shell"><code><span class="c"># Note: use npx, not npm!</span>
+npx mage create my-gameserver
 <span class="nb">cd </span>my-gameserver
-</code></pre><pre class="highlight powershell tab-powershell"><code>npm install mage --create --prefix my-gameserver
+</code></pre><pre class="highlight powershell tab-powershell"><code><span class="c1"># Note: use npx, not npm!</span>
+npx mage create my-gameserver
 <span class="nb">cd </span>my-gameserver
 </code></pre>
 <blockquote>
@@ -429,9 +431,10 @@ empty folder</strong> that is named after the game you are developing.</p>
 the end of the line.</p>
 
 <h3 id="as-a-typescript-project">As a TypeScript project</h3>
-<pre class="highlight shell tab-shell"><code>npm install mage --create --typescript --prefix my-gameserver
+<pre class="highlight shell tab-shell"><code><span class="c"># Note: use npx, not npm!</span>
+npx mage create my-gameserver --typescript
 <span class="nb">cd </span>my-gameserver
-</code></pre><pre class="highlight powershell tab-powershell"><code>npm install mage --create --typescript --prefix my-gameserver
+</code></pre><pre class="highlight powershell tab-powershell"><code>npx mage create my-gameserver --typescript
 <span class="nb">cd </span>my-gameserver
 </code></pre>
 <p>MAGE can also create TypeScript projects; to do so, all you need to do is to
@@ -724,13 +727,13 @@ a <code class="prettyprint">password</code> parameter.</p>
 for yet, but we can see that they are to be used to respond with an error should one occur.</p>
 
 <h2 id="testing-your-user-command">Testing your user command</h2>
-<pre class="highlight shell tab-shell"><code>npm run archivist-create
+<pre class="highlight shell tab-shell"><code>npm run archivist:create
 npm run develop
-</code></pre><pre class="highlight powershell tab-powershell"><code>npm run archivist-create
+</code></pre><pre class="highlight powershell tab-powershell"><code>npm run archivist:create
 npm run develop
 </code></pre>
 <p>Before we try to test the code above, we will first need to create a place for the auth module
-to store the data. <code class="prettyprint">archivist-create</code> will do just that.</p>
+to store the data. <code class="prettyprint">archivist:create</code> will do just that.</p>
 
 <p>Once this command completes, we&rsquo;ll start our MAGE project in development mode.</p>
 
@@ -743,7 +746,7 @@ to store the data. <code class="prettyprint">archivist-create</code> will do jus
 {"username": "test","password": "secret"}
 EOF
 </span></code></pre><pre class="highlight powershell tab-powershell"><code> Invoke-RestMethod -Method Post -Uri <span class="s2">"http://127.0.0.1:8080/game/players.register"</span> -Body <span class="s1">'[]
-{"username": "username", "password": "password"}'</span>
+{"username": "username", "password": "password"}'</span> | ConvertTo-Json
 </code></pre>
 <p>For testing most user commands in MAGE, you would normally need to use one
 of the <a href="#client-sdks">client SDKs</a>; however, this example is simple enough
@@ -752,6 +755,84 @@ for us to be able to simply query the endpoint manually.</p>
 <p>You may notice that the content we send is in line-separated JSON format, and
 that the first thing we send is an empty array; this array, under normal
 circumstances, would contain credentials and other metadata.</p>
+
+<h2 id="login">Login</h2>
+
+<blockquote>
+<p>lib/modules/players/index.js</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">mage</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mage'</span><span class="p">);</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">register</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">acl</span><span class="p">:</span> <span class="p">[</span><span class="s1">'user'</span><span class="p">]</span>
+  <span class="p">};</span>
+
+  <span class="nx">mage</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span>  <span class="kd">function</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">userId</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">mage</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nx">debug</span><span class="p">(</span><span class="s1">'Logging in as'</span><span class="p">,</span> <span class="nx">userId</span><span class="p">);</span>
+
+    <span class="nx">mage</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">,</span> <span class="nx">callback</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">};</span>
+</code></pre>
+<p>Now that we can register users, we may want to automatically log in the user by calling
+<code class="prettyprint">mage.auth.login</code>. While the registration has not been completed in the database, our <code class="prettyprint">state</code>
+transaction contains the information for the newly registered user, which will allow for
+<code class="prettyprint">login</code> to complete successfully.</p>
+
+<p>For more information about the <code class="prettyprint">auth</code> module, please refer to the
+<a href="https://mage.github.io/mage/api/classes/mage.html#auth">API documentation</a>.</p>
+
+<h2 id="acls">ACLs</h2>
+
+<blockquote>
+<p>lib/modules/players/usercommands/notAccessibleToNormalUers.js</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">mage</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mage'</span><span class="p">);</span>
+
+<span class="c1">// Who can access this API?</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">acl</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'special'</span><span class="p">];</span>
+
+<span class="c1">// [...]</span>
+</code></pre>
+<p>As you may have noticed, <code class="prettyprint">mage.auth.register</code> receives and <code class="prettyprint">acl</code> option allowing
+to attach to a give user different access rights. User commands can then in return
+list what ACL groups are allowed to acces that user command.</p>
+
+<p>For instance, in the example above, a user registered only with the <code class="prettyprint">user</code> credential
+would not be allowed to execute this user command. Only if the &lsquo;user&rsquo; or &lsquo;*&rsquo; wildcard ACL
+were added to the <code class="prettyprint">exports.acl</code> array would a normal user be able to execute it.</p>
+
+<p>By standard, <code class="prettyprint">user</code> is assigned to any registered player, but you may create your own ACL
+groups as you see fit.</p>
+
+<h2 id="user-command-timeout">User command timeout</h2>
+
+<blockquote>
+<p>lib/modules/players/usercommands/register.js</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">mage</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mage'</span><span class="p">);</span>
+
+<span class="c1">// Who can access this API?</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">acl</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'*'</span><span class="p">];</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">timeout</span> <span class="o">=</span> <span class="mi">200</span>
+
+<span class="c1">// [...]</span>
+</code></pre>
+<p>By default, user command execution will time out after 15,000 milliseconds; however,
+in some cases, you may want to increase or reduce that value.</p>
+
+<p>To do so, simply set <code class="prettyprint">exports.timeout</code> to your desired value.</p>
+
+<p>Keep in mind that the execution of your usercommand may not get interrupted;
+we will return an error on the next access to the user command&rsquo;s <code class="prettyprint">state</code>
+(which will in turn ensure that execution is interrupted), but manual operations
+unrelated to <code class="prettyprint">state</code> may still complete.</p>
 
 <h2 id="using-async-await-node-7-6">Using async/await (Node 7.6+)</h2>
 
@@ -771,7 +852,7 @@ to your project.
   <span class="nx">auth</span>
 <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mage'</span><span class="p">);</span>
 
-<span class="nx">exports</span><span class="p">.</span><span class="nx">register</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">)</span> <span class="p">{</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">register</span> <span class="o">=</span> <span class="nx">async</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">)</span> <span class="p">{</span>
   <span class="kr">const</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">acl</span><span class="p">:</span> <span class="p">[</span><span class="s1">'user'</span><span class="p">]</span>
   <span class="p">};</span>
@@ -793,7 +874,7 @@ to your project.
 <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
   <span class="na">acl</span><span class="p">:</span> <span class="p">[</span><span class="s1">'*'</span><span class="p">],</span>
   <span class="nx">async</span> <span class="nx">execute</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">await</span> <span class="nx">players</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">players</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">};</span>
 </code></pre>
@@ -1016,7 +1097,7 @@ so there is nothing left for us to do.</p>
 {"username": "test","password": "secret"}
 EOF
 </span></code></pre><pre class="highlight powershell tab-powershell"><code> Invoke-RestMethod -Method Post -Uri <span class="s2">"http://127.0.0.1:8080/game/players.login"</span> -Body <span class="s1">'[]
-{"username": "test", "password": "secret"}'</span>
+{"username": "test", "password": "secret"}'</span> | ConvertTo-Json
 </code></pre>
 <p>If authentication fails, you will receive <code class="prettyprint">[[&quot;invalidUsernameOrPassword&quot;,null]]</code>;
 otherwise, you should get back an event object containing your player&rsquo;s session information.</p>
@@ -1851,7 +1932,7 @@ APIs; reads will be asynchronous, but writes will be synchronous.</p>
 {}
 EOF
 </span></code></pre><pre class="highlight powershell tab-powershell"><code> Invoke-RestMethod -Method Post -Uri <span class="s2">"http://127.0.0.1:8080/game/players.list"</span> -Body <span class="s1">'[]
-{}'</span>
+{}'</span> | ConvertTo-Json
 </code></pre>
 <p>We can re-use the previous command to create a new user; once we have done so, we can use
 the following command to retrieve the data we have just created.</p>
@@ -2015,6 +2096,23 @@ This is what they look like:</p>
 archivist:drop [vaults]       destroy database environments for all configured vaults
 archivist:migrate [version]   migrates all vaults to the current version, or to the version requested
 </code></pre>
+<h2 id="maximum-data-size-warning-and-errors">Maximum data size (warning and errors)</h2>
+<pre class="highlight yaml tab-yaml"><code><span class="na">archivist</span><span class="pi">:</span>
+  <span class="na">size</span><span class="pi">:</span>
+    <span class="c1"># Default set to 1Mb (1024 kilobytes); set to false to disable</span>
+    <span class="na">warning</span><span class="pi">:</span> <span class="s">256</span>
+
+    <span class="c1"># Disabled by default</span>
+    <span class="na">error</span><span class="pi">:</span> <span class="s">512</span>
+</code></pre>
+<p>MAGE will keep track of all data that is written into vaults, and automatically log a warning
+when the data size reaches a certain threshold. Optionally, you can also configure MAGE to throw
+an error should the data reach a certain size.</p>
+
+<p>You may configure this behavior by configuring <code class="prettyprint">archivist.size.warning</code> and <code class="prettyprint">archivist.size.error</code>
+in your configuration files. By default, MAGE will never throw an error no matter how big your
+data gets, but will log a warning should your data be bigger than 1 megabyte.</p>
+
           <h1 id="events">Events</h1>
 
 <p>We have seen in the <a href="#states">States</a> section of this user guide that
@@ -2558,6 +2656,10 @@ in such case.</p>
     <span class="na">serviceDiscovery</span><span class="pi">:</span>
         <span class="na">engine</span><span class="pi">:</span> <span class="s">zookeeper</span>
         <span class="na">options</span><span class="pi">:</span>
+            <span class="c1"># The interface to announce the IP for. By default, all</span>
+            <span class="c1"># IP are announced</span>
+            <span class="na">interface</span><span class="pi">:</span> <span class="s">eth0</span>
+
             <span class="c1"># List of available ZooKeeper nodes (comma-separated)</span>
             <span class="na">hosts</span><span class="pi">:</span> <span class="s2">"</span><span class="s">192.168.1.12:2181,192.168.3.18:2181"</span>
 
@@ -2635,7 +2737,7 @@ in many cases, one will suffice.</p>
 <p>Query sampler</p>
 </blockquote>
 <pre class="highlight shell tab-shell"><code>curl http://localhost:8080/savvy/sampler/metrics
-</code></pre><pre class="highlight powershell tab-powershell"><code> Invoke-RestMethod -Method Get -Uri <span class="s2">"http://localhost:8080/savvy/sampler/metrics"</span>
+</code></pre><pre class="highlight powershell tab-powershell"><code> Invoke-RestMethod -Method Get -Uri <span class="s2">"http://localhost:8080/savvy/sampler/metrics"</span> | ConvertTo-Json
 </code></pre>
 <blockquote>
 <p>Response</p>
@@ -2677,7 +2779,7 @@ of state errors, mean latency per user command, and so on.</p>
 {}
 EOF
 </span></code></pre><pre class="highlight powershell tab-powershell"><code> Invoke-RestMethod -Method Post -Uri <span class="s2">"http://127.0.0.1:8080/game/players.countClicks"</span> -Body <span class="s1">'[]
-{}'</span>
+{}'</span> | ConvertTo-Json
 </code></pre>
 <blockquote>
 <p>New sampler output</p>
