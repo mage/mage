@@ -22,10 +22,11 @@ If you are making a minor release that is equal to the current state of the `mas
 
 1. Compare changes with the previous release: `git log master...1.2.3` (replace `1.2.3` by the previous version tag)
 2. Run: `npm version minor`. This will have:
-    1. Updated the version in package.json
-    2. Regenerated documentation
-    3. Committed (git)
-    4. Tagged (git)
+    1. Updated the version in package.
+    2. Updated the version in package-lock.json
+    3. Regenerated documentation
+    4. Committed (git)
+    5. Tagged (git)
 3. Run: `git push upstream master --tags`
 4. Write up the release notes at the new tag on https://github.com/mage/mage/releases/new
 5. Run: `npm publish`
@@ -39,9 +40,10 @@ To make a patch-release, we cherry-pick commits from master into a temporary bra
 3. Pick all commits you wish to include: `git cherry-pick COMMITHASH` (replace `COMMITHASH`)
 4. Run: `npm version patch`. This will have:
     1. Updated the version in package.json
-    2. Regenerated documentation
-    3. Committed (git)
-    4. Tagged (git)
+    2. Updated the version in package-lock.json
+    3. Regenerated documentation
+    4. Committed (git)
+    5. Tagged (git)
 5. Run: `git push upstream 1.2.4` (replace `1.2.4` by the new version tag)
 6. Write up the release notes at the new tag on https://github.com/mage/mage/releases/new
 7. Run: `npm publish`

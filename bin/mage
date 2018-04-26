@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 
+// Executed when running npx mage create
+if (process.argv[2] === 'create') {
+	return require('../scripts/create.js');
+}
+
 const prettyjson = require('prettyjson');
 const chalk = require('chalk');
 const path = require('path');
@@ -65,4 +70,9 @@ if (!app.boot) {
 	process.exit(-1);
 }
 
-app.boot();
+app.boot((error) => {
+	if (error) {
+		logError(`Failed to load MAGE application: ${error.stack || error}`);
+		app.exit(1, true);
+	}
+});

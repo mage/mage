@@ -33,7 +33,7 @@ set-item env:NODE_ENV development
 git clone %APP_REPO% %APP_NAME%
 cd %APP_NAME%
 npm install
-npm run archivist-create
+npm run archivist:create
 npm run develop
 ```
 

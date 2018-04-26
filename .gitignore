@@ -25,8 +25,6 @@ npm-debug.log
 # Docs related
 /docs-sources/includes/mage
 
-# reports (.eslintrc is generated for plato to use)
-/complexity-report
+# reports
 /coverage-report
 /coveralls
-.eslintrc

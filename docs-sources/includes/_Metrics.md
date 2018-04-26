@@ -35,7 +35,7 @@ curl http://localhost:8080/savvy/sampler/metrics
 ```
 
 ```powershell
- Invoke-RestMethod -Method Get -Uri "http://localhost:8080/savvy/sampler/metrics"
+ Invoke-RestMethod -Method Get -Uri "http://localhost:8080/savvy/sampler/metrics" | ConvertTo-Json
 ```
 
 > Response
@@ -83,7 +83,7 @@ EOF
 
 ```powershell
  Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8080/game/players.countClicks" -Body '[]
-{}'
+{}' | ConvertTo-Json
 ```
 
 > New sampler output
@@ -108,4 +108,4 @@ access them.
 Sampler values are defined on-the-fly; therefore, you must be careful when
 choosing a sampler key for your metrics, so to avoid overlaps.
 
-See [the sampler API documentation](./api/interfaces/_mage_d_.imagecore.html#sampler) for more documentation.
+See [the sampler API documentation](./api/interfaces/imagecore.html#sampler) for more documentation.

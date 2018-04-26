@@ -4,6 +4,7 @@ declare type VaultOperation = 'add' | 'set' | 'del' | 'touch';
 
 import * as commander from 'commander';
 import * as config from './lib/config';
+import MageError from './lib/mage/MageError';
 
 /**
  * Abstracted data store access interface
@@ -226,6 +227,8 @@ declare type AuthenticateCallback = (error: Error|null, userId: string|number, a
 declare type LoginCallback = (error: Error|null, session: Session) => void;
 
 declare type RegisterCallback = (error: Error|null, session: Session) => void;
+
+declare type ChangePasswordCallback = (error: Error|null) => void;
 
 declare interface ILog extends Function {
     /**
@@ -1115,20 +1118,12 @@ declare interface IMageCore {
         getClusterId(): string;
 
         /**
-         * Retreive the configuration used by this Message
+         * Retrieve the configuration used by this Message
          * Server instance
          *
          * @returns {*}
          */
         getPublicConfig(): any;
-
-        /**
-         * Get the URL to use to connect to this Message
-         * Stream's instance
-         *
-         * @returns {string}
-         */
-        getMsgStreamUrl(): string;
 
         /**
          * Send a message to a remote Message Server instance
@@ -1269,6 +1264,8 @@ declare interface IMageCore {
 }
 
 declare class Mage extends NodeJS.EventEmitter {
+    MageError: typeof MageError;
+
     /**
      * Check if a file is considered like a source code file in MAGE
      *
@@ -1282,6 +1279,17 @@ declare class Mage extends NodeJS.EventEmitter {
      * @returns {boolean} True if the extension is for a source code file
      */
     isCodeFileExtension(ext: string): boolean;
+
+    /**
+     * The worker ID of the currently worker process
+     *
+     * Will return false if the process is the master process, or
+     * if MAGE is running in single mode.
+     *
+     * This differs from cluster.worker.id because it will remain consistent
+     * if restarted or reloaded.
+     */
+    workerId?: number;
 
     /**
      * The current task to execute. Internal value.
@@ -1388,18 +1396,34 @@ declare class Mage extends NodeJS.EventEmitter {
     getTask(): mage.core.ITask;
 
     /**
+     * Quit MAGE
+     *
+     * This will stop ALL MAGE processes regardless of where it
+     * is called from. To stop only the local process (similarly
+     * to what `process.exit` would do, please see `mage.exit`)
+     *
+     * @param {number} [exitCode] exit code to use
+     * @param {boolean} [hard] If true, exit immediately (exit code will be ignored and set to 1)
+     */
+    quit(exitCode?: number, hard?: boolean) : never;
+
+    /**
      * Shut down MAGE
      *
      * When setting `hard` to true, MAGE will not try to complete current I/O
      * operations and exit immediately; you should avoid using `hard` unless there
      * are no other options available to you.
      *
+     * Note that this will behave similarly to `process.exit`; only the *current*
+     * process will be stopped, not the entire server. To stop the entire server,
+     * see `mage.quit`
+     *
      * @param {number} [exitCode] exit code to use
      * @param {boolean} [hard] If true, exit immediately (exit code will be ignored and set to 1)
      *
      * @memberOf Mage
      */
-    quit(exitCode?: number, hard?: boolean) : never;
+    exit(exitCode?: number, hard?: boolean) : never;
 
     // deprecated
     // fatalError(...args: any[]): never;
@@ -1567,6 +1591,11 @@ declare class Mage extends NodeJS.EventEmitter {
          * Register a new user
          */
         register(state: mage.core.IState, username: string, password: string, options: mage.auth.IAuthOptions, callback: RegisterCallback): void;
+
+        /**
+         * Change a user's password.
+         */
+        changePassword(state: mage.core.IState, username: string, newPassword: string, callback: ChangePasswordCallback): void;
     }
 
     /**
@@ -2070,17 +2099,6 @@ declare namespace mage {
              * @memberof VaultValue
              */
             registerReadMiss(vault: string): void;
-
-            /**
-             * Schedule a value add to the different vault backends
-             *
-             * @param {string} mediaType
-             * @param {*} data
-             * @param {string} encoding
-             *
-             * @memberof VaultValue
-             */
-            add(mediaType: string, data: any, encoding: string): void;
 
             /**
              * Schedule a data set on the different vault backends

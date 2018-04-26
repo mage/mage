@@ -4,28 +4,20 @@ var pathResolve = require('path').resolve;
 var pathJoin = require('path').join;
 var rl = require('../lib/readline.js');
 
-var magePath = process.cwd();
-var appPath = pathResolve(magePath, '../..');
+var magePath = pathResolve(__dirname, '../..');
+var appPath = process.cwd();
 
 var magePackage = require(pathJoin(magePath, 'package.json'));
-var npmArgs = JSON.parse(process.env.npm_config_argv);
+var MAGE_PACKAGE_VERSION = magePackage._from;
+var replacements = {};
 
-// Note: the following will NOT work
-// with NPM versions; mage@1.1.1 would break
-// not only here, but because template files
-// will hard-code the version as repo#version
-// (note the hash)
-var MAGE_REPO = npmArgs.remain[0];
-var MAGE_VERSION = magePackage.version;
-var MAGE_PACKAGE_VERSION = magePackage.version;
-
-if (MAGE_REPO.indexOf('#') !== -1 || MAGE_REPO.indexOf('/') !== -1) {
-	MAGE_PACKAGE_VERSION = MAGE_REPO;
-} else if (MAGE_REPO.indexOf('@') !== -1) {
-	MAGE_PACKAGE_VERSION = MAGE_REPO.substring(MAGE_REPO.indexOf('@') + 1);
+if (MAGE_PACKAGE_VERSION.substring(0, 5) === 'mage@') {
+	MAGE_PACKAGE_VERSION = MAGE_PACKAGE_VERSION.substring(5);
 }
 
-var replacements = {};
+if (MAGE_PACKAGE_VERSION === 'latest') {
+	MAGE_PACKAGE_VERSION = magePackage.version;
+}
 
 function getVar(varName, required) {
 	if (required && !replacements.hasOwnProperty(varName)) {
@@ -59,8 +51,6 @@ replacements = {
 	APP_LICENSE: 'Private',
 	APP_REPO: '',
 	APP_CLIENTHOST_EXPOSE: '',
-	MAGE_REPO: MAGE_REPO,
-	MAGE_VERSION: MAGE_VERSION,
 	MAGE_PACKAGE_VERSION: MAGE_PACKAGE_VERSION,
 	MAGE_NODE_VERSION: (magePackage.engines && magePackage.engines.node) ? magePackage.engines.node : '',
 	ENV_USER: process.env.USER
