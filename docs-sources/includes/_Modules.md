@@ -1,5 +1,20 @@
 # Modules
 
+## External helper modules
+
+Some mage modules are optional but simplify the use of the library.
+Here are the most important:
+
+
+|                                      Module                                      |                                                                    Description                                                                    | Typescript library |
+|:--------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------:|:------------------:|
+|               [mage-console](https://github.com/mage/mage-console)               | Mage development console with [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) interface and auto-reload on file change |                    |
+|             [mage-validator](https://github.com/mage/mage-validator)             |                                          Validation system for MAGE topics and user command input types                                           |         ✔          |
+|          [mage-module-shard](https://github.com/mage/mage-module-shard)          |                                      Helps you to implement modules that act as shards within a MAGE cluster                                      |         ✔          |
+| [mage-vaulthelper-couchbase](https://github.com/mage/mage-vaulthelper-couchbase) |                                                    Helps you to access mage Couchbase backend                                                     |         ✔          |
+|    [mage-module-maintenance](https://github.com/mage/mage-module-maintenance)    |                                           Helps you implement a maintenance mode for your game cluster                                            |         ✔          |
+|           [mage-https-devel](https://github.com/mage/mage-https-devel)           |                                         Toolchain for enabling the use of HTTPS during local development                                          |                    |
+
 ## Built-in modules
 
 > lib/index.js
