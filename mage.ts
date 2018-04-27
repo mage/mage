@@ -1552,7 +1552,7 @@ declare class Mage extends NodeJS.EventEmitter {
      *
      * @memberof Mage
      */
-    getClientConfig(appName: string, baseUrl: string): any;
+    getConfig(appName: string): any;
 
     /**
      * auth module
