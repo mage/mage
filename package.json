@@ -10,7 +10,7 @@
   },
   "types": "./mage.ts",
   "engines": {
-    "node": "^6 || ^7 || ^8 || ^9",
+    "node": "^8 || ^9",
     "typescript": "^2.2"
   },
   "scripts": {
