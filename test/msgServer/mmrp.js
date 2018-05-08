@@ -107,12 +107,12 @@ describe('MMRP', function () {
 			network.clients.forEach(function (client) {
 				client.relayUp(createUri(network.relay.routerPort), {
 					clusterId: network.relay.clusterId
-				}, true);
+				});
 			});
 
 			network.relay.relayUp(createUri(network.relay.routerPort), {
 				clusterId: network.relay.clusterId
-			}, true);
+			});
 		}
 
 		it('instantiates', function () {
@@ -195,7 +195,7 @@ describe('MMRP', function () {
 				relays.forEach(function (peer) {
 					relay.relayUp(createUri(peer.routerPort), {
 						clusterId: peer.clusterId
-					}, relay.clusterId === peer.clusterId);
+					});
 				});
 			});
 		}
@@ -373,7 +373,7 @@ describe('MMRP', function () {
 					peer.relayUp(createUri(relay.routerPort), {
 						clusterId: relay.clusterId,
 						timestamp: Date.now()
-					}, peer.clusterId === relay.clusterId);
+					});
 				});
 			});
 		}
