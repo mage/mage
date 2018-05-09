@@ -7,6 +7,9 @@
     mocha: true
     node: true
     es6: true
+  parserOptions:
+    ecmaVersion: 8
+    sourceType: "module"
   rules:
     no-bitwise: 0
     camelcase:

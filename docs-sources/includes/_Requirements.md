@@ -2,8 +2,8 @@
 
 ## Node.js
 
-<aside class="notice">
-MAGE always supports the "Active LTS" (Long Term Support) versions of Node.js.
+<aside class="warning">
+MAGE only supports node from version 8.x
 We recommend using the most recent Active LTS version, but we always try to support the Current Release as well.
 
 You can see what the LTS and Current versions are in the Node.js
