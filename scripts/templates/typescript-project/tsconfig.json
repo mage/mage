@@ -11,6 +11,8 @@
     "removeComments": true,
     "sourceMap": true,
     "inlineSources": true,
-    "inlineSourceMap": false
+    "inlineSourceMap": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   }
 }
