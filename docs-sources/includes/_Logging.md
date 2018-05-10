@@ -9,7 +9,7 @@ on.
 
 ```javascript
 var mage = require('mage');
-var logger = mage.core.logger;
+var logger = mage.logger;
 logger.debug('hello world');
 logger.info.data({
   debug: 'data'
