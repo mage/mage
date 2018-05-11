@@ -227,7 +227,7 @@ to store the data. `archivist:create` will do just that.
 
 Once this command completes, we'll start our MAGE project in development mode.
 
-> In a separate terminal window
+> Using curl in a separate terminal window
 
 ```shell
 curl -X POST http://127.0.0.1:8080/game/players.register \
@@ -235,6 +235,48 @@ curl -X POST http://127.0.0.1:8080/game/players.register \
 []
 {"username": "test","password": "secret"}
 EOF
+```
+
+> With JavaScript using XMLHttpRequest
+
+```javascript
+var xhr = new XMLHttpRequest();
+
+xhr.onload = function(e) {
+  var response = xhr.response;
+}
+
+xhr.responseType = 'json';
+xhr.open('POST', 'http://127.0.0.1:8080/game/players.register');
+
+var data = {
+  "username": "test",
+  "password": "secret"
+};
+var payload = '[]\n' + JSON.stringify(data);
+
+xhr.send(payload);
+```
+
+> With JavaScript using JQuery
+
+```javascript
+var data = {
+  "username": "test",
+  "password": "secret"
+};
+var payload = '[]\n' + JSON.stringify(data);
+
+$.post(
+  'http://127.0.0.1:8080/game/players.register',
+  payload
+)
+.done(function(res) {
+  // Success
+})
+.fail(function() {
+  // Error
+});
 ```
 
 ```powershell
