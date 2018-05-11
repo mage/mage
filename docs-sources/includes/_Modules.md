@@ -26,6 +26,7 @@ Here are the most important:
 // (with npx mage create [game name])
 mage.useModules([
   'archivist',
+  'config',
   'logger',
   'session',
   'time'

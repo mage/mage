@@ -5,6 +5,7 @@ var mage = module.exports = require('mage');
 // https://github.com/mage/mage/tree/master/lib/modules
 mage.useModules([
 	'archivist',
+	'config',
 	'logger',
 	'session',
 	'time'
