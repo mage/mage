@@ -40,6 +40,7 @@ In the mage library, some modules are already created to provide some facilities
 | Module                     | Description                                          |
 |----------------------------|------------------------------------------------------|
 | archivist                  | Expose usercommands to synchronize data in real time |
+| config                     | Expose client config with a usercommand              |
 | [auth](#auth-module)       | Authentication facility                              |
 | [logger](#logging)         | Logging facility                                     |
 | [session](#session-module) | Session facility                                     |
