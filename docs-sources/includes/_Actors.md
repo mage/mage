@@ -44,7 +44,7 @@ exports.login = function (state, username, password, callback) {
 
 ```javascript
 var mage = require('mage');
-var logger = mage.core.logger.context('players');
+var logger = mage.logger.context('players');
 
 exports.acl = ['*'];
 

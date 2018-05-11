@@ -2,18 +2,20 @@
 
 ## External helper modules
 
-Some mage modules are optional but simplify the use of the library.
+External helpers modules are optional but simplify the use of the library.
+They are different from mage built-in modules and user modules: they don't expose usercommands, they just act as helpers.
+
 Here are the most important:
 
 
-|                                      Module                                      |                                                                    Description                                                                    | Typescript library |
-|:--------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------:|:------------------:|
-|               [mage-console](https://github.com/mage/mage-console)               | Mage development console with [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) interface and auto-reload on file change |                    |
-|             [mage-validator](https://github.com/mage/mage-validator)             |                                          Validation system for MAGE topics and user command input types                                           |         ✔          |
-|          [mage-module-shard](https://github.com/mage/mage-module-shard)          |                                      Helps you to implement modules that act as shards within a MAGE cluster                                      |         ✔          |
-| [mage-vaulthelper-couchbase](https://github.com/mage/mage-vaulthelper-couchbase) |                                                    Helps you to access mage Couchbase backend                                                     |         ✔          |
-|    [mage-module-maintenance](https://github.com/mage/mage-module-maintenance)    |                                           Helps you implement a maintenance mode for your game cluster                                            |         ✔          |
-|           [mage-https-devel](https://github.com/mage/mage-https-devel)           |                                         Toolchain for enabling the use of HTTPS during local development                                          |                    |
+| Module                                                                           | Description                                                                                                                                       | TypeScript library |
+|----------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|--------------------|
+| [mage-console](https://github.com/mage/mage-console)                             | Mage development console with [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) interface and auto-reload on file change |                    |
+| [mage-validator](https://github.com/mage/mage-validator)                         | Validation system for MAGE topics and user command input types                                                                                    | ✔                  |
+| [mage-module-shard](https://github.com/mage/mage-module-shard)                   | Helps you to implement modules that act as shards within a MAGE cluster                                                                           | ✔                  |
+| [mage-vaulthelper-couchbase](https://github.com/mage/mage-vaulthelper-couchbase) | Helps you to access mage Couchbase backend                                                                                                        | ✔                  |
+| [mage-module-maintenance](https://github.com/mage/mage-module-maintenance)       | Helps you implement a maintenance mode for your game cluster                                                                                      | ✔                  |
+| [mage-https-devel](https://github.com/mage/mage-https-devel)                     | Toolchain for enabling the use of HTTPS during local development                                                                                  |                    |
 
 ## Built-in modules
 
@@ -32,7 +34,20 @@ mage.useModules([
 ```
 
 
-In the mage library, some modules are already created to provide some facilities such as session and authentication. The full list of available modules can be consulted [here](https://github.com/mage/mage/tree/master/lib/modules).
+In the mage library, some modules are already created to provide some facilities such as session and authentication. The full list of available modules is defined as below:
+
+| Module                     | Description                                          |
+|----------------------------|------------------------------------------------------|
+| archivist                  | Expose usercommands to synchronize data in real time |
+| [auth](#auth-module)       | Authentication facility                              |
+| [logger](#logging)         | Logging facility                                     |
+| [session](#session-module) | Session facility                                     |
+| [time](#time-manipulation) | Time manipulation facility                           |
+
+<aside class="notice">
+Note that the built-in archivist module is different from <a href="#archivist">Archivist</a> defined later.
+</aside>
+
 
 To see the default modules on a fresh install of mage and how they can be set up, see the example on the right side.
 Note that the `auth` module is **not activated by default**.
