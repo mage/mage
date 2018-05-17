@@ -1,8 +1,51 @@
 # Events
 
-We have seen in the [States](#states) section of this user guide that
-states can be used to emit events between players. Let's dig a bit deeper
-into how this can be used.
+We have seen in the [States](#states) section of this user guide that states can be used to emit events between players.
+Before explaining how to send events, we will first see how MAGE send events to the clients, and how to configure the server to do so.
+
+## How does it work ?
+
+Events sending and receipt is done via **Message Stream**.
+
+Message Stream is a protocol used by MAGE servers and its clients in order to communicate. This protocol is implemented through different transports, which are the following:
+
+- **short-polling**: The client send a request to the server and get an **instant response** with the events. The client repeats this every X seconds to receive new events.
+- **long-polling**: The client send a request to the server and keep the connection open. The server will send a response with the events once one or multiple events destinated to the client are received. Then, the client open a new connection and repeat the process.
+- **websocket**: Real time events sending and receipt.
+
+If you need more information about Message Stream protocol, you can read this [documentation](https://github.com/mage/mage/tree/master/lib/msgServer/msgStream).
+
+In your MAGE config file, you can specify the priority of the transports which will be used by the client SDK to receive the events.
+
+> config/default.yaml
+
+```yaml
+server:
+    msgStream:
+        detect:
+            - websocket
+            - longpolling
+            - shortpolling
+
+```
+
+You can also configure longpolling transport:
+
+> config/default.yaml
+
+```yaml
+server:
+    msgStream:
+        transports:
+            longpolling:
+                heartbeat: 60
+
+```
+
+For the `longpolling` transport, you can specify a `heartbeat` config, which correspond to the number of seconds until a request expire and automatically close.
+
+
+Now we have seen how to configure your server to send and receive events, we will now see how to send events with the [State](#states) object.
 
 ## Sending events
 
