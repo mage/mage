@@ -226,7 +226,7 @@ declare type AuthenticateCallback = (error: Error|null, userId: string|number, a
 
 declare type LoginCallback = (error: Error|null, session: Session) => void;
 
-declare type RegisterCallback = (error: Error|null, session: Session) => void;
+declare type RegisterCallback = (error: Error|null, userId: string) => void;
 
 declare type ChangePasswordCallback = (error: Error|null) => void;
 
