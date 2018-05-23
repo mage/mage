@@ -338,14 +338,18 @@ with various aspects of your MAGE development pipeline.</p>
 
 <h2 id="node-js">Node.js</h2>
 
-<aside class="notice">
-We recommend using version 4 since it is an LTS version
+<aside class="warning">
+MAGE only supports node from version 8.x
+We recommend using the most recent Active LTS version, but we always try to support the Current Release as well.
+
+You can see what the LTS and Current versions are in the Node.js
+<a href="https://github.com/nodejs/Release#release-schedule">release schedule</a>.
 </aside>
-<pre class="highlight shell tab-shell"><code>nvm install 4
-nvm use 4
+<pre class="highlight shell tab-shell"><code>nvm install 8
+nvm use 8
 </code></pre><pre class="highlight powershell tab-powershell"><code><span class="c1"># You will need to provide the specific version to install and use</span>
-Install-NodeVersion v4.8.2
-<span class="nb">Set</span>-NodeVersion v4.8.2
+Install-NodeVersion v8.10.0
+<span class="nb">Set</span>-NodeVersion v8.10.0
 </code></pre>
 <p>Node.js (or Node) is essentially JavaScript for servers, and the MAGE platform has been built on it.
 There are some concepts you will most likely benefit from understanding before getting started on a
@@ -623,6 +627,180 @@ been initialized will likely not have any effects.</p>
 
           <h1 id="modules">Modules</h1>
 
+<h2 id="external-helper-modules">External helper modules</h2>
+
+<p>External helpers modules are optional but simplify the use of the library.
+They are different from mage built-in modules and user modules: they don&rsquo;t expose usercommands, they just act as helpers.</p>
+
+<p>Here are the most important:</p>
+
+<table><thead>
+<tr>
+<th>Module</th>
+<th>Description</th>
+<th>TypeScript library</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="https://github.com/mage/mage-console">mage-console</a></td>
+<td>Mage development console with <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">REPL</a> interface and auto-reload on file change</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/mage/mage-validator">mage-validator</a></td>
+<td>Validation system for MAGE topics and user command input types</td>
+<td>✔</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mage/mage-module-shard">mage-module-shard</a></td>
+<td>Helps you to implement modules that act as shards within a MAGE cluster</td>
+<td>✔</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mage/mage-vaulthelper-couchbase">mage-vaulthelper-couchbase</a></td>
+<td>Helps you to access mage Couchbase backend</td>
+<td>✔</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mage/mage-module-maintenance">mage-module-maintenance</a></td>
+<td>Helps you implement a maintenance mode for your game cluster</td>
+<td>✔</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mage/mage-https-devel">mage-https-devel</a></td>
+<td>Toolchain for enabling the use of HTTPS during local development</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h2 id="built-in-modules">Built-in modules</h2>
+
+<blockquote>
+<p>lib/index.js</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="c1">// Default modules with a fresh mage install</span>
+<span class="c1">// (with npx mage create [game name])</span>
+<span class="nx">mage</span><span class="p">.</span><span class="nx">useModules</span><span class="p">([</span>
+  <span class="s1">'archivist'</span><span class="p">,</span>
+  <span class="s1">'config'</span><span class="p">,</span>
+  <span class="s1">'logger'</span><span class="p">,</span>
+  <span class="s1">'session'</span><span class="p">,</span>
+  <span class="s1">'time'</span>
+<span class="p">]);</span>
+
+</code></pre>
+<p>In the mage library, some modules are already created to provide some facilities such as session and authentication. The full list of available modules is defined as below:</p>
+
+<table><thead>
+<tr>
+<th>Module</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>archivist</td>
+<td>Expose usercommands to synchronize data in real time</td>
+</tr>
+<tr>
+<td>config</td>
+<td>Expose client config with a usercommand</td>
+</tr>
+<tr>
+<td><a href="#auth-module">auth</a></td>
+<td>Authentication facility</td>
+</tr>
+<tr>
+<td><a href="#logging">logger</a></td>
+<td>Logging facility</td>
+</tr>
+<tr>
+<td><a href="#session-module">session</a></td>
+<td>Session facility</td>
+</tr>
+<tr>
+<td><a href="#time-manipulation">time</a></td>
+<td>Time manipulation facility</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+Note that the built-in archivist module is different from <a href="#archivist">Archivist</a> defined later.
+</aside>
+
+<p>To see the default modules on a fresh install of mage and how they can be set up, see the example on the right side.
+Note that the <code class="prettyprint">auth</code> module is <strong>not activated by default</strong>.</p>
+
+<h3 id="set-up-the-auth-module">Set up the auth module</h3>
+
+<p>To set up the auth module, adding it to <code class="prettyprint">mage.useModules</code> is not sufficient, a basic configuration is needed.
+See the example on the right side for a basic configuration.</p>
+
+<p>Here are the different hash types you can use:</p>
+
+<table><thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>pbkdf2</td>
+<td><a href="https://en.wikipedia.org/wiki/PBKDF2">pbkdf2 algorithm</a></td>
+</tr>
+<tr>
+<td>hmac</td>
+<td><a href="https://en.wikipedia.org/wiki/HMAC">hmac algorithm</a></td>
+</tr>
+<tr>
+<td>hash</td>
+<td>Basic hash</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p><code class="prettyprint">lib/index.js</code></p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">mage</span><span class="p">.</span><span class="nx">useModules</span><span class="p">([</span>
+  <span class="s1">'auth'</span>
+<span class="p">]);</span>
+</code></pre>
+<blockquote>
+<p>lib/archivist/index.js</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="c1">// a valid topic with ['username'] as an index</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">auth</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">index</span><span class="p">:</span> <span class="p">[</span><span class="s1">'username'</span><span class="p">],</span>
+  <span class="na">vaults</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">myDataVault</span><span class="p">:</span> <span class="p">{}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre>
+<blockquote>
+<p>config/default.yaml</p>
+</blockquote>
+<pre class="highlight yaml tab-yaml"><code><span class="na">module</span><span class="pi">:</span>
+    <span class="na">auth</span><span class="pi">:</span>
+        <span class="c1"># this should point to the topic you created</span>
+        <span class="na">topic</span><span class="pi">:</span> <span class="s">auth</span>
+
+        <span class="c1"># configure how user passwords are stored, the values below are the</span>
+        <span class="c1"># recommended default</span>
+        <span class="na">hash</span><span class="pi">:</span>
+            <span class="c1"># Please see https://en.wikipedia.org/wiki/PBKDF2 for more information</span>
+            <span class="na">type</span><span class="pi">:</span> <span class="s">pbkdf2</span>
+            <span class="na">algorithm</span><span class="pi">:</span> <span class="s">sha256</span>
+            <span class="na">iterations</span><span class="pi">:</span> <span class="s">10000</span>
+</code></pre><pre class="highlight yaml tab-yaml"><code>        <span class="na">hash</span><span class="pi">:</span>
+          <span class="c1"># Please see https://en.wikipedia.org/wiki/HMAC for more information</span>
+          <span class="na">type</span><span class="pi">:</span> <span class="s">hmac</span>
+          <span class="na">algorithm</span><span class="pi">:</span> <span class="s">sha256</span>
+          <span class="c1"># Hex key of any length</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">89076d50860489076d508604</span>
+</code></pre><pre class="highlight yaml tab-yaml"><code>        <span class="na">hash</span><span class="pi">:</span>
+          <span class="c1"># Basic hash</span>
+          <span class="na">type</span><span class="pi">:</span> <span class="s">hash</span>
+          <span class="na">algorithm</span><span class="pi">:</span> <span class="s">sha1</span>
+</code></pre>
 <h2 id="file-structure">File structure</h2>
 <pre class="highlight plaintext tab-plaintext"><code>mygame/
   lib/
@@ -834,6 +1012,32 @@ we will return an error on the next access to the user command&rsquo;s <code cla
 (which will in turn ensure that execution is interrupted), but manual operations
 unrelated to <code class="prettyprint">state</code> may still complete.</p>
 
+<h2 id="request-caching">Request caching</h2>
+<pre class="highlight shell tab-shell"><code>curl -X POST http://127.0.0.1:8080/game/players.checkStats?queryId<span class="o">=</span>1 <span class="se">\</span>
+--data-binary @- <span class="sh">&lt;&lt; EOF
+[{"key":"be20d767-4067-40d6-92dc-c52067b7d21e:lMftdnXxEFbP3ctq","name":"mage.session"}]
+{}
+EOF
+</span></code></pre><pre class="highlight powershell tab-powershell"><code> Invoke-RestMethod -Method Post -Uri <span class="s2">"http://127.0.0.1:8080/game/players.checkStats?queryId=1"</span> -Body <span class="s1">'[{"key":"be20d767-4067-40d6-92dc-c52067b7d21e:lMftdnXxEFbP3ctq","name":"mage.session"}]
+{}'</span> | ConvertTo-Json
+</code></pre>
+<p>By default, responses to requests from authenticated users which
+contain a numerical identifier in the will be automatically cached;
+this is so to avoid double-execution when the client disconnects before
+the response could be sent and the client wishes to retry.</p>
+
+<p>This comes handy for most operations (trades, purchases and so on),
+but may be undesirable in some circumstances (when you serve computed
+static data or static data stored in the database).</p>
+
+<blockquote>
+<p>lib/modules/players/checkStats.js</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">exports</span><span class="p">.</span><span class="nx">cache</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+</code></pre>
+<p>To disable this behavior, simply set <code class="prettyprint">cache</code> to false
+in your user command&rsquo;s definition.</p>
+
 <h2 id="using-async-await-node-7-6">Using async/await (Node 7.6+)</h2>
 
 <aside class="notice">
@@ -913,6 +1117,70 @@ instead of relying on MAGE to serialize the return data. This can be useful when
 will serve certain pieces of data which will not change frequently. When you wish to do so, simply make
 sure that <code class="prettyprint">exports.serialize</code> is set to <code class="prettyprint">false</code>, and to manually return a stringified version of your
 data.</p>
+
+<h2 id="error-management">Error management</h2>
+
+<blockquote>
+<p>lib/modules/players/usercommands/register.js</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="s1">'use strict'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="p">{</span>
+  <span class="nx">players</span><span class="p">,</span>
+  <span class="nx">MageError</span>
+<span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mage'</span><span class="p">);</span>
+
+<span class="kr">class</span> <span class="nx">NoHomersError</span> <span class="kr">extends</span> <span class="nx">MageError</span> <span class="p">{</span>
+  <span class="nx">constructor</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kr">super</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+
+    <span class="c1">// Code to return to the client (default: server)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">code</span> <span class="o">=</span> <span class="s1">'server'</span><span class="p">;</span>
+
+    <span class="c1">// Log level to use to log this error (default: error)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">level</span> <span class="o">=</span> <span class="s1">'warning'</span><span class="p">;</span>
+
+    <span class="c1">// Details to log alongside the message (default: undefined)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">details</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">details</span><span class="p">;</span>
+
+    <span class="c1">// Error type - traditionally the class name</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="s1">'NoHomersError'</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">acl</span><span class="p">:</span> <span class="p">[</span><span class="s1">'*'</span><span class="p">],</span>
+  <span class="nx">async</span> <span class="nx">execute</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">username</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// Using MageError directly</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nx">MageError</span><span class="p">({</span>
+        <span class="na">code</span><span class="p">:</span> <span class="s1">'username_length_exceeded'</span><span class="p">,</span>
+        <span class="na">level</span><span class="p">:</span> <span class="s1">'warning'</span><span class="p">,</span>
+        <span class="na">message</span><span class="p">:</span> <span class="s1">'Username is more than 10 character'</span><span class="p">,</span>
+        <span class="na">details</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">received</span><span class="p">:</span> <span class="nx">username</span>
+        <span class="p">}</span>
+      <span class="p">})</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">username</span> <span class="o">===</span> <span class="s1">'homer'</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// Using a custom error class inheriting MageError</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nx">NoHomersError</span><span class="p">({</span>
+        <span class="na">message</span><span class="p">:</span> <span class="s1">'We already have one Homer anyway '</span>
+      <span class="p">})</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">await</span> <span class="nx">players</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre>
+<p>When using <code class="prettyprint">async/await</code>, you will want to customise the behavior of your errors
+in regards to how they will be logged, what data will be logged, what message will be
+returned to the user, and so on.</p>
+
+<p>To do so, MAGE provides the <code class="prettyprint">MageError</code> error class, which can be used as-is or
+extended as needed. This error class will allow you to control precisely what you will
+log in case of error, and what should be returned to the user.</p>
 
           <h1 id="states">States</h1>
 
@@ -1014,40 +1282,8 @@ to retrieve sessions to route messages to them properly.</p>
 
 <h2 id="auth-module">Auth module</h2>
 
-<blockquote>
-<p><code class="prettyprint">lib/index.js</code></p>
-</blockquote>
-<pre class="highlight javascript tab-javascript"><code><span class="nx">mage</span><span class="p">.</span><span class="nx">useModules</span><span class="p">([</span>
-  <span class="s1">'auth'</span>
-<span class="p">]);</span>
-</code></pre>
-<blockquote>
-<p>lib/archivist/index.js</p>
-</blockquote>
-<pre class="highlight javascript tab-javascript"><code><span class="c1">// a valid topic with ['username'] as an index</span>
-<span class="nx">exports</span><span class="p">.</span><span class="nx">auth</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="na">index</span><span class="p">:</span> <span class="p">[</span><span class="s1">'username'</span><span class="p">],</span>
-  <span class="na">vaults</span><span class="p">:</span> <span class="p">{</span>
-    <span class="na">myDataVault</span><span class="p">:</span> <span class="p">{}</span>
-  <span class="p">}</span>
-<span class="p">};</span>
-</code></pre>
-<blockquote>
-<p>config/default.yaml</p>
-</blockquote>
-<pre class="highlight yaml tab-yaml"><code><span class="na">module</span><span class="pi">:</span>
-    <span class="na">auth</span><span class="pi">:</span>
-        <span class="s">// this should point to the topic you created</span>
-        <span class="s">topic</span><span class="pi">:</span> <span class="s">auth</span>
-        <span class="s">// configure how user passwords are stored, the values below are the</span>
-        <span class="s">// recommended default, see the module's README.md for more details</span>
-        <span class="s">// about available hash types</span>
-        <span class="na">hash</span><span class="pi">:</span>
-            <span class="na">type</span><span class="pi">:</span> <span class="s">pbkdf2</span>
-            <span class="na">algorithm</span><span class="pi">:</span> <span class="s">sha256</span>
-            <span class="na">iterations</span><span class="pi">:</span> <span class="s">10000</span>
-</code></pre>
-<p>Once configured you can just add the <code class="prettyprint">auth</code> module to your <code class="prettyprint">useModules</code> call.</p>
+<p>Once configured you can just add the <code class="prettyprint">auth</code> module to your <code class="prettyprint">useModules</code> call.
+Please see <a href="##built-in-modules">built-in modules</a> part to see how to set up the auth module.</p>
 
 <h2 id="logging-in">Logging in</h2>
 
@@ -1062,7 +1298,7 @@ to retrieve sessions to route messages to them properly.</p>
 <p>lib/modules/players/usercommands/login.js</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">mage</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mage'</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">mage</span><span class="p">.</span><span class="nx">core</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nx">context</span><span class="p">(</span><span class="s1">'players'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">mage</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nx">context</span><span class="p">(</span><span class="s1">'players'</span><span class="p">);</span>
 
 <span class="nx">exports</span><span class="p">.</span><span class="nx">acl</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'*'</span><span class="p">];</span>
 
@@ -1102,6 +1338,19 @@ EOF
 <p>If authentication fails, you will receive <code class="prettyprint">[[&quot;invalidUsernameOrPassword&quot;,null]]</code>;
 otherwise, you should get back an event object containing your player&rsquo;s session information.</p>
 
+<h2 id="changing-the-password">Changing the password</h2>
+
+<p>You can change the password for a given user after registration. It works the same way as registration, except
+that the user ID needs to exist or you will get a <code class="prettyprint">UserNotFoundError</code>. Note that this does not invalidate current
+sessions for this account.</p>
+
+<blockquote>
+<p>lib/modules/players/index.js</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">exports</span><span class="p">.</span><span class="nx">changePassword</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">newPassword</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">mage</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">changePassword</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">newPassword</span><span class="p">,</span> <span class="nx">callback</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre>
           <h1 id="archivist">Archivist</h1>
 
 <p>Archivist is a key-value abstraction layer generally used with state objects.</p>
@@ -1112,6 +1361,51 @@ in the <a href="./#actors-sessions">Actors &amp; Sessions</a> section of this us
 uses Archivist behind the scenes to store credentials for newly created users.</p>
 
 <h2 id="vaults">Vaults</h2>
+
+<aside class="warning">
+Never configure multiple vaults to connect to the same vault backend storage!
+This would break how [migration scripts](#migrations) work.
+</aside>
+
+<aside class="warning">
+Not all vaults support every operations! Below you will find
+a short configuration description for each available vault backends
+alongside a list of supported operations for that backend.
+</aside>
+
+<h3 id="list-read-and-write-order">List, read and write order</h3>
+
+<blockquote>
+<p>./config/default.yaml</p>
+</blockquote>
+<pre class="highlight yaml tab-yaml"><code><span class="na">archivist</span><span class="pi">:</span>
+    <span class="c1"># When doing "list" operations, will attempt each mentioned vault until successful</span>
+    <span class="na">listOrder</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">userVault</span>
+        <span class="pi">-</span> <span class="s">itemVault</span>
+
+    <span class="c1"># When doing "get" operations, will attempt each mentioned vault until successful</span>
+    <span class="na">readOrder</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">userVault</span>
+        <span class="pi">-</span> <span class="s">itemVault</span>
+
+    <span class="c1"># When doing "add/set/touch/del" operations, will write to each mentioned vault in the given order</span>
+    <span class="na">writeOrder</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">userVault</span>
+        <span class="pi">-</span> <span class="s">itemVault</span>
+</code></pre>
+<p>listOrder, readOrder, and writeOrder properties <strong>have to</strong> be defined in your configuration file to specify the order when reading or writting data.<br>
+For read operations (listOrder, readOrder), mage will attempt the mentioned vaults until one is successful. However, for write operations (writeOrder), mage will write to each mentioned vault, in the given order.</p>
+
+<blockquote>
+<p>The item won&rsquo;t be written before the player because it will follow the order of the writeOrder configuration</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">state</span><span class="p">.</span><span class="nx">archivist</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">'item'</span><span class="p">,</span> <span class="p">{</span> <span class="na">userId</span><span class="p">:</span> <span class="nx">userId</span> <span class="p">},</span> <span class="nx">playerData</span><span class="p">);</span>
+<span class="nx">state</span><span class="p">.</span><span class="nx">archivist</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">'player'</span><span class="p">,</span> <span class="p">{</span> <span class="na">itemId</span><span class="p">:</span> <span class="nx">itemId</span> <span class="p">},</span> <span class="nx">itemData</span><span class="p">);</span>
+</code></pre>
+<p>Please note that if you are doing multiple operations in a single state transaction, the order in which the operations will be done correspond to the order provided by your configuration, not the order of the actual calls.</p>
+
+<h3 id="vaults-types">Vaults types</h3>
 
 <blockquote>
 <p>./config/default.yaml</p>
@@ -1127,17 +1421,6 @@ uses Archivist behind the scenes to store credentials for newly created users.</
             <span class="na">config</span><span class="pi">:</span>
                 <span class="na">path</span><span class="pi">:</span> <span class="s">./filevault/itemVault</span>
 </code></pre>
-<aside class="warning">
-Never configure multiple vaults to connect to the same vault backend storage!
-This would break how [migration scripts](#migrations) work.
-</aside>
-
-<aside class="warning">
-Not all vaults support every operations! Below you will find
-a short configuration description for each available vault backends
-alongside a list of supported operations for that backend.
-</aside>
-
 <p>As mentioned, vaults are used by archivist to store data. Currently, the following backend
 targets are supported:</p>
 
@@ -1166,30 +1449,6 @@ targets are supported:</p>
 <tr>
 <td>mysql</td>
 <td><a href="https://www.mysql.com/">MySQL</a> interface.</td>
-</tr>
-<tr>
-<td>elasticsearch</td>
-<td><a href="https://www.elastic.co/">Elasticsearch</a> interface.</td>
-</tr>
-<tr>
-<td>dynamodb</td>
-<td><a href="https://aws.amazon.com/dynamodb/">AWS DynamoDB</a> interface.</td>
-</tr>
-<tr>
-<td>manta</td>
-<td><a href="https://apidocs.joyent.com/manta/">Joyent Manta</a> interface.</td>
-</tr>
-<tr>
-<td>redis</td>
-<td><a href="https://redis.io/">Redis</a> interface.</td>
-</tr>
-<tr>
-<td>memcached</td>
-<td><a href="https://memcached.org/">Memcached</a> interface.</td>
-</tr>
-<tr>
-<td>sqlite3</td>
-<td><a href="https://www.sqlite.org/">SQLite</a> interface.</td>
 </tr>
 </tbody></table>
 
@@ -1343,15 +1602,29 @@ always synchronized in real time.</p>
 </tbody></table>
 
 <h3 id="couchbase">Couchbase</h3>
+
+<aside class="warning">
+Please note that the authentication is different for Couchbase Server >= 5.0 and Couchbase Server < 5.0.
+The configuration for each is explained in the example on the right side.
+</aside>
+
+<aside class="info">
+We recommend you to use Couchbase Server >= 5.0 which is more secured that Couchbase Server < 5.0.
+</aside>
 <pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">couchbase</span>
 <span class="na">config</span><span class="pi">:</span>
     <span class="na">options</span><span class="pi">:</span>
         <span class="c1"># List of hosts in the cluster</span>
         <span class="na">hosts</span><span class="pi">:</span> <span class="pi">[</span> <span class="s2">"</span><span class="s">localhost:8091"</span> <span class="pi">]</span>
 
-        <span class="c1"># optional</span>
-        <span class="na">user</span><span class="pi">:</span> <span class="s">Administrator</span>
+        <span class="c1"># Only for Couchbase Server &gt;= 5.0</span>
+        <span class="c1"># User credentials</span>
+        <span class="na">username</span><span class="pi">:</span> <span class="s">Administrator</span>
         <span class="na">password</span><span class="pi">:</span> <span class="s2">"</span><span class="s">password"</span>
+
+        <span class="c1"># Only for Couchbase Server &lt; 5.0</span>
+        <span class="c1"># Bucket password (optional)</span>
+        <span class="na">password</span><span class="pi">:</span> <span class="s2">"</span><span class="s">toto"</span>
 
         <span class="c1"># optional</span>
         <span class="na">bucket</span><span class="pi">:</span> <span class="s">default</span>
@@ -1359,15 +1632,23 @@ always synchronized in real time.</p>
         <span class="c1"># optional, useful if you share a bucket with other applications</span>
         <span class="na">prefix</span><span class="pi">:</span> <span class="s2">"</span><span class="s">bob/"</span>
 
+        <span class="c1"># optional, can use any option specified in https://developer.couchbase.com/documentation/server/5.1/sdk/nodejs/client-settings.html#topic_pkk_vhn_qv__d397e189</span>
+        <span class="na">options</span><span class="pi">:</span>
+          <span class="c1"># usefull to debug network errors (eg. authentication errors)</span>
+          <span class="na">detailed_errcodes</span><span class="pi">:</span> <span class="s">1</span>
+
     <span class="c1"># options only used with archivist:create</span>
     <span class="na">create</span><span class="pi">:</span>
         <span class="na">adminUsername</span><span class="pi">:</span> <span class="s">admin</span>
         <span class="na">adminPassword</span><span class="pi">:</span> <span class="s2">"</span><span class="s">password"</span>
         <span class="na">bucketType</span><span class="pi">:</span> <span class="s">couchbase</span> <span class="c1"># can be couchbase or memcached</span>
-        <span class="na">romQuotaMB</span><span class="pi">:</span> <span class="s">100</span>       <span class="c1"># how much memory to allocate to the bucket</span>
+        <span class="na">ramQuotaMB</span><span class="pi">:</span> <span class="s">100</span>       <span class="c1"># how much memory to allocate to the bucket</span>
 </code></pre>
-<p><code class="prettyprint">user</code> and <code class="prettyprint">password</code> are optional, however, you will need to configure
-configure them if you with to create the underlying bucket
+<p>For <strong>Couchbase Server &gt;= 5.0</strong>, <code class="prettyprint">options.user</code> and <code class="prettyprint">options.password</code> have to be set to a user who has access to the <code class="prettyprint">options.bucket</code>.</p>
+
+<p>For <strong>Couchbase Server &lt; 5.0</strong>, however, you just need to configure <code class="prettyprint">options.password</code> which correspond to the bucket password and is <strong>optional</strong>.</p>
+
+<p><code class="prettyprint">create.adminUsername</code> and <code class="prettyprint">create.password</code> need to be configured only if you wish to create the underlying bucket
 through <code class="prettyprint">archivist:create</code>, or to create views and query indexes
 through <code class="prettyprint">archivist:migrate</code>.</p>
 
@@ -1503,328 +1784,6 @@ timestamp to a <code class="prettyprint">lastChanged INT UNSIGNED NOT NULL</code
 
 <p><br><br><br><br><br><br><br><br><br><br><br><br><br><br></p>
 
-<h3 id="elasticsearch">Elasticsearch</h3>
-<pre class="highlight yaml tab-yaml"><code><span class="na">elasticsearch</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">elasticsearch</span>
-    <span class="na">config</span><span class="pi">:</span>
-        <span class="c1"># this is the default index used for storage, you can override this in your code if necessary</span>
-        <span class="na">index</span><span class="pi">:</span> <span class="s">testgame</span>
-
-        <span class="c1"># here is your server configuration</span>
-        <span class="na">server</span><span class="pi">:</span>
-            <span class="na">hostname</span><span class="pi">:</span> <span class="s1">'</span><span class="s">192.168.2.176'</span>
-            <span class="na">port</span><span class="pi">:</span> <span class="s">9200</span>
-            <span class="na">secure</span><span class="pi">:</span> <span class="s">false</span>
-</code></pre>
-<table><thead>
-<tr>
-<th>operation</th>
-<th style="text-align: center">supported</th>
-<th>implementation</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>list</td>
-<td style="text-align: center"></td>
-<td></td>
-</tr>
-<tr>
-<td>get</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">elasticsearch.get</code></td>
-</tr>
-<tr>
-<td>add</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">elasticsearch.index</code> with op_type set to <code class="prettyprint">create</code></td>
-</tr>
-<tr>
-<td>set</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">elasticsearch.index</code></td>
-</tr>
-<tr>
-<td>touch</td>
-<td style="text-align: center"></td>
-<td></td>
-</tr>
-<tr>
-<td>del</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">elasticsearch.del</code></td>
-</tr>
-</tbody></table>
-
-<h3 id="dynamodb">DynamoDB</h3>
-<pre class="highlight yaml tab-yaml"><code><span class="na">dynamodb</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">dynamodb"</span>
-    <span class="na">config</span><span class="pi">:</span>
-        <span class="na">accessKeyId</span><span class="pi">:</span> <span class="s2">"</span><span class="s">The</span><span class="nv"> </span><span class="s">access</span><span class="nv"> </span><span class="s">ID</span><span class="nv"> </span><span class="s">provided</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">Amazon"</span>
-        <span class="na">secretAccessKey</span><span class="pi">:</span> <span class="s2">"</span><span class="s">The</span><span class="nv"> </span><span class="s">secret</span><span class="nv"> </span><span class="s">ID</span><span class="nv"> </span><span class="s">provided</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">Amazon"</span>
-        <span class="na">region</span><span class="pi">:</span> <span class="s2">"</span><span class="s">A</span><span class="nv"> </span><span class="s">valid</span><span class="nv"> </span><span class="s">region.</span><span class="nv"> </span><span class="s">Refer</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">Amazon</span><span class="nv"> </span><span class="s">doc</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">ask</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">sysadmin.</span><span class="nv"> </span><span class="s">Asia</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">ap-northeast-1"</span>
-</code></pre>
-<table><thead>
-<tr>
-<th>operation</th>
-<th style="text-align: center">supported</th>
-<th>implementation</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>list</td>
-<td style="text-align: center"></td>
-<td></td>
-</tr>
-<tr>
-<td>get</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">DynamoDB.getItem</code></td>
-</tr>
-<tr>
-<td>add</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">DynamoDB.putItem</code> with <code class="prettyprint">Expect.exists = false</code> set to the index keys</td>
-</tr>
-<tr>
-<td>set</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">DynamoDB.putItem</code></td>
-</tr>
-<tr>
-<td>touch</td>
-<td style="text-align: center"></td>
-<td></td>
-</tr>
-<tr>
-<td>del</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">DynamoDB.deleteItem</code></td>
-</tr>
-</tbody></table>
-
-<h3 id="manta">Manta</h3>
-<pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">manta</span>
-<span class="na">config</span><span class="pi">:</span>
-    <span class="c1"># url is optional</span>
-    <span class="na">url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://us-east.manta.joyent.com"</span>
-    <span class="na">user</span><span class="pi">:</span> <span class="s">bob</span>
-    <span class="na">sign</span><span class="pi">:</span>
-        <span class="na">keyId</span><span class="pi">:</span> <span class="s2">"</span><span class="s">a3:81:a2:2c:8f:c0:18:43:8a:1e:cd:12:40:fa:65:2a"</span>
-
-        <span class="c1"># key may be replaced with "keyPath" (path to a private key file),</span>
-        <span class="c1"># or omitted to fallback to "~/.ssh/id_rsa"</span>
-        <span class="na">key</span><span class="pi">:</span> <span class="pi">|</span>
-          <span class="no">-----BEGIN RSA PRIVATE KEY-----</span>
-          <span class="no">..etc..</span>
-          <span class="no">-----END RSA PRIVATE KEY-----</span>
-</code></pre>
-<p><code class="prettyprint">keyId</code> is the fingerprint of your public key, which can be retrieved by running:</p>
-
-<p><code class="prettyprint">ssh-keygen -l -f $HOME/.ssh/id_rsa.pub | awk &#39;{print $2}&#39;</code></p>
-
-<table><thead>
-<tr>
-<th>operation</th>
-<th style="text-align: center">supported</th>
-<th>implementation</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>list</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">manta.ls()</code></td>
-</tr>
-<tr>
-<td>get</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">manta.get()</code></td>
-</tr>
-<tr>
-<td>add</td>
-<td style="text-align: center"></td>
-<td></td>
-</tr>
-<tr>
-<td>set</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">manta.put()</code></td>
-</tr>
-<tr>
-<td>touch</td>
-<td style="text-align: center"></td>
-<td></td>
-</tr>
-<tr>
-<td>del</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">manta.unlink()</code></td>
-</tr>
-</tbody></table>
-
-<h3 id="redis">Redis</h3>
-<pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">redis</span>
-<span class="na">config</span><span class="pi">:</span>
-    <span class="na">port</span><span class="pi">:</span> <span class="s">6379</span>
-    <span class="na">host</span><span class="pi">:</span> <span class="s2">"</span><span class="s">127.0.0.1"</span>
-    <span class="na">options</span><span class="pi">:</span> <span class="pi">{}</span>
-    <span class="na">prefix</span><span class="pi">:</span> <span class="s2">"</span><span class="s">key/prefix/"</span>
-</code></pre>
-<p>The <code class="prettyprint">options</code> object is described in the <a href="https://npmjs.org/package/redis">node-redis readme</a>.
-Both <code class="prettyprint">options</code> and <code class="prettyprint">prefix</code> are optional. The option <code class="prettyprint">return_buffers</code> is turned on by default by the
-Archivist, because the default serialization will prepend values with meta data (in order to
-preserve mediaType awareness).</p>
-
-<table><thead>
-<tr>
-<th>operation</th>
-<th style="text-align: center">supported</th>
-<th>implementation</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>list</td>
-<td style="text-align: center"></td>
-<td></td>
-</tr>
-<tr>
-<td>get</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">redis.get()</code></td>
-</tr>
-<tr>
-<td>add</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">redis.set(&#39;NX&#39;)</code></td>
-</tr>
-<tr>
-<td>set</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">redis.set()</code></td>
-</tr>
-<tr>
-<td>touch</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">redis.expire()</code></td>
-</tr>
-<tr>
-<td>del</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">redis.del()</code></td>
-</tr>
-</tbody></table>
-
-<h3 id="memcached">Memcached</h3>
-<pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">memcached</span>
-<span class="na">config</span><span class="pi">:</span>
-    <span class="na">servers</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="s2">"</span><span class="s">1.2.3.4:11211"</span>
-        <span class="pi">-</span> <span class="s2">"</span><span class="s">1.2.3.5:11411"</span>
-    <span class="na">options</span><span class="pi">:</span>
-        <span class="na">foo</span><span class="pi">:</span> <span class="s">bar</span>
-    <span class="na">prefix</span><span class="pi">:</span> <span class="s2">"</span><span class="s">prefix</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">all</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">keys"</span>
-</code></pre>
-<p>The usage of the <code class="prettyprint">servers</code> and <code class="prettyprint">options</code> properties are described in the
-<a href="https://npmjs.org/package/memcached">node-memcached readme</a>. Both <code class="prettyprint">options</code> and <code class="prettyprint">prefix</code> are
-optional.</p>
-
-<table><thead>
-<tr>
-<th>operation</th>
-<th style="text-align: center">supported</th>
-<th>implementation</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>list</td>
-<td style="text-align: center"></td>
-<td></td>
-</tr>
-<tr>
-<td>get</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">memcached.get()</code></td>
-</tr>
-<tr>
-<td>add</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">memcached.add()</code></td>
-</tr>
-<tr>
-<td>set</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">memcached.set()</code></td>
-</tr>
-<tr>
-<td>touch</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">memcached.touch()</code></td>
-</tr>
-<tr>
-<td>del</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">memcached.del()</code></td>
-</tr>
-</tbody></table>
-
-<h3 id="sqlite3">SQLite3</h3>
-<pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">sqlite3</span>
-<span class="na">config</span><span class="pi">:</span>
-    <span class="na">filename</span><span class="pi">:</span> <span class="s2">"</span><span class="s">./sqlitevault/awesomegame.db"</span>
-</code></pre>
-<p>This vault should only be used for development and testing.</p>
-
-<p>Further documentation can be found at <a href="https://github.com/mapbox/node-sqlite3">node-sqlite3</a>.
-To avoid confusion, the npm package name is sqlite3, but the project is called node-sqlite3.</p>
-
-<p>If no filename is provided, an in-memory database will be created at runtime and will be destroyed on close.</p>
-
-<p>If an empty string is provided, an temporary database stored on disk will be createdat runtime and destroyed on close.</p>
-
-<table><thead>
-<tr>
-<th>operation</th>
-<th style="text-align: center">supported</th>
-<th>implementation</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>list</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">SELECT FROM table WHERE partialIndex</code></td>
-</tr>
-<tr>
-<td>get</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">SELECT FROM table WHERE fullIndex</code></td>
-</tr>
-<tr>
-<td>add</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">INSERT INTO table () VALUES ()</code></td>
-</tr>
-<tr>
-<td>set</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">INSERT OR REPLACE INTO table () VALUES ()</code></td>
-</tr>
-<tr>
-<td>touch</td>
-<td style="text-align: center"></td>
-<td></td>
-</tr>
-<tr>
-<td>del</td>
-<td style="text-align: center">✔</td>
-<td><code class="prettyprint">DELETE FROM table WHERE fullIndex</code></td>
-</tr>
-</tbody></table>
-
-<p><code class="prettyprint">archivist:create</code> support requires that the user be allowed to create databases. However, you
-will still need to write a <a href="#migrations">migration script</a> to create the different tables
-where your topics will be stored.</p>
-
-<p>See <a href="#mysql">documentation</a> for the <code class="prettyprint">MySQL</code> vault on how to structure your tables for usage with archivist.</p>
-
 <h2 id="topics">Topics</h2>
 
 <blockquote>
@@ -1840,9 +1799,30 @@ where your topics will be stored.</p>
 <p>Topics are essentially Archivist datatypes; they define which vault(s)
 to use for storage, the key structure for accessing data, and so on.</p>
 
-<p>In this example, we simply specify a new topic, called items, in which we will be
-identifying by itemId.</p>
+<p>In this example, we simply specify a new topic, called player, in which we will be
+identifying by userId.</p>
 
+<h3 id="add-an-expiration-time">Add an expiration time</h3>
+
+<p>In your topic config, you can specify a <code class="prettyprint">ttl</code> to make your data expires after a certain amount of time.</p>
+
+<p><code class="prettyprint">ttl</code> should be a string matching one of the following formats:</p>
+
+<ul>
+<li>days: &ldquo;[num]d&rdquo;</li>
+<li>hours: &ldquo;[num]h&rdquo;</li>
+<li>minutes: &ldquo;[num]m&rdquo;</li>
+<li>seconds: &ldquo;[num]s&rdquo;</li>
+</ul>
+
+<blockquote>
+<p>Add an expiration time</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">exports</span><span class="p">.</span><span class="nx">player</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="c1">// ...</span>
+  <span class="na">ttl</span><span class="p">:</span> <span class="s1">'1m'</span> <span class="c1">// Expire the data after 1 minute</span>
+<span class="p">};</span>
+</code></pre>
 <h2 id="store-retrieve-topics">Store &amp; retrieve topics</h2>
 
 <blockquote>
@@ -2027,7 +2007,6 @@ as admin credentials are properly configured, see each vault&rsquo;s configurati
 <li><code class="prettyprint">file</code></li>
 <li><code class="prettyprint">couchbase</code></li>
 <li><code class="prettyprint">mysql</code></li>
-<li><code class="prettyprint">sqlite</code></li>
 </ul>
 
 <p>It is not recommended to use those features in production.</p>
@@ -2115,9 +2094,51 @@ data gets, but will log a warning should your data be bigger than 1 megabyte.</p
 
           <h1 id="events">Events</h1>
 
-<p>We have seen in the <a href="#states">States</a> section of this user guide that
-states can be used to emit events between players. Let&rsquo;s dig a bit deeper
-into how this can be used.</p>
+<p>We have seen in the <a href="#states">States</a> section of this user guide that states can be used to emit events between players.
+Before explaining how to send events, we will first see how MAGE send events to the clients, and how to configure the server to do so.</p>
+
+<h2 id="how-does-it-work">How does it work ?</h2>
+
+<p>Events sending and receipt is done via <strong>Message Stream</strong>.</p>
+
+<p>Message Stream is a protocol used by MAGE servers and its clients in order to communicate. This protocol is implemented through different transports, which are the following:</p>
+
+<ul>
+<li><strong>short-polling</strong>: The client send a request to the server and get an <strong>instant response</strong> with the events. The client repeats this every X seconds to receive new events.</li>
+<li><strong>long-polling</strong>: The client send a request to the server and keep the connection open. The server will send a response with the events once one or multiple events destinated to the client are received. Then, the client open a new connection and repeat the process.</li>
+<li><strong>websocket</strong>: Real time events sending and receipt.</li>
+</ul>
+
+<p>If you need more information about Message Stream protocol, you can read this <a href="https://github.com/mage/mage/tree/master/lib/msgServer/msgStream">documentation</a>.</p>
+
+<p>In your MAGE config file, you can specify the priority of the transports which will be used by the client SDK to receive the events.</p>
+
+<blockquote>
+<p>config/default.yaml</p>
+</blockquote>
+<pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
+    <span class="na">msgStream</span><span class="pi">:</span>
+        <span class="na">detect</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">websocket</span>
+            <span class="pi">-</span> <span class="s">longpolling</span>
+            <span class="pi">-</span> <span class="s">shortpolling</span>
+
+</code></pre>
+<p>You can also configure longpolling transport:</p>
+
+<blockquote>
+<p>config/default.yaml</p>
+</blockquote>
+<pre class="highlight yaml tab-yaml"><code><span class="na">server</span><span class="pi">:</span>
+    <span class="na">msgStream</span><span class="pi">:</span>
+        <span class="na">transports</span><span class="pi">:</span>
+            <span class="na">longpolling</span><span class="pi">:</span>
+                <span class="na">heartbeat</span><span class="pi">:</span> <span class="s">60</span>
+
+</code></pre>
+<p>For the <code class="prettyprint">longpolling</code> transport, you can specify a <code class="prettyprint">heartbeat</code> config, which correspond to the number of seconds until a request expire and automatically close.</p>
+
+<p>Now we have seen how to configure your server to send and receive events, we will now see how to send events with the <a href="#states">State</a> object.</p>
 
 <h2 id="sending-events">Sending events</h2>
 
@@ -2167,7 +2188,7 @@ you may want to send an event after a certain amount of time, or once something 
 in the database. To do so, you will need to create your own State of that. You will also need
 to make sure to manually close that state.</p>
 
-<p>For more information, please read the <a href="./api/interfaces/_mage_d_.mage.core.istate.html">State API documentation</a>.</p>
+<p>For more information, please read the <a href="./api/interfaces/mage.core.istate.html">State API documentation</a>.</p>
 
 <h2 id="broadcasting-events">Broadcasting events</h2>
 
@@ -2260,7 +2281,7 @@ on.</p>
 
 <h2 id="log-levels-channels">Log levels (channels)</h2>
 <pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">mage</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mage'</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">mage</span><span class="p">.</span><span class="nx">core</span><span class="p">.</span><span class="nx">logger</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">mage</span><span class="p">.</span><span class="nx">logger</span><span class="p">;</span>
 <span class="nx">logger</span><span class="p">.</span><span class="nx">debug</span><span class="p">(</span><span class="s1">'hello world'</span><span class="p">);</span>
 <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">data</span><span class="p">({</span>
   <span class="na">debug</span><span class="p">:</span> <span class="s1">'data'</span>
@@ -2386,6 +2407,21 @@ context is now appended to the terminal output.</p>
 </tbody></table>
 
 <h3 id="terminal">Terminal</h3>
+
+<aside class="warning">
+By default, the logger will log to the terminal. To disable this behaviour, set terminal to false in your config.
+</aside>
+
+<blockquote>
+<p>Disable terminal logging</p>
+</blockquote>
+<pre class="highlight yaml tab-yaml"><code><span class="na">logging</span><span class="pi">:</span>
+    <span class="na">server</span><span class="pi">:</span>
+        <span class="na">terminal</span><span class="pi">:</span> <span class="s">false</span>
+</code></pre>
+<blockquote>
+<p>Terminal config example</p>
+</blockquote>
 <pre class="highlight yaml tab-yaml"><code><span class="na">logging</span><span class="pi">:</span>
     <span class="na">server</span><span class="pi">:</span>
         <span class="na">terminal</span><span class="pi">:</span>
@@ -2414,6 +2450,10 @@ simply forwards and parses stdout/stderr output.</p>
 each log line outputed will then be outputed as a JSON object.</p>
 
 <h3 id="file">File</h3>
+
+<blockquote>
+<p>File config example</p>
+</blockquote>
 <pre class="highlight yaml tab-yaml"><code><span class="na">logging</span><span class="pi">:</span>
     <span class="na">server</span><span class="pi">:</span>
         <span class="na">file</span><span class="pi">:</span>
@@ -2434,6 +2474,10 @@ as a value, or specify <code class="prettyprint">all</code> if you wish to write
 <p><br><br><br><br><br><br><br><br></p>
 
 <h3 id="syslog">Syslog</h3>
+
+<blockquote>
+<p>Syslog config example</p>
+</blockquote>
 <pre class="highlight yaml tab-yaml"><code><span class="na">logging</span><span class="pi">:</span>
     <span class="na">server</span><span class="pi">:</span>
         <span class="na">syslog</span><span class="pi">:</span>
@@ -2459,6 +2503,10 @@ destination.</p>
 <p><br><br><br><br><br><br><br><br></p>
 
 <h3 id="graylog">Graylog</h3>
+
+<blockquote>
+<p>Graylog config example</p>
+</blockquote>
 <pre class="highlight yaml tab-yaml"><code><span class="na">logging</span><span class="pi">:</span>
     <span class="na">server</span><span class="pi">:</span>
         <span class="na">graylog</span><span class="pi">:</span>
@@ -2497,7 +2545,7 @@ of the following:</p>
 <li>Proxy requests to a remote server through MAGE</li>
 </ol>
 
-<p>To this end, MAGE provides to developers an <a href="./api/interfaces/_mage_d_.imagecore.html#httpserver">API</a> that will allow you
+<p>To this end, MAGE provides to developers an <a href="./api/interfaces/imagecore.html#httpserver">API</a> that will allow you
 to do such things.</p>
 
 <h2 id="cross-origin-resource-sharing-cors">Cross-Origin Resource Sharing (CORS)</h2>
@@ -2802,7 +2850,7 @@ access them.</p>
 <p>Sampler values are defined on-the-fly; therefore, you must be careful when
 choosing a sampler key for your metrics, so to avoid overlaps.</p>
 
-<p>See <a href="./api/interfaces/_mage_d_.imagecore.html#sampler">the sampler API documentation</a> for more documentation.</p>
+<p>See <a href="./api/interfaces/imagecore.html#sampler">the sampler API documentation</a> for more documentation.</p>
 
           <h1 id="production">Production</h1>
 
