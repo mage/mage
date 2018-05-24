@@ -372,7 +372,7 @@ This comes handy for most operations (trades, purchases and so on),
 but may be undesirable in some circumstances (when you serve computed
 static data or static data stored in the database).
 
-> lib/modules/players/checkStats.js
+> lib/modules/players/usercommands/checkStats.js
 
 ```javascript
 exports.cache = false;
