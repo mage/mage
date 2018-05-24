@@ -2341,15 +2341,6 @@ declare namespace mage {
             data: any;
 
             /**
-             * Returns whether this node is running on the local machine or not,
-             * based on the announced IP addresses
-             *
-             * @returns {boolean}
-             * @memberof IServiceNode
-             */
-            isLocal(): boolean;
-
-            /**
              * Retrieve an IP from the addresses list
              *
              * The `network` parameter is an array containing the network list
