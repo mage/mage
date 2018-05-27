@@ -1,2 +1,2 @@
-cluster: 0
+workers: 0
 shutdownGracePeriod: 15
