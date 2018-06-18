@@ -97,7 +97,7 @@
   },
   "devDependencies": {
     "broken-link-checker-local": "0.1.1",
-    "coveralls": "3.0.0",
+    "coveralls": "3.0.1",
     "cross-env": "4.0.0",
     "eslint": "3.19.0",
     "eslint-plugin-json": "1.2.0",
@@ -111,7 +111,7 @@
     "mysql": "2.5.4",
     "npm-run-all": "4.0.2",
     "power-assert": "1.4.2",
-    "retire": "1.6.0",
+    "retire": "1.6.1",
     "sinon": "4.5.0",
     "sqlite3": "4.0.0",
     "typedoc": "0.7.0",

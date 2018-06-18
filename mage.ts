@@ -230,6 +230,10 @@ declare type RegisterCallback = (error: Error|null, userId: string) => void;
 
 declare type ChangePasswordCallback = (error: Error|null) => void;
 
+declare type BanCallback = (error: Error|null) => void;
+
+declare type UnbanCallback = (error: Error|null) => void;
+
 declare interface ILog extends Function {
     /**
      * String(s) to log
@@ -1592,6 +1596,16 @@ declare class Mage extends NodeJS.EventEmitter {
          * Change a user's password.
          */
         changePassword(state: mage.core.IState, username: string, newPassword: string, callback: ChangePasswordCallback): void;
+
+        /**
+         * Ban the user
+         */
+        ban(state: mage.core.IState, username: string, callback: BanCallback): void;
+
+        /**
+         * Unban the user
+         */
+        unban(state: mage.core.IState, username: string, callback: UnbanCallback): void;
     }
 
     /**
