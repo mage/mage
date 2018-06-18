@@ -48,6 +48,7 @@ describe('auth', function () {
 		getSessionModule: function () {
 			return {
 				register: function (state, userId, language, meta) {
+					state.acl = meta.acl;
 					return { userId: userId, language: language, meta: meta }; // a fake session object
 				}
 			};
@@ -492,6 +493,43 @@ describe('auth', function () {
 		var session = auth.loginAnonymous(state, options);
 		assert(session.userId);
 		done();
+	});
+
+	it('ban the user, and then unban', function (done) {
+		auth.getHashConfiguration = function () {
+			return {
+				type: 'hash',
+				algorithm: 'sha1'
+			};
+		};
+
+		var state = new State();
+		var username = 'bob';
+		var password = 'b0b';
+		var options = { acl: ['user'] };
+
+		auth.register(state, username, password, options, function (error, userId) {
+			assert.ifError(error);
+			assert(userId);
+
+			auth.ban(state, username, function (error) {
+				assert.ifError(error);
+
+				assert(currentUser.acl.includes('banned'), 'Banned should be added to acl');
+
+				auth.login(state, username, password, function (error) {
+					assert(error);
+					assert.equal(error, 'banned', 'Should not be able to login after beeing banned');
+
+					auth.unban(state, username, function (error) {
+						assert.ifError(error);
+
+						assert(!currentUser.acl.includes('banned'), 'Banned should be removed from acl');
+						done();
+					});
+				});
+			});
+		});
 	});
 
 	describe('errors', function () {
