@@ -80,6 +80,31 @@ describe('State class', function () {
 	before(() => mod.initialize(fakeMage, logger, FakeArchivist));
 
 	describe('instanciation', function () {
+		it('missing `new` keyword will throw', function () {
+			try {
+				State(); // eslint-disable-line new-cap
+			} catch (error) {
+				return assert(error.message, '`this` context is incorrect, did you forget to use the `new` keyword?');
+			}
+
+			throw new Error('Did not throw');
+		});
+
+		it('missing `new` keyword will throw', function () {
+			const mage = {
+				core: {
+					archivist: {},
+					State: State
+				}
+			};
+			try {
+				mage.core.State(); // eslint-disable-line new-cap
+			} catch (error) {
+				return assert(error.message, '`this` context is incorrect, did you forget to use the `new` keyword?');
+			}
+
+			throw new Error('Did not throw');
+		});
 		it('Without arguments', function () {
 			const state = new State();
 
