@@ -85,6 +85,7 @@ targets are supported:
 | client                | Special vault type (client-side archivist support required). |
 | couchbase             | [Couchbase](https://www.couchbase.com/) interface            |
 | mysql                 | [MySQL](https://www.mysql.com/) interface.                   |
+| redis                 | [Redis](https://redis.io/) interface.                        |
 
 Vaults can have different configuration for different environments, as long as the Archivist
 API set used in your project is provided by the different vault backends you wish to use.
@@ -279,7 +280,29 @@ If you want to change how this information is stored, by adding columns, etc, yo
 serializer method to do so. For example, consider the following example if you want to add a
 timestamp to a `lastChanged INT UNSIGNED NOT NULL` column.
 
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+### Redis
+
+ ```yaml
+type: redis
+config:
+    port: 6379
+    host: "127.0.0.1"
+    options: {}
+    prefix: "key/prefix/"
+```
+ The `options` object is described in the [node-redis readme](https://npmjs.org/package/redis).
+Both `options` and `prefix` are optional. The option `return_buffers` is turned on by default by the
+Archivist, because the default serialization will prepend values with meta data (in order to
+preserve mediaType awareness).
+
+ operation | supported | implementation
+----------|:---------:|---------------
+list      |           |
+get       | ✔         | `redis.get()`
+add       | ✔         | `redis.set('NX')`
+set       | ✔         | `redis.set()`
+touch     | ✔         | `redis.expire()`
+del       | ✔         | `redis.del()`
 
 ## Topics
 
