@@ -572,11 +572,7 @@ considered to be set to true. Set any of the following to false to change the de
 development mode behavior.</p>
 </blockquote>
 <pre class="highlight yaml tab-yaml"><code><span class="na">developmentMode</span><span class="pi">:</span>
-    <span class="na">loginAs</span><span class="pi">:</span> <span class="s">true</span>              <span class="c1"># Allows unsecure login as another user.</span>
-    <span class="na">customAccessLevel</span><span class="pi">:</span> <span class="s">true</span>    <span class="c1"># Allows unsecure login with any access level (eg: admin).</span>
-    <span class="na">adminEverywhere</span><span class="pi">:</span> <span class="s">true</span>      <span class="c1"># Changes the default access level from "anonymous" to "admin".</span>
     <span class="na">archivistInspection</span><span class="pi">:</span> <span class="s">true</span>  <span class="c1"># Archivist will do heavy sanity checks on queries and mutations.</span>
-    <span class="na">buildAppsOnDemand</span><span class="pi">:</span> <span class="s">true</span>    <span class="c1"># The web-builder will build apps on-demand for each HTTP request.</span>
 </code></pre>
 <p>To run your game in development, MAGE has a <code class="prettyprint">developmentMode</code> configuration flag. This enables or
 disables certain behaviors which make development a bit more convenient. If you want more granular
@@ -1031,7 +1027,7 @@ but may be undesirable in some circumstances (when you serve computed
 static data or static data stored in the database).</p>
 
 <blockquote>
-<p>lib/modules/players/checkStats.js</p>
+<p>lib/modules/players/usercommands/checkStats.js</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="nx">exports</span><span class="p">.</span><span class="nx">cache</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 </code></pre>
@@ -1450,6 +1446,10 @@ targets are supported:</p>
 <td>mysql</td>
 <td><a href="https://www.mysql.com/">MySQL</a> interface.</td>
 </tr>
+<tr>
+<td>redis</td>
+<td><a href="https://redis.io/">Redis</a> interface.</td>
+</tr>
 </tbody></table>
 
 <p>Vaults can have different configuration for different environments, as long as the Archivist
@@ -1782,7 +1782,57 @@ MAGE may know how to process the stored value.</p>
 serializer method to do so. For example, consider the following example if you want to add a
 timestamp to a <code class="prettyprint">lastChanged INT UNSIGNED NOT NULL</code> column.</p>
 
-<p><br><br><br><br><br><br><br><br><br><br><br><br><br><br></p>
+<h3 id="redis">Redis</h3>
+<pre class="highlight yaml tab-yaml"><code><span class="na">type</span><span class="pi">:</span> <span class="s">redis</span>
+<span class="na">config</span><span class="pi">:</span>
+    <span class="na">port</span><span class="pi">:</span> <span class="s">6379</span>
+    <span class="na">host</span><span class="pi">:</span> <span class="s2">"</span><span class="s">127.0.0.1"</span>
+    <span class="na">options</span><span class="pi">:</span> <span class="pi">{}</span>
+    <span class="na">prefix</span><span class="pi">:</span> <span class="s2">"</span><span class="s">key/prefix/"</span>
+</code></pre>
+<p>The <code class="prettyprint">options</code> object is described in the <a href="https://npmjs.org/package/redis">node-redis readme</a>.
+Both <code class="prettyprint">options</code> and <code class="prettyprint">prefix</code> are optional. The option <code class="prettyprint">return_buffers</code> is turned on by default by the
+Archivist, because the default serialization will prepend values with meta data (in order to
+preserve mediaType awareness).</p>
+
+<table><thead>
+<tr>
+<th>operation</th>
+<th style="text-align: center">supported</th>
+<th>implementation</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>list</td>
+<td style="text-align: center"></td>
+<td></td>
+</tr>
+<tr>
+<td>get</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">redis.get()</code></td>
+</tr>
+<tr>
+<td>add</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">redis.set(&#39;NX&#39;)</code></td>
+</tr>
+<tr>
+<td>set</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">redis.set()</code></td>
+</tr>
+<tr>
+<td>touch</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">redis.expire()</code></td>
+</tr>
+<tr>
+<td>del</td>
+<td style="text-align: center">✔</td>
+<td><code class="prettyprint">redis.del()</code></td>
+</tr>
+</tbody></table>
 
 <h2 id="topics">Topics</h2>
 
@@ -2871,7 +2921,7 @@ running it like this:</p>
 <p>The &ldquo;server&rdquo; entry in the configuration must be set up properly. That <em>probably</em> means:</p>
 
 <ul>
-<li><code class="prettyprint">cluster</code> should be set to a number to indicate a worker count, or even better, to <code class="prettyprint">true</code> (meaning
+<li><code class="prettyprint">workers</code> should be set to a number to indicate a worker count, or even better, to <code class="prettyprint">true</code> (meaning
 that as many workers will be spawned as the CPU has cores).</li>
 <li><code class="prettyprint">serviceDiscovery.engine</code> should be appropriately selected for this environment.</li>
 <li><code class="prettyprint">mmrp</code> must be set up to allow all MAGE servers to communicate with each other on the network.</li>

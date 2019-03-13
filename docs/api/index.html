@@ -944,6 +944,9 @@ img { max-width: 100%; }
 			<a href="globals.html#authenticatecallback" class="tsd-kind-icon">Authenticate<wbr>Callback</a>
 		</li>
 		<li class=" tsd-kind-type-alias tsd-is-not-exported">
+			<a href="globals.html#bancallback" class="tsd-kind-icon">Ban<wbr>Callback</a>
+		</li>
+		<li class=" tsd-kind-type-alias tsd-is-not-exported">
 			<a href="globals.html#changepasswordcallback" class="tsd-kind-icon">Change<wbr>Password<wbr>Callback</a>
 		</li>
 		<li class=" tsd-kind-type-alias tsd-is-not-exported">
@@ -975,6 +978,9 @@ img { max-width: 100%; }
 		</li>
 		<li class=" tsd-kind-type-alias tsd-is-not-exported">
 			<a href="globals.html#timeconfig" class="tsd-kind-icon">Time<wbr>Config</a>
+		</li>
+		<li class=" tsd-kind-type-alias tsd-is-not-exported">
+			<a href="globals.html#unbancallback" class="tsd-kind-icon">Unban<wbr>Callback</a>
 		</li>
 		<li class=" tsd-kind-type-alias tsd-is-not-exported">
 			<a href="globals.html#vaultoperation" class="tsd-kind-icon">Vault<wbr>Operation</a>
@@ -1069,6 +1075,7 @@ img { max-width: 100%; }
 						<h3>Type aliases</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-type-alias tsd-is-not-exported"><a href="globals.html#authenticatecallback" class="tsd-kind-icon">Authenticate<wbr>Callback</a></li>
+							<li class="tsd-kind-type-alias tsd-is-not-exported"><a href="globals.html#bancallback" class="tsd-kind-icon">Ban<wbr>Callback</a></li>
 							<li class="tsd-kind-type-alias tsd-is-not-exported"><a href="globals.html#changepasswordcallback" class="tsd-kind-icon">Change<wbr>Password<wbr>Callback</a></li>
 							<li class="tsd-kind-type-alias tsd-is-not-exported"><a href="globals.html#configurationlabel" class="tsd-kind-icon">Configuration<wbr>Label</a></li>
 							<li class="tsd-kind-type-alias tsd-is-not-exported"><a href="globals.html#logincallback" class="tsd-kind-icon">Login<wbr>Callback</a></li>
@@ -1080,6 +1087,7 @@ img { max-width: 100%; }
 							<li class="tsd-kind-type-alias tsd-is-not-exported"><a href="globals.html#serviceeventhandler" class="tsd-kind-icon">Service<wbr>Event<wbr>Handler</a></li>
 							<li class="tsd-kind-type-alias tsd-is-not-exported"><a href="globals.html#serviceeventname" class="tsd-kind-icon">Service<wbr>Event<wbr>Name</a></li>
 							<li class="tsd-kind-type-alias tsd-is-not-exported"><a href="globals.html#timeconfig" class="tsd-kind-icon">Time<wbr>Config</a></li>
+							<li class="tsd-kind-type-alias tsd-is-not-exported"><a href="globals.html#unbancallback" class="tsd-kind-icon">Unban<wbr>Callback</a></li>
 							<li class="tsd-kind-type-alias tsd-is-not-exported"><a href="globals.html#vaultoperation" class="tsd-kind-icon">Vault<wbr>Operation</a></li>
 						</ul>
 					</section>
@@ -1127,6 +1135,37 @@ img { max-width: 100%; }
 										</li>
 										<li>
 											<h5>acl: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+										</li>
+									</ul>
+									<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-is-not-exported">
+				<a name="bancallback" class="tsd-anchor"></a>
+				<h3>Ban<wbr>Callback</h3>
+				<div class="tsd-signature tsd-kind-icon">Ban<wbr>Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L233">mage.ts:233</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-type-declaration">
+					<h4>Type declaration</h4>
+					<ul class="tsd-parameters">
+						<li class="tsd-parameter-siganture">
+							<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
+								<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>error<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+							</ul>
+							<ul class="tsd-descriptions">
+								<li class="tsd-description">
+									<h4 class="tsd-parameters-title">Parameters</h4>
+									<ul class="tsd-parameters">
+										<li>
+											<h5>error: <span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
 										</li>
 									</ul>
 									<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1226,7 +1265,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">Mmrp<wbr>Envelope<wbr>Flag<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"NONE"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"TRACK_ROUTE"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L464">mage.ts:464</a></li>
+						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L468">mage.ts:468</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1243,7 +1282,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">Mmrp<wbr>Envelope<wbr>Message<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Buffer</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L469">mage.ts:469</a></li>
+						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L473">mage.ts:473</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1258,7 +1297,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">Mmrp<wbr>Envelope<wbr>Route<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L474">mage.ts:474</a></li>
+						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L478">mage.ts:478</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1302,7 +1341,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">Service<wbr>Error<wbr>Event<wbr>Handler<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L741">mage.ts:741</a></li>
+						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L745">mage.ts:745</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1338,7 +1377,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">Service<wbr>Event<wbr>Handler<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L736">mage.ts:736</a></li>
+						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L740">mage.ts:740</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1374,7 +1413,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">Service<wbr>Event<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"up"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"down"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"error"</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L731">mage.ts:731</a></li>
+						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L735">mage.ts:735</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1389,7 +1428,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">Time<wbr>Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L853">mage.ts:853</a></li>
+						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L857">mage.ts:857</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -1434,6 +1473,37 @@ img { max-width: 100%; }
 									</dd>
 								</dl>
 							</div>
+						</li>
+					</ul>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-is-not-exported">
+				<a name="unbancallback" class="tsd-anchor"></a>
+				<h3>Unban<wbr>Callback</h3>
+				<div class="tsd-signature tsd-kind-icon">Unban<wbr>Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/mage/mage/tree/master/mage.ts#L235">mage.ts:235</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-type-declaration">
+					<h4>Type declaration</h4>
+					<ul class="tsd-parameters">
+						<li class="tsd-parameter-siganture">
+							<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
+								<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>error<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+							</ul>
+							<ul class="tsd-descriptions">
+								<li class="tsd-description">
+									<h4 class="tsd-parameters-title">Parameters</h4>
+									<ul class="tsd-parameters">
+										<li>
+											<h5>error: <span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
+										</li>
+									</ul>
+									<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+								</li>
+							</ul>
 						</li>
 					</ul>
 				</div>
