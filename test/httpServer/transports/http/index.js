@@ -550,6 +550,10 @@ describe('http', function () {
 
 	describe('Shutdown', function () {
 		it('closes', function (done) {
+			// Added to avoid issues with slow connection refused response on Windows
+			this.timeout(30 * 1000);
+			this.slow(5 * 1000);
+
 			httpServer.close(function () {
 				get('/favicon.ico', function (error) {
 					assert.ok(error);

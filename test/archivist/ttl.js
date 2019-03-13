@@ -49,10 +49,11 @@ describe('ttl', () => {
 	});
 
 	it('[archivist.set] use ttl config', () => {
+		const time = Math.ceil(Date.now() / 1000 + ttl);
 		archivist.set(topic, { [index]: 5 });
 		assert(touchSpy.called, 'vault.touch should be called');
 		assert(touchSpy.calledOnce, 'vault.touch should be called only once');
-		assert(touchSpy.calledWithExactly(Date.now() / 1000 + ttl));
+		assert(touchSpy.calledWithExactly(time), `expected: ${time}, received: ${touchSpy.args}`);
 	});
 
 	it('[archivist.set] does not use ttl config if expirationTime in params', () => {
