@@ -56,11 +56,7 @@ developmentMode: true
 
 ```yaml
 developmentMode:
-    loginAs: true              # Allows unsecure login as another user.
-    customAccessLevel: true    # Allows unsecure login with any access level (eg: admin).
-    adminEverywhere: true      # Changes the default access level from "anonymous" to "admin".
     archivistInspection: true  # Archivist will do heavy sanity checks on queries and mutations.
-    buildAppsOnDemand: true    # The web-builder will build apps on-demand for each HTTP request.
 ```
 
 To run your game in development, MAGE has a `developmentMode` configuration flag. This enables or

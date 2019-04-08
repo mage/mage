@@ -1,5 +1,125 @@
 # Modules
 
+## External helper modules
+
+External helpers modules are optional but simplify the use of the library.
+They are different from mage built-in modules and user modules: they don't expose usercommands, they just act as helpers.
+
+Here are the most important:
+
+
+| Module                                                                           | Description                                                                                                                                       | TypeScript library |
+|----------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|--------------------|
+| [mage-console](https://github.com/mage/mage-console)                             | Mage development console with [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) interface and auto-reload on file change |                    |
+| [mage-validator](https://github.com/mage/mage-validator)                         | Validation system for MAGE topics and user command input types                                                                                    | ✔                  |
+| [mage-module-shard](https://github.com/mage/mage-module-shard)                   | Helps you to implement modules that act as shards within a MAGE cluster                                                                           | ✔                  |
+| [mage-vaulthelper-couchbase](https://github.com/mage/mage-vaulthelper-couchbase) | Helps you to access mage Couchbase backend                                                                                                        | ✔                  |
+| [mage-module-maintenance](https://github.com/mage/mage-module-maintenance)       | Helps you implement a maintenance mode for your game cluster                                                                                      | ✔                  |
+| [mage-https-devel](https://github.com/mage/mage-https-devel)                     | Toolchain for enabling the use of HTTPS during local development                                                                                  |                    |
+
+## Built-in modules
+
+> lib/index.js
+
+```javascript
+// Default modules with a fresh mage install
+// (with npx mage create [game name])
+mage.useModules([
+  'archivist',
+  'config',
+  'logger',
+  'session',
+  'time'
+]);
+
+```
+
+
+In the mage library, some modules are already created to provide some facilities such as session and authentication. The full list of available modules is defined as below:
+
+| Module                     | Description                                          |
+|----------------------------|------------------------------------------------------|
+| archivist                  | Expose usercommands to synchronize data in real time |
+| config                     | Expose client config with a usercommand              |
+| [auth](#auth-module)       | Authentication facility                              |
+| [logger](#logging)         | Logging facility                                     |
+| [session](#session-module) | Session facility                                     |
+| [time](#time-manipulation) | Time manipulation facility                           |
+
+<aside class="notice">
+Note that the built-in archivist module is different from <a href="#archivist">Archivist</a> defined later.
+</aside>
+
+
+To see the default modules on a fresh install of mage and how they can be set up, see the example on the right side.
+Note that the `auth` module is **not activated by default**.
+
+### Set up the auth module
+
+To set up the auth module, adding it to `mage.useModules` is not sufficient, a basic configuration is needed.
+See the example on the right side for a basic configuration.
+
+Here are the different hash types you can use:
+
+| Type                    | Description                                                   |
+| ---------------------   | ------------------------------------------------------------  |
+| pbkdf2                  | [pbkdf2 algorithm](https://en.wikipedia.org/wiki/PBKDF2)      |
+| hmac                    | [hmac algorithm](https://en.wikipedia.org/wiki/HMAC)          |
+| hash                    | Basic hash                                                    |
+
+> `lib/index.js`
+
+```javascript
+mage.useModules([
+  'auth'
+]);
+```
+
+> lib/archivist/index.js
+
+```javascript
+// a valid topic with ['username'] as an index
+exports.auth = {
+  index: ['username'],
+  vaults: {
+    myDataVault: {}
+  }
+};
+```
+
+> config/default.yaml
+
+```yaml
+module:
+    auth:
+        # this should point to the topic you created
+        topic: auth
+
+        # configure how user passwords are stored, the values below are the
+        # recommended default
+        hash:
+            # Please see https://en.wikipedia.org/wiki/PBKDF2 for more information
+            type: pbkdf2
+            algorithm: sha256
+            iterations: 10000
+```
+
+```yaml
+        hash:
+          # Please see https://en.wikipedia.org/wiki/HMAC for more information
+          type: hmac
+          algorithm: sha256
+          # Hex key of any length
+          key: 89076d50860489076d508604
+```
+
+```yaml
+        hash:
+          # Basic hash
+          type: hash
+          algorithm: sha1
+```
+
 ## File structure
 
 ```plaintext
@@ -227,6 +347,39 @@ Keep in mind that the execution of your usercommand may not get interrupted;
 we will return an error on the next access to the user command's `state`
 (which will in turn ensure that execution is interrupted), but manual operations
 unrelated to `state` may still complete.
+
+## Request caching
+
+```shell
+curl -X POST http://127.0.0.1:8080/game/players.checkStats?queryId=1 \
+--data-binary @- << EOF
+[{"key":"be20d767-4067-40d6-92dc-c52067b7d21e:lMftdnXxEFbP3ctq","name":"mage.session"}]
+{}
+EOF
+```
+
+```powershell
+ Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8080/game/players.checkStats?queryId=1" -Body '[{"key":"be20d767-4067-40d6-92dc-c52067b7d21e:lMftdnXxEFbP3ctq","name":"mage.session"}]
+{}' | ConvertTo-Json
+```
+
+By default, responses to requests from authenticated users which
+contain a numerical identifier in the will be automatically cached;
+this is so to avoid double-execution when the client disconnects before
+the response could be sent and the client wishes to retry.
+
+This comes handy for most operations (trades, purchases and so on),
+but may be undesirable in some circumstances (when you serve computed
+static data or static data stored in the database).
+
+> lib/modules/players/usercommands/checkStats.js
+
+```javascript
+exports.cache = false;
+```
+
+To disable this behavior, simply set `cache` to false
+in your user command's definition.
 
 ## Using async/await (Node 7.6+)
 

@@ -9,6 +9,56 @@ uses Archivist behind the scenes to store credentials for newly created users.
 
 ## Vaults
 
+
+<aside class="warning">
+Never configure multiple vaults to connect to the same vault backend storage!
+This would break how [migration scripts](#migrations) work.
+</aside>
+
+<aside class="warning">
+Not all vaults support every operations! Below you will find
+a short configuration description for each available vault backends
+alongside a list of supported operations for that backend.
+</aside>
+
+### List, read and write order
+
+> ./config/default.yaml
+
+```yaml
+archivist:
+    # When doing "list" operations, will attempt each mentioned vault until successful
+    listOrder:
+        - userVault
+        - itemVault
+
+    # When doing "get" operations, will attempt each mentioned vault until successful
+    readOrder:
+        - userVault
+        - itemVault
+
+    # When doing "add/set/touch/del" operations, will write to each mentioned vault in the given order
+    writeOrder:
+        - userVault
+        - itemVault
+```
+
+
+listOrder, readOrder, and writeOrder properties **have to** be defined in your configuration file to specify the order when reading or writting data.<br>
+For read operations (listOrder, readOrder), mage will attempt the mentioned vaults until one is successful. However, for write operations (writeOrder), mage will write to each mentioned vault, in the given order.
+
+> The item won't be written before the player because it will follow the order of the writeOrder configuration
+
+```javascript
+state.archivist.set('item', { userId: userId }, playerData);
+state.archivist.set('player', { itemId: itemId }, itemData);
+```
+
+Please note that if you are doing multiple operations in a single state transaction, the order in which the operations will be done correspond to the order provided by your configuration, not the order of the actual calls.
+
+
+### Vaults types
+
 > ./config/default.yaml
 
 ```yaml
@@ -24,16 +74,6 @@ archivist:
                 path: ./filevault/itemVault
 ```
 
-<aside class="warning">
-Never configure multiple vaults to connect to the same vault backend storage!
-This would break how [migration scripts](#migrations) work.
-</aside>
-
-<aside class="warning">
-Not all vaults support every operations! Below you will find
-a short configuration description for each available vault backends
-alongside a list of supported operations for that backend.
-</aside>
 
 As mentioned, vaults are used by archivist to store data. Currently, the following backend
 targets are supported:
@@ -45,12 +85,7 @@ targets are supported:
 | client                | Special vault type (client-side archivist support required). |
 | couchbase             | [Couchbase](https://www.couchbase.com/) interface            |
 | mysql                 | [MySQL](https://www.mysql.com/) interface.                   |
-| elasticsearch         | [Elasticsearch](https://www.elastic.co/) interface.          |
-| dynamodb              | [AWS DynamoDB](https://aws.amazon.com/dynamodb/) interface.  |
-| manta                 | [Joyent Manta](https://apidocs.joyent.com/manta/) interface. |
 | redis                 | [Redis](https://redis.io/) interface.                        |
-| memcached             | [Memcached](https://memcached.org/) interface.               |
-| sqlite3               | [SQLite](https://www.sqlite.org/) interface.                 |
 
 Vaults can have different configuration for different environments, as long as the Archivist
 API set used in your project is provided by the different vault backends you wish to use.
@@ -119,6 +154,14 @@ del       | ✔         | `state.emitToActors('archivist:del')`
 
 ### Couchbase
 
+<aside class="warning">
+Please note that the authentication is different for Couchbase Server >= 5.0 and Couchbase Server < 5.0.
+The configuration for each is explained in the example on the right side.
+</aside>
+<aside class="info">
+We recommend you to use Couchbase Server >= 5.0 which is more secured that Couchbase Server < 5.0.
+</aside>
+
 ```yaml
 type: couchbase
 config:
@@ -126,9 +169,14 @@ config:
         # List of hosts in the cluster
         hosts: [ "localhost:8091" ]
 
-        # optional
-        user: Administrator
+        # Only for Couchbase Server >= 5.0
+        # User credentials
+        username: Administrator
         password: "password"
+
+        # Only for Couchbase Server < 5.0
+        # Bucket password (optional)
+        password: "toto"
 
         # optional
         bucket: default
@@ -136,16 +184,24 @@ config:
         # optional, useful if you share a bucket with other applications
         prefix: "bob/"
 
+        # optional, can use any option specified in https://developer.couchbase.com/documentation/server/5.1/sdk/nodejs/client-settings.html#topic_pkk_vhn_qv__d397e189
+        options:
+          # usefull to debug network errors (eg. authentication errors)
+          detailed_errcodes: 1
+
     # options only used with archivist:create
     create:
         adminUsername: admin
         adminPassword: "password"
         bucketType: couchbase # can be couchbase or memcached
-        romQuotaMB: 100       # how much memory to allocate to the bucket
+        ramQuotaMB: 100       # how much memory to allocate to the bucket
 ```
 
-`user` and `password` are optional, however, you will need to configure
-configure them if you with to create the underlying bucket
+For **Couchbase Server >= 5.0**, `options.user` and `options.password` have to be set to a user who has access to the `options.bucket`.
+
+For **Couchbase Server < 5.0**, however, you just need to configure `options.password` which correspond to the bucket password and is **optional**.
+
+`create.adminUsername` and `create.password` need to be configured only if you wish to create the underlying bucket
 through `archivist:create`, or to create views and query indexes
 through `archivist:migrate`.
 
@@ -224,88 +280,9 @@ If you want to change how this information is stored, by adding columns, etc, yo
 serializer method to do so. For example, consider the following example if you want to add a
 timestamp to a `lastChanged INT UNSIGNED NOT NULL` column.
 
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
-### Elasticsearch
-
-```yaml
-elasticsearch:
-    type: elasticsearch
-    config:
-        # this is the default index used for storage, you can override this in your code if necessary
-        index: testgame
-
-        # here is your server configuration
-        server:
-            hostname: '192.168.2.176'
-            port: 9200
-            secure: false
-```
-
-operation | supported | implementation
-----------|:---------:|---------------
-list      |           |
-get       | ✔         | `elasticsearch.get`
-add       | ✔         | `elasticsearch.index` with op_type set to `create`
-set       | ✔         | `elasticsearch.index`
-touch     |           |
-del       | ✔         | `elasticsearch.del`
-
-### DynamoDB
-
-```yaml
-dynamodb:
-    type: "dynamodb"
-    config:
-        accessKeyId: "The access ID provided by Amazon"
-        secretAccessKey: "The secret ID provided by Amazon"
-        region: "A valid region. Refer to the Amazon doc or ask your sysadmin. Asia is ap-northeast-1"
-```
-
-operation | supported | implementation
-----------|:---------:|---------------
-list      |           |
-get       | ✔         | `DynamoDB.getItem`
-add       | ✔         | `DynamoDB.putItem` with `Expect.exists = false` set to the index keys
-set       | ✔         | `DynamoDB.putItem`
-touch     |           |
-del       | ✔         | `DynamoDB.deleteItem`
-
-### Manta
-
-```yaml
-type: manta
-config:
-    # url is optional
-    url: "https://us-east.manta.joyent.com"
-    user: bob
-    sign:
-        keyId: "a3:81:a2:2c:8f:c0:18:43:8a:1e:cd:12:40:fa:65:2a"
-
-        # key may be replaced with "keyPath" (path to a private key file),
-        # or omitted to fallback to "~/.ssh/id_rsa"
-        key: |
-          -----BEGIN RSA PRIVATE KEY-----
-          ..etc..
-          -----END RSA PRIVATE KEY-----
-```
-
-`keyId` is the fingerprint of your public key, which can be retrieved by running:
-
-`ssh-keygen -l -f $HOME/.ssh/id_rsa.pub | awk '{print $2}'`
-
-operation | supported | implementation
-----------|:---------:|---------------
-list      | ✔         | `manta.ls()`
-get       | ✔         | `manta.get()`
-add       |           |
-set       | ✔         | `manta.put()`
-touch     |           |
-del       | ✔         | `manta.unlink()`
-
 ### Redis
 
-```yaml
+ ```yaml
 type: redis
 config:
     port: 6379
@@ -313,13 +290,12 @@ config:
     options: {}
     prefix: "key/prefix/"
 ```
-
-The `options` object is described in the [node-redis readme](https://npmjs.org/package/redis).
+ The `options` object is described in the [node-redis readme](https://npmjs.org/package/redis).
 Both `options` and `prefix` are optional. The option `return_buffers` is turned on by default by the
 Archivist, because the default serialization will prepend values with meta data (in order to
 preserve mediaType awareness).
 
-operation | supported | implementation
+ operation | supported | implementation
 ----------|:---------:|---------------
 list      |           |
 get       | ✔         | `redis.get()`
@@ -327,64 +303,6 @@ add       | ✔         | `redis.set('NX')`
 set       | ✔         | `redis.set()`
 touch     | ✔         | `redis.expire()`
 del       | ✔         | `redis.del()`
-
-### Memcached
-
-```yaml
-type: memcached
-config:
-    servers:
-        - "1.2.3.4:11211"
-        - "1.2.3.5:11411"
-    options:
-        foo: bar
-    prefix: "prefix for all your keys"
-```
-
-The usage of the `servers` and `options` properties are described in the
-[node-memcached readme](https://npmjs.org/package/memcached). Both `options` and `prefix` are
-optional.
-
-operation | supported | implementation
-----------|:---------:|---------------
-list      |           |
-get       | ✔         | `memcached.get()`
-add       | ✔         | `memcached.add()`
-set       | ✔         | `memcached.set()`
-touch     | ✔         | `memcached.touch()`
-del       | ✔         | `memcached.del()`
-
-### SQLite3
-
-```yaml
-type: sqlite3
-config:
-    filename: "./sqlitevault/awesomegame.db"
-```
-
-This vault should only be used for development and testing.
-
-Further documentation can be found at [node-sqlite3](https://github.com/mapbox/node-sqlite3).
-To avoid confusion, the npm package name is sqlite3, but the project is called node-sqlite3.
-
-If no filename is provided, an in-memory database will be created at runtime and will be destroyed on close.
-
-If an empty string is provided, an temporary database stored on disk will be createdat runtime and destroyed on close.
-
-operation | supported | implementation
-----------|:---------:|---------------
-list      | ✔         | `SELECT FROM table WHERE partialIndex`
-get       | ✔         | `SELECT FROM table WHERE fullIndex`
-add       | ✔         | `INSERT INTO table () VALUES ()`
-set       | ✔         | `INSERT OR REPLACE INTO table () VALUES ()`
-touch     |           |
-del       | ✔         | `DELETE FROM table WHERE fullIndex`
-
-`archivist:create` support requires that the user be allowed to create databases. However, you
-will still need to write a [migration script](#migrations) to create the different tables
-where your topics will be stored.
-
-See [documentation](#mysql) for the `MySQL` vault on how to structure your tables for usage with archivist.
 
 ## Topics
 
@@ -402,8 +320,28 @@ exports.player = {
 Topics are essentially Archivist datatypes; they define which vault(s)
 to use for storage, the key structure for accessing data, and so on.
 
-In this example, we simply specify a new topic, called items, in which we will be
-identifying by itemId.
+In this example, we simply specify a new topic, called player, in which we will be
+identifying by userId.
+
+### Add an expiration time
+
+In your topic config, you can specify a `ttl` to make your data expires after a certain amount of time.
+
+`ttl` should be a string matching one of the following formats:
+
+- days: "[num]d"
+- hours: "[num]h"
+- minutes: "[num]m"
+- seconds: "[num]s"
+
+> Add an expiration time
+
+```javascript
+exports.player = {
+  // ...
+  ttl: '1m' // Expire the data after 1 minute
+};
+```
 
 ## Store & retrieve topics
 
@@ -596,7 +534,6 @@ List of `archivist:create` enabled backends:
 * `file`
 * `couchbase`
 * `mysql`
-* `sqlite`
 
 It is not recommended to use those features in production.
 

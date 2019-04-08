@@ -7,7 +7,7 @@ of the following:
   2. Serve service status files (or content)
   3. Proxy requests to a remote server through MAGE
 
-To this end, MAGE provides to developers an [API](./api/interfaces/_mage_d_.imagecore.html#httpserver) that will allow you
+To this end, MAGE provides to developers an [API](./api/interfaces/imagecore.html#httpserver) that will allow you
 to do such things.
 
 ## Cross-Origin Resource Sharing (CORS)

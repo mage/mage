@@ -2,12 +2,11 @@
   "compilerOptions": {
     "module": "commonjs",
     "moduleResolution": "node",
-    "baseUrl": "../",
-    "typeRoots": [
-        "../"
-    ],
-    "types": [],
     "isolatedModules": true,
     "noEmit": true
-  }
+  },
+  "include": [
+    "./lib/**/*.ts",
+    "./*.ts"
+  ]
 }

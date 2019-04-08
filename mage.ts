@@ -4,7 +4,7 @@ declare type VaultOperation = 'add' | 'set' | 'del' | 'touch';
 
 import * as commander from 'commander';
 import * as config from './lib/config';
-import * as MageError from './lib/mage/MageError';
+import MageError from './lib/mage/MageError';
 
 /**
  * Abstracted data store access interface
@@ -226,9 +226,13 @@ declare type AuthenticateCallback = (error: Error|null, userId: string|number, a
 
 declare type LoginCallback = (error: Error|null, session: Session) => void;
 
-declare type RegisterCallback = (error: Error|null, session: Session) => void;
+declare type RegisterCallback = (error: Error|null, userId: string) => void;
 
 declare type ChangePasswordCallback = (error: Error|null) => void;
+
+declare type BanCallback = (error: Error|null) => void;
+
+declare type UnbanCallback = (error: Error|null) => void;
 
 declare interface ILog extends Function {
     /**
@@ -1118,20 +1122,12 @@ declare interface IMageCore {
         getClusterId(): string;
 
         /**
-         * Retreive the configuration used by this Message
+         * Retrieve the configuration used by this Message
          * Server instance
          *
          * @returns {*}
          */
         getPublicConfig(): any;
-
-        /**
-         * Get the URL to use to connect to this Message
-         * Stream's instance
-         *
-         * @returns {string}
-         */
-        getMsgStreamUrl(): string;
 
         /**
          * Send a message to a remote Message Server instance
@@ -1600,6 +1596,16 @@ declare class Mage extends NodeJS.EventEmitter {
          * Change a user's password.
          */
         changePassword(state: mage.core.IState, username: string, newPassword: string, callback: ChangePasswordCallback): void;
+
+        /**
+         * Ban the user
+         */
+        ban(state: mage.core.IState, username: string, callback: BanCallback): void;
+
+        /**
+         * Unban the user
+         */
+        unban(state: mage.core.IState, username: string, callback: UnbanCallback): void;
     }
 
     /**
@@ -2347,15 +2353,6 @@ declare namespace mage {
              * @memberof IServiceNode
              */
             data: any;
-
-            /**
-             * Returns whether this node is running on the local machine or not,
-             * based on the announced IP addresses
-             *
-             * @returns {boolean}
-             * @memberof IServiceNode
-             */
-            isLocal(): boolean;
 
             /**
              * Retrieve an IP from the addresses list

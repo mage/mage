@@ -28,14 +28,18 @@ logging:
 
     server:
         # You should add logging services such as Graylog or Syslog here
-
+        terminal:
+            channels: ">=notice"
+            config:
+                # Themes enable colors
+                theme: default
 
 # The server and its place in the network
 
 server:
-    # Set cluster to boolean true to have as many workers as this machine has cores, or a number
+    # Set workers to boolean true to have as many workers as this machine has cores, or a number
     # if you want to be more precise.
-    cluster: true
+    workers: true
 
     # MMRP is the messaging layer between node instances, built on top of ZeroMQ
     mmrp:

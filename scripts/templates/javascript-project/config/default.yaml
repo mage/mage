@@ -53,9 +53,9 @@ server:
         detect:
             - longpolling
 
-    # Set cluster to boolean true to have as many workers as this machine has cores, or a number
+    # Set workers to boolean true to have as many workers as this machine has cores, or a number
     # if you want to be more precise.
-    cluster: 1
+    workers: 1
 
     # Shutdown the current worker process when an uncaught exception is
     # caught, and let MAGE restart the process. You will normally

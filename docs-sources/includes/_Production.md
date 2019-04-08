@@ -22,7 +22,7 @@ DEVELOPMENT_MODE=false npm start
 
 The "server" entry in the configuration must be set up properly. That *probably* means:
 
-  * `cluster` should be set to a number to indicate a worker count, or even better, to `true` (meaning
+  * `workers` should be set to a number to indicate a worker count, or even better, to `true` (meaning
     that as many workers will be spawned as the CPU has cores).
   * `serviceDiscovery.engine` should be appropriately selected for this environment.
   * `mmrp` must be set up to allow all MAGE servers to communicate with each other on the network.

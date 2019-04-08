@@ -2,19 +2,23 @@
 
 ## Node.js
 
-<aside class="notice">
-We recommend using version 4 since it is an LTS version
+<aside class="warning">
+MAGE only supports node from version 8.x
+We recommend using the most recent Active LTS version, but we always try to support the Current Release as well.
+
+You can see what the LTS and Current versions are in the Node.js
+<a href="https://github.com/nodejs/Release#release-schedule">release schedule</a>.
 </aside>
 
 ```shell
-nvm install 4
-nvm use 4
+nvm install 8
+nvm use 8
 ```
 
 ```powershell
 # You will need to provide the specific version to install and use
-Install-NodeVersion v4.8.2
-Set-NodeVersion v4.8.2
+Install-NodeVersion v8.10.0
+Set-NodeVersion v8.10.0
 ```
 
 Node.js (or Node) is essentially JavaScript for servers, and the MAGE platform has been built on it.
