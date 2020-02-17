@@ -1250,6 +1250,10 @@ declare interface IMageCore {
      */
     serviceDiscovery: {
         /**
+         * Register a discovery engine
+         */
+        registerEngine(name: string, mod: mage.core.IServiceDiscoveryEngine)
+        /**
          * Create a service instance
          *
          * Service instances can be used to announce services as well
@@ -2236,6 +2240,14 @@ declare namespace mage {
          * @extends {Logger}
          */
         interface ILogger extends Logger {}
+
+        /**
+         * IServiceDiscoveryEngine defines the structure for pluggable
+         * service discovery engines.
+         */
+        interface IServiceDiscoveryEngine {
+            create(name: string, type: any, configuration: any): IService
+        }
 
         /**
          * IService interface
